@@ -4,7 +4,7 @@ spark-submit \
 	--master spark://eiger-1.maas:7077 \
 	--driver-memory 2G \
 	--total-executor-cores $2 \
-	--executor-cores 2 \
+	--executor-cores 4 \
 	--executor-memory 2G \
 	--py-files /home/ubuntu/bigdl/lib/bigdl-0.8.0-python-api.zip,/home/ubuntu/sprinting/applications/lenet5.py \
 	--properties-file /home/ubuntu/bigdl/conf/spark-bigdl.conf \
@@ -14,7 +14,7 @@ spark-submit \
 	--appName $1 \
 	--action train \
 	--dataPath /home/ubuntu/dataset/mnist/ \
-	--batchSize 128 \
+	--batchSize $3 \
 	--learningRate 0.01 \
 	--learningrateDecay 0.0002 \
-	--endTriggerNum $3
+	--endTriggerNum $4
