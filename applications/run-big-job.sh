@@ -4,7 +4,7 @@ spark-submit \
 	--master spark://eiger-1.maas:7077 \
 	--driver-memory 2G \
 	--total-executor-cores $2 \
-	--executor-cores 2 \
+	--executor-cores 16 \
 	--executor-memory 2G \
 	--py-files /home/ubuntu/bigdl/lib/bigdl-0.8.0-python-api.zip,/home/ubuntu/sprinting/applications/lenet5.py \
 	--properties-file /home/ubuntu/bigdl/conf/spark-bigdl.conf \
