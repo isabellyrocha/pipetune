@@ -66,7 +66,7 @@ if __name__ == "__main__":
     if options.action == "train":
         #(train_data, test_data) = preprocess_mnist(sc, options)
         (train_data, test_data) = utils.get_mnist_costum(sc, options.dataPath)
-        if os.path.exists("/tmp/%s.bigdl" % options.appName):
+        if False: #os.path.exists("/tmp/%s.bigdl" % options.appName):
             model = Model.loadModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName)
         else:
             model = build_model(10)
@@ -80,7 +80,7 @@ if __name__ == "__main__":
         validate_optimizer(optimizer, test_data, options)
         trained_model = optimizer.optimize()
         parameters = trained_model.parameters()
-        trained_model.saveModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName, True)
+#        trained_model.saveModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName, True)
     elif options.action == "test":
         # Load a pre-trained model and then validate it through top1 accuracy.
         test_data = get_mnist(sc, "test", options.dataPath) \
