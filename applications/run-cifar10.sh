@@ -4,7 +4,7 @@ spark-submit \
 	--master spark://eiger-1.maas:7077 \
 	--driver-memory 2G \
 	--total-executor-cores $2 \
-	--executor-cores 4 \
+	--executor-cores 8 \
 	--executor-memory 4G \
 	--py-files /home/ubuntu/bigdl/lib/bigdl-0.8.0-python-api.zip,/home/ubuntu/sprinting/applications/cifar10.py \
 	--properties-file /home/ubuntu/bigdl/conf/spark-bigdl.conf \

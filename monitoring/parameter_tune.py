@@ -18,7 +18,7 @@ def query_data(node_name, start, end):
 
 def energy(start, end):
     energy = 0
-    for node_name in ['eiger-1', 'eiger-2', 'eiger-3', 'eiger-4']:
+    for node_name in ['eiger-6', 'eiger-2', 'eiger-3', 'eiger-4']:
         points = query_data(node_name, start, end)
         values = []
 
@@ -68,13 +68,14 @@ def next(file_name):
 
 def setCores(cores):
     command = "ps -aux -a | grep executor | awk '{print $2}' | while read line ; do sudo taskset -cp -pa 0-%d $line  ; done" % (cores-1)
-    for node in ["eiger-1.maas", "eiger-2.maas", "eiger-3.maas", "eiger-4.maas"]:
+    for node in ["eiger-6.maas", "eiger-2.maas", "eiger-3.maas", "eiger-4.maas"]:
         subprocess.Popen(["ssh", node, command], shell=False ,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print("Changed number of cores to %d... " % cores)
 
 output_file = open("../traces/mnist.log", "w")
-application = subprocess.Popen(["bash", "../applications/run-cifar10.sh", "cifar10", "16", "128", "5"], stdout=output_file)
+application = subprocess.Popen(["bash", "../applications/run-cifar10.sh", "cifar10", "32", "512", "5"], stdout=output_file)
 
-time.sleep(5)
+time.sleep(15)
 print("Staring application..")
 
 setCores(1)
@@ -90,9 +91,16 @@ print("Application has started..")
 epochStart = []
 epochEnd = []
 epochID = 1
+
+#iterations lenet
 #iterations = 1875 # batch size: 32
-iterations = 469 # batch size: 128
+#iterations = 469 # batch size: 128
 #iterations =  118# batch size: 512
+
+#iterations cifar10
+#iterations = 1563 # batch size: 32
+iterations = 98 # batch size: 512
+
 while epochID < 5:
     if "[Iteration %d]" % (iterations*(epochID-1)+1) in line:
         date = line.split(" INFO")[0]
@@ -102,19 +110,10 @@ while epochID < 5:
         epochStart.append(start)
         if epochID == 2:
             setCores(2)
-            #os.system("ps -aux -a | awk '{print $2}' | while read line ; do sudo taskset -cp -pa 0-1 $line ; done")
-#           os.system("sudo taskset -cp 0-1 %d" % application.pid)
-            print("Changing number of cores to 2... ")
         if epochID == 3:
             setCores(4) #os.system("ps -aux -a | awk '{print $2}' | while read line ; do sudo taskset -cp 0-0 $line ; done")
-#            os.system("sudo taskset -cp 0-0 %d" % application.pid)
-
-            print("Changing number of cores to 1... ")
         if epochID == 4:
             setCores(8) #os.system("ps -aux -a | awk '{print $2}' | while read line ; do sudo taskset -cp 0-0 $line ; done")
-#            os.system("sudo taskset -cp 0-0 %d" % application.pid)
-
-            print("Changing number of cores to 1... ")
     if "[Iteration %d]" % (iterations*epochID) in line:
         if len(epochStart) > len(epochEnd):
             date = line.split(" INFO")[0]
@@ -130,8 +129,7 @@ while epochID < 5:
 for i in range(4):
     start = epochStart[i]
     end = epochEnd[i]
-    print("%d	%d	%d	%d" % (i, (end-start), start, end))
-
+    print("%d	%d	%d" % (i, (end-start), energy(start,end)))
 
 print("Best option setup. Waiting application to finish..")
 application.wait()

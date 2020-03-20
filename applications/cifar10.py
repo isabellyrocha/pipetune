@@ -220,7 +220,7 @@ if __name__ == "__main__":
     learning_rate=float(options.learningRate)
     learning_rate_decay=float(options.learningrateDecay)
 
-    (train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
+    (train_images, train_labels), (test_images, test_labels) = cifar100.load_data()
     training_mean = np.mean(train_images)
     training_std = np.std(train_images)
     test_mean = np.mean(test_images)
@@ -237,7 +237,7 @@ if __name__ == "__main__":
     test_data = record.map(lambda rec_tuple: (normalizer(rec_tuple[0], test_mean, test_std), rec_tuple[1])).map(lambda t: Sample.from_ndarray(t[0], t[1]))
 
     optimizer = Optimizer(
-        model=build_model_new(10),
+        model=build_model_new(100),
         training_rdd=train_data,
         criterion=ClassNLLCriterion(),
         optim_method=RMSprop(learningrate=learning_rate, learningrate_decay=learning_rate_decay),#, momentum=0.9, dampening=0.0, nesterov=True),
