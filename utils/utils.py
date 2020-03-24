@@ -6,10 +6,11 @@ import os
 def timestamp():
     return int(datetime.timestamp(datetime.now()))#datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
-def read_json(file_path:str, executors:int =1):
+def read_json(file_path:str, executors:str ="1", batch_size:str ="1024"):
     with open(file_path, 'r') as json_file:
         json_obj = json.load(json_file)
-    json_obj['total_executor_cores'] = str(executors)
+    json_obj['total_executor_cores'] = executors
+    json_obj['batch_size'] = batch_size
     return json_obj
 
 def run_script(args, out =subprocess.PIPE, err =subprocess.PIPE):

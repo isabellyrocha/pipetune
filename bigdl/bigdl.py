@@ -34,9 +34,10 @@ class BigDL:
 
     def run_mnist(self, 
                   config_file ="%s/pipetune/bigdl/config/mnist.json" % str(Path.home()),
-                  total_executor_cores =1,
+                  total_executor_cores ="1",
+                  batch_size ="1024",
                   output_file ="%s/pipetune/bigdl/logs/mnist.log" % str(Path.home())):
-        config = utils.read_json(config_file, 4)
+        config = utils.read_json(config_file, total_executor_cores, batch_size)
         output = open(output_file, "w")
         start = utils.timestamp()
         app = self.submit(config, output)
