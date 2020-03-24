@@ -7,12 +7,12 @@
     "py_files": "/home/ubuntu/bigdl/lib/bigdl-0.8.0-python-api.zip,/home/ubuntu/sprinting/applications/lenet5.py",
     "properties_file": "/home/ubuntu/bigdl/conf/spark-bigdl.conf",
     "jars": "/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar",
-    "conf": "spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar /home/ubuntu/sprinting/applications/lenet5.py",
-    "appName": "mnist",
+    "conf": "/home/ubuntu/sprinting/applications/lenet5.py",
+    "app_name": "mnist",
     "action": "train",
-    "dataPath": "/home/ubuntu/dataset/mnist",
-    "batchSize": "64",
-    "learningRate": "0.01",
-    "learningrateDecay": "0.0002",
-    "endTriggerNum": "1"
+    "data_path": "/home/ubuntu/dataset/mnist",
+    "batch_size": "64",
+    "learning_rate": "0.01",
+    "learning_rate_decay": "0.0002",
+    "end_trigger_num": "1"
 }
