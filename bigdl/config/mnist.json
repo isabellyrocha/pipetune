@@ -1,0 +1,18 @@
+{
+    "master": "spark://eiger-1.maas:7077",
+    "driver_memory": "2G",
+    "total_executor_cores": "1",
+    "executor_cores": "1",
+    "executor_memory": "2G",
+    "py_files": "/home/ubuntu/bigdl/lib/bigdl-0.8.0-python-api.zip,/home/ubuntu/sprinting/applications/lenet5.py",
+    "properties_file": "/home/ubuntu/bigdl/conf/spark-bigdl.conf",
+    "jars": "/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar",
+    "conf": "spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar /home/ubuntu/sprinting/applications/lenet5.py",
+    "appName": "mnist",
+    "action": "train",
+    "dataPath": "/home/ubuntu/dataset/mnist",
+    "batchSize": "64",
+    "learningRate": "0.01",
+    "learningrateDecay": "0.0002",
+    "endTriggerNum": "1"
+}
