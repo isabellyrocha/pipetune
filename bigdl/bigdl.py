@@ -1,12 +1,10 @@
-from utils import utils
+from utils import utils, energy
 from pathlib import Path
 
 class BigDL:
-    def submit(self, config):
-        print(config)
-        #output_file = open("mnist.log", "w")
+    def submit(self, config, output):
         return utils.run_script([
-            '/usr/local/spark/bin/spark-submit',
+            'spark-submit',
             '--master', config['master'],
             '--driver-memory', config['driver_memory'],
             '--total-executor-cores', config['total_executor_cores'],
@@ -23,8 +21,27 @@ class BigDL:
             '--batchSize', config['batch_size'],
             '--learningRate', config['learning_rate'],
             '--learningrateDecay', config['learning_rate_decay'],
-            '--endTriggerNum', config['end_trigger_num']])
+            '--endTriggerNum', config['end_trigger_num']], output)
 
-    def run_mnist(self, file ="%s/pipetune/bigdl/config/mnist.json" % str(Path.home())):
-        config = utils.read_json(file)
-        self.submit(config)
+    def get_accuracy(self, output_file):
+        with open(output_file, "r") as output:
+            line = output.readline()
+            while line:
+                if "accuracy" in line:
+                    accuracy = line.split("accuracy: ")[1].replace(')','')
+                line = output.readline()
+        return float(accuracy)
+
+    def run_mnist(self, 
+                  config_file ="%s/pipetune/bigdl/config/mnist.json" % str(Path.home()),
+                  total_executor_cores =1,
+                  output_file ="%s/pipetune/bigdl/logs/mnist.log" % str(Path.home())):
+        config = utils.read_json(config_file, 4)
+        output = open(output_file, "w")
+        start = utils.timestamp()
+        app = self.submit(config, output)
+        app.wait()
+        end = utils.timestamp()
+        output.close()
+        accuracy = self.get_accuracy(output_file)
+        return {'accuracy': accuracy, 'duration': (end-start), 'energy': energy.pdu_energy(start, end)}
