@@ -51,7 +51,7 @@ def runParameter():
         time_attr="training_iteration",
         metric="duration",
         mode="min",
-        max_t=100)
+        max_t=1)
 
     exp = Experiment(
         name="hyperband_test",
@@ -59,7 +59,7 @@ def runParameter():
         num_samples=1,
         stop={"training_iteration": 1 if args.smoke_test else 99999},
         config={
-            "batch": tune.sample_from(lambda spec: np.random.randint(64, 1024))
+            "batch": tune.grid_search([32,64,512,1024])#tune.sample_from(lambda spec: np.random.randint(64, 1024))
             #"cores": tune.grid_search([1,2,4])
         })
 
