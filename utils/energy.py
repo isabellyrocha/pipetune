@@ -4,7 +4,7 @@ import numpy
 def query_pdu_data(node_name, start, end):
     client = InfluxDBClient('localhost', 8086, 'root', 'root', 'energy')
     result = client.query('SELECT max(value) '
-                'FROM "power/node_utilization" '
+                'FROM "pdu_power/node_utilization" '
                 'WHERE nodename =~ /%s/ AND '
                 '%d000000000 <= time AND '
                 'time <= %d000000000 '

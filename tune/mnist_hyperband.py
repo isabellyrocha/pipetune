@@ -49,7 +49,7 @@ def runParameter():
     # which is automatically filled by Tune.
     hyperband = AsyncHyperBandScheduler(
         time_attr="training_iteration",
-        metric="duration",
+        metric="accuracy",
         mode="min",
         max_t=1)
 
@@ -59,7 +59,7 @@ def runParameter():
         num_samples=1,
         stop={"training_iteration": 1 if args.smoke_test else 99999},
         config={
-            "batch": tune.grid_search([32,64,512,1024])#tune.sample_from(lambda spec: np.random.randint(64, 1024))
+            "batch": np.random.randint(32,1024) #tune.grid_search([32,64,512,1024])#tune.sample_from(lambda spec: np.random.randint(64, 1024))
             #"cores": tune.grid_search([1,2,4])
         })
 

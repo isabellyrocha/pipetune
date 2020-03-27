@@ -34,7 +34,7 @@ def get_nodename(node_id):
 
 def get_json(nodename, timestamp, power):
     json_body = [{
-        "measurement": "power/node_utilization",
+        "measurement": "pdu_power/node_utilization",
         "tags": {
             "nodename": nodename,
         },
@@ -49,16 +49,16 @@ def write_outputs_metrics_influxdb(timestamp, metrics_values, client):
     for output_id in range(2,11):
         nodename = get_nodename(output_id)
         power = metrics_values[output_id][4]['v']
-
+        
         json_body = get_json(nodename, timestamp, power)
-        client.write_points(json_body)
+        client.write_points(json_body)    	
 
 def main(status_url, frequency):
     print('Starting PDU monitoring...')
     try:
         client = InfluxDBClient('localhost', 8086, 'root', 'root', 'energy')
         while True:
-            timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+            timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')	
             response = urllib.request.urlopen(status_url + '/statusjsn.js?components=16384')
             obj = response.readline().decode('utf8')
             metrics = json.loads(obj)
