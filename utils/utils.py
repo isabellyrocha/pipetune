@@ -1,7 +1,11 @@
 import subprocess
+import time
 from datetime import datetime
 import json
 import os
+
+def str_to_tstp(time_str:str):
+    return int(time.mktime(datetime.strptime(time_str, '%Y-%m-%d %H:%M:%S').timetuple()))
 
 def timestamp():
     return int(datetime.timestamp(datetime.now()))#datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')

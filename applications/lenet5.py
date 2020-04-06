@@ -37,6 +37,7 @@ def build_model(class_num):
     model.add(Reshape([120 * 5 * 5]))
     model.add(Linear(120 * 5 * 5, 84))
     model.add(Tanh())
+    model.add(Dropout(0.25))
     model.add(Linear(84, class_num))
     model.add(LogSoftMax())
     return model

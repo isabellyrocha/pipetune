@@ -9,7 +9,7 @@ def query_pdu_data(node_name, start, end):
                 '%d000000000 <= time AND '
                 'time <= %d000000000 '
                 'group by time(1s) fill(previous)' % (node_name, start, end))
-    return list(result.get_points(measurement='power/node_utilization'))
+    return list(result.get_points(measurement='pdu_power/node_utilization'))
 
 def query_pcm_data(node_name, start, end):
     client = InfluxDBClient('localhost', 8086, 'root', 'root', 'energy')
