@@ -54,7 +54,7 @@ class BigDL(object):
         info['accuracy'] = float(accuracy)
         info['energy'] = cluster_energy
         info['duration'] = duration
-        info['ratio'] = accuracy/duration
+        info['ratio'] = float(accuracy)/duration
         return float(accuracy)
 
     def run_mnist(self, 
