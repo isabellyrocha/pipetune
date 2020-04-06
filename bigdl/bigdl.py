@@ -55,7 +55,7 @@ class BigDL(object):
         info['energy'] = cluster_energy
         info['duration'] = duration
         info['ratio'] = float(accuracy)/duration
-        return float(accuracy)
+        return info
 
     def run_mnist(self, 
                   config_file ="%s/pipetune/bigdl/config/mnist.json" % Path.home(),
