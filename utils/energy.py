@@ -42,7 +42,7 @@ def pcm_energy(start, end):
     energy = 0
     for node_name in ['eiger-2']:#, 'eiger-2', 'eiger-3', 'eiger-4']:
         points = query_pcm_data(node_name, start, end)
-        print(points)
+#        print(points)
         values = []
 
         #last = 0
@@ -54,6 +54,6 @@ def pcm_energy(start, end):
         #        last = i
         #for i in range(last, len(points)):
         #    values.append(value)
-        print(values)
+#        print(values)
         energy += (numpy.trapz(values))
     return energy

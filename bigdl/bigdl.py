@@ -2,6 +2,7 @@ from utils import utils, energy
 from pathlib import Path
 import random
 import time
+import sys
 
 class BigDL(object):
 
@@ -13,6 +14,35 @@ class BigDL(object):
         self._job_id =+ 1
         #print(self._job_id)
         return self._job_id
+
+
+    def submit_v2(self, config, output):
+        epochs = {1: "1", 2: "2", 3: "4"}
+        cores = "1"
+        number_of_epochs = int(config['end_trigger_num'])
+        duration = sys.maxsize
+        min_energy = sys.maxsize
+        config['end_trigger_num'] = "1"
+ #   file_path = open(file_name, 'r')
+        for epoch in epochs.keys():
+            #start = utils.timestamp()
+            config['total_executor_cores'] = epochs[epoch]
+            app = self.submit(config, output)
+            start = utils.timestamp()
+            app.wait()
+            #utils.setCores(epochs[epoch])
+            finish = utils.timestamp()
+            epoch_duration = finish - start
+            epoch_energy = energy.pcm_energy(start,finish)
+            if epoch_energy < min_energy:
+            #if epoch_duration < duration:
+                min_energy = epoch_energy
+                duration = epoch_duration
+                cores = epochs[epoch]
+        config['total_executor_cores'] = cores
+        config['end_trigger_num'] = str(number_of_epochs-3)
+        app = self.submit(config, output)
+        app.wait()
 
     def submit(self, config, output):
         return utils.run_script([
@@ -49,22 +79,33 @@ class BigDL(object):
                     accuracy = line.split("accuracy: ")[1].replace(')','')
                 line = output.readline()
         duration = finish - start
-        cluster_energy = energy.pdu_energy(start, finish)
+        cluster_energy = energy.pcm_energy(start, finish)
         info = {}
         info['accuracy'] = float(accuracy)
         info['energy'] = cluster_energy
         info['duration'] = duration
-        info['ratio'] = float(accuracy)/duration
+        info['ratio'] = float(accuracy)/float(cluster_energy)
         return info
 
     def run_mnist(self, 
                   config_file ="%s/pipetune/bigdl/config/mnist.json" % Path.home(),
                   total_executor_cores ="1",
-                  batch_size ="1024"):
+                  batch_size ="1024",
+                  learning_rate ="0.01",
+                  epochs ="1"):
         output_file ="%s/pipetune/bigdl/logs/mnist_%s.log" % (Path.home(), str(time.time()))
-        config = utils.read_json(config_file, total_executor_cores, batch_size)
-        output = open(output_file, "w")
+        config = utils.read_json(config_file)
+        config['total_executor_cores'] = total_executor_cores
+        config['batch_size'] = batch_size
+        #print(config['batch_size'])
+        config['learning_rate'] = learning_rate
+        config['end_trigger_num'] = epochs
+        output = open(output_file, "w+")
         app = self.submit(config, output)
         app.wait()
+        #self.submit_v2(config, output)
         output.close()
-        return self.get_info(output_file)
+        info = self.get_info(output_file)
+        print(config)
+        print(info)
+        return info

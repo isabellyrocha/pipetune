@@ -8,6 +8,7 @@ from ray import tune
 from ray.tune import Trainable, run, Experiment, sample_from
 from ray.tune.schedulers import AsyncHyperBandScheduler, HyperBandScheduler
 from bigdl.bigdl import BigDL
+from utils import utils
 
 class MNIST(Trainable):
     """Example agent whose learning curve is a random sigmoid.
@@ -16,15 +17,21 @@ class MNIST(Trainable):
     """
     def _setup(self, config):
         self.timestep = 0
-        self.bigdl = self.config['bigdl']#igDL()
+        self.bigdl = BigDL()# = self.config['bigdl']#igDL()
         self.config = config
 
     def _train(self):
         self.timestep += 1
         batch = str(self.config['batch'])
-        cores = str(self.config['cores'])
-        result = self.bigdl.run_mnist(batch_size = batch,
-                                      total_executor_cores = cores)
+        lr = "0.001"#str(self.config['lr'])
+        n_epochs = "10"#str(self.config['epochs'])
+        cores = "1"#str(self.config['cores'])
+#        if batch == "32":
+#            cores = "2"
+        result = self.bigdl.run_mnist(total_executor_cores = cores,
+                                      batch_size = batch,
+                                      learning_rate = lr,
+                                      epochs = n_epochs)
         result["iter"] = self.timestep
         return result
 
@@ -81,8 +88,6 @@ def runParameter():
 #    analysis = run(exp, scheduler=hyperband, resume=False, resources_per_trial={"cpu": 2})
 #    print("Best config is", analysis.get_best_config(metric="duration"))
 
-    bigdl = BigDL()
-
     analysis = tune.run(
         MNIST,
         checkpoint_freq=10,
@@ -94,20 +99,23 @@ def runParameter():
         num_samples=1,
         reuse_actors=False,
         resume=False,
-        #resources_per_trial={
-        #    "cpu": 1
+        resources_per_trial={
+            "cpu": 8
             #"gpu": 0.5
-        #},
+        },
         config={
-            "bigdl": bigdl,
-            "batch": tune.grid_search([64,256,1024]),
-            "cores": tune.grid_search([1,2,4])
+            #"epochs": tune.sample_from([]
+            #    lambda spec: np.random.randint(1, 100)),
+            #"lr": tune.sample_from([0.1,0.01,0.001]),
+            #    lambda spec: np.random.uniform(0.001, 0.1)),
+            "batch": tune.sample_from([32, 1024])#tune.grid_search([64,256,1024]),
+#            "cores": tune.sample_from([4,2])#tune.grid_search([1,2,4])
         })
 
     trials = analysis.trials
     for trial in trials:
-        print (trial.metric_analysis['ratio'])
-    best_trial = analysis.get_best_trial('ratio', mode='max', scope='all')
+        print (trial.metric_analysis['energy'])
+    best_trial = analysis.get_best_trial('energy', mode='min', scope='all')
     print(best_trial)
-    print(best_trial.metric_analysis['ratio'])
+    print(best_trial.metric_analysis['energy'])
     print(best_trial.config)
