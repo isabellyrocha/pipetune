@@ -1,5 +1,5 @@
 #from __future__ import print_function
-#import keras
+from tensorflow import keras
 from keras.datasets import cifar10
 #from keras.preprocessing.image import ImageDataGenerator
 #from keras.models import Sequential
@@ -75,9 +75,9 @@ if __name__ == "__main__":
 
     print('x_train shape: ', x_train.shape[1:])
 
-#    keras_model = build_keras_model(x_train, 10)
+    keras_model = build_keras_model(x_train, 10)
     json_path = "/home/ubuntu/pipetune/applications/cifar10.json"
-#    save_keras_definition(keras_model, json_path)
+    save_keras_definition(keras_model, json_path)
 
     from bigdl.util.common import *
     from bigdl.nn.layer import *

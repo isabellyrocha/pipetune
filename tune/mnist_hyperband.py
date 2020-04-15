@@ -23,15 +23,20 @@ class MNIST(Trainable):
     def _train(self):
         self.timestep += 1
         batch = str(self.config['batch'])
-        lr = "0.001"#str(self.config['lr'])
-        n_epochs = "10"#str(self.config['epochs'])
-        cores = "1"#str(self.config['cores'])
+        lr = str(self.config['lr'])
+        n_epochs = str(self.config['epochs'])
+        cores = str(self.config['cores'])
+        lrd = str(self.config['lrd'])
+        mem = str(self.config['memory'])
 #        if batch == "32":
 #            cores = "2"
         result = self.bigdl.run_mnist(total_executor_cores = cores,
+                                      memory = mem,
                                       batch_size = batch,
                                       learning_rate = lr,
+                                      learning_rate_decay = lrd,
                                       epochs = n_epochs)
+
         result["iter"] = self.timestep
         return result
 
@@ -104,12 +109,15 @@ def runParameter():
             #"gpu": 0.5
         },
         config={
-            #"epochs": tune.sample_from([]
+            "epochs": tune.sample_from([10, 15, 20]),
             #    lambda spec: np.random.randint(1, 100)),
-            #"lr": tune.sample_from([0.1,0.01,0.001]),
+            "lr": tune.sample_from([0.1, 0.01, 0.001]),
             #    lambda spec: np.random.uniform(0.001, 0.1)),
-            "batch": tune.sample_from([32, 1024])#tune.grid_search([64,256,1024]),
-#            "cores": tune.sample_from([4,2])#tune.grid_search([1,2,4])
+            "batch": tune.sample_from([32, 512, 1024]),#tune.grid_search([64,256,1024]),
+            "lrd": tune.sample_from([0.02, 0.002, 0.0002]),
+            "cores": tune.sample_from([1, 2, 4]),
+            #"executor_cores": tune.sample_from([1, 2, 4]),#tune.grid_search([1,2,4])
+            "memory": tune.sample_from([2, 4, 8])
         })
 
     trials = analysis.trials

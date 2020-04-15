@@ -165,38 +165,134 @@ def build_model_inc(class_num):
     model = Sequential()
     model.add(Reshape([3, 32, 32]))
     model.add(SpatialConvolution(3, 32, 3, 3, 1, 1, 1, 1))
-    model.add(ELU())
-    model.add(SpatialBatchNormalization(32))
+    model.add(ReLU())
+#    model.add(SpatialBatchNormalization(32))
     model.add(SpatialConvolution(32, 32, 3, 3, 1, 1, 1, 1))
-    model.add(ELU())
-    model.add(SpatialBatchNormalization(32))
+    model.add(ReLU())
+#    model.add(SpatialBatchNormalization(32))
     model.add(SpatialMaxPooling(2, 2, 1, 1))
     model.add(Dropout(0.2))
 
     model.add(SpatialConvolution(32, 64, 3, 3, 1, 1, 1, 1))
-    model.add(ELU())
+    model.add(ReLU())
     model.add(SpatialBatchNormalization(64))
     model.add(SpatialConvolution(64, 64, 3, 3, 1, 1, 1, 1))
-    model.add(ELU())
-    model.add(SpatialBatchNormalization(64))
+    model.add(ReLU())
+#    model.add(SpatialBatchNormalization(64))
     model.add(SpatialMaxPooling(2, 2, 2, 2))
     model.add(Dropout(0.3))
 
-    model.add(SpatialConvolution(64, 128, 3, 3, 1, 1, 1, 1))
-    model.add(ELU())
-    model.add(SpatialBatchNormalization(128))
-    model.add(SpatialConvolution(128, 128, 3, 3, 1, 1, 1, 1))
-    model.add(ELU())
-    model.add(SpatialBatchNormalization(128))
+    model.add(SpatialConvolution(64, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU())
+#    model.add(SpatialBatchNormalization(128))
+    model.add(SpatialConvolution(256, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU())
+#    model.add(SpatialBatchNormalization(128))
     model.add(SpatialMaxPooling(2, 2, 2, 2))
     model.add(Dropout(0.4))
 
 #    model.add(SpatialConvolution(128, 256, 3, 3, 1, 1, 1, 1))
-    model.add(Reshape([128 * 7 * 7]))
-    model.add(Linear(128 * 7 * 7, 84))
-    model.add(ELU())
+    model.add(Reshape([256 * 7 * 7]))
+    model.add(Linear(256 * 7 * 7, 84))
+    model.add(ReLU())
     model.add(Linear(84, class_num))
     model.add(SoftMax())
+    return model
+
+def build_model_inc1(class_num):
+    model = Sequential()
+    model.add(Reshape([3, 32, 32]))
+    model.add(SpatialConvolution(3, 64, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialBatchNormalization(32))
+    model.add(SpatialConvolution(64, 64, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    #model.add(SpatialBatchNormalization(32))
+    model.add(SpatialMaxPooling(2, 2, 1, 1))
+    #model.add(Dropout(0.2))
+
+    model.add(SpatialConvolution(64, 128, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    #model.add(SpatialBatchNormalization(64))
+    model.add(SpatialConvolution(128, 128, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    #model.add(SpatialBatchNormalization(64))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+    #model.add(Dropout(0.3))
+
+    model.add(SpatialConvolution(128, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    #model.add(SpatialBatchNormalization(128))
+    model.add(SpatialConvolution(256, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(256, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialBatchNormalization(256))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+    #model.add(Dropout(0.4))
+
+#    model.add(SpatialConvolution(128, 256, 3, 3, 1, 1, 1, 1))
+    model.add(Reshape([256 * 7 * 7]))
+    model.add(Linear(256 * 7 * 7, 84))
+    model.add(ReLU())
+    model.add(Linear(84, class_num))
+    model.add(SoftMax())
+    return model
+
+
+
+def vgg16(classNum, hasDropout):
+    model = Sequential()
+    model.add(Reshape([3, 32, 32]))
+    model.add(SpatialConvolution(3, 64, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(64, 64, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+
+    model.add(SpatialConvolution(64, 128, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(128, 128, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+
+    model.add(SpatialConvolution(128, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(256, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(256, 256, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+
+    model.add(SpatialConvolution(256, 512, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(512, 512, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(512, 512, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+
+    model.add(SpatialConvolution(512, 512, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(512, 512, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialConvolution(512, 512, 3, 3, 1, 1, 1, 1))
+    model.add(ReLU(True))
+    model.add(SpatialMaxPooling(2, 2, 2, 2))
+
+    model.add(SpatialBatchNormalization(512)) 
+    model.add(Reshape([512 * 7 * 7])) #model.add(View(512 * 7 * 7)) 
+    model.add(Linear(512 * 7 * 7, 50176))
+    #model.add(Threshold(0, 1e-6))
+    if (hasDropout):
+        model.add(Dropout(0.5))
+    model.add(Linear(50176, 50176))
+    #model.add(Threshold(0, 1e-6))
+    if (hasDropout):
+        model.add(Dropout(0.5))
+    model.add(Linear(50176, classNum))
+    model.add(LogSoftMax())
+
     return model
 
 if __name__ == "__main__":
@@ -220,7 +316,7 @@ if __name__ == "__main__":
     learning_rate=float(options.learningRate)
     learning_rate_decay=float(options.learningrateDecay)
 
-    (train_images, train_labels), (test_images, test_labels) = cifar100.load_data()
+    (train_images, train_labels), (test_images, test_labels) = cifar10.load_data()
     training_mean = np.mean(train_images)
     training_std = np.std(train_images)
     test_mean = np.mean(test_images)
@@ -237,7 +333,7 @@ if __name__ == "__main__":
     test_data = record.map(lambda rec_tuple: (normalizer(rec_tuple[0], test_mean, test_std), rec_tuple[1])).map(lambda t: Sample.from_ndarray(t[0], t[1]))
 
     optimizer = Optimizer(
-        model=build_model_new(100),
+        model=build_model_inc(10),
         training_rdd=train_data,
         criterion=ClassNLLCriterion(),
         optim_method=RMSprop(learningrate=learning_rate, learningrate_decay=learning_rate_decay),#, momentum=0.9, dampening=0.0, nesterov=True),

@@ -40,7 +40,7 @@ def pdu_energy(start, end):
 
 def pcm_energy(start, end):
     energy = 0
-    for node_name in ['eiger-2']:#, 'eiger-2', 'eiger-3', 'eiger-4']:
+    for node_name in ['eiger-2', 'eiger-3', 'eiger-4', 'eiger-5']:
         points = query_pcm_data(node_name, start, end)
 #        print(points)
         values = []

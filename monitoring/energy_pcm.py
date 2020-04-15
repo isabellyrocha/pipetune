@@ -1,3 +1,6 @@
+#!/usr/bin/python
+
+import sys
 from datetime import datetime
 from influxdb import InfluxDBClient
 import time 
@@ -22,7 +25,10 @@ def next(file_name):
         time.sleep(1)
     return line
 
-log_file = open("/home/ubuntu/sprinting/monitoring/eiger-2.log", "r")
+#log_file = open("/home/ubuntu/sprinting/monitoring/eiger-2.log", "r")
+file_name = sys.argv[1]
+log_file = open(file_name, "r")
+node = sys.argv[2]
 line = next(log_file)
 
 while not line.startswith("Date"):
@@ -36,14 +42,17 @@ for i in range(len(sline)):
 
 client = InfluxDBClient('localhost', 8086, 'root', 'root', 'energy')
 while True:
-    line = next(log_file)
-    print(line)
-    sline = line.split(",")
-    date = sline[0]
-    print(sline[1])
-    t = sline[1].split(".")[0]
-    dt = datetime.strptime("%s %s" % (date, t), "%Y-%m-%d %H:%M:%S")
-    #timestamp = int(datetime.timestamp(dt))
-    power = sline[eId]
-    json_body = get_json('eiger-2', dt, power)
-    client.write_points(json_body)
+    try:
+        line = next(log_file)
+        print(line)
+        sline = line.split(",")
+        date = sline[0]
+        print(sline[1])
+        t = sline[1].split(".")[0]
+        dt = datetime.strptime("%s %s" % (date, t), "%Y-%m-%d %H:%M:%S")
+        #timestamp = int(datetime.timestamp(dt))
+        power = sline[eId]
+        json_body = get_json(node, dt, power)
+        client.write_points(json_body)
+    except Exception:
+        print("Exception has occured. Restarting...")

@@ -90,15 +90,19 @@ class BigDL(object):
     def run_mnist(self, 
                   config_file ="%s/pipetune/bigdl/config/mnist.json" % Path.home(),
                   total_executor_cores ="1",
+                  memory ="2",
                   batch_size ="1024",
                   learning_rate ="0.01",
+                  learning_rate_decay ="0.002",
                   epochs ="1"):
         output_file ="%s/pipetune/bigdl/logs/mnist_%s.log" % (Path.home(), str(time.time()))
         config = utils.read_json(config_file)
         config['total_executor_cores'] = total_executor_cores
+        config['memory'] = "%sG" % memory
         config['batch_size'] = batch_size
         #print(config['batch_size'])
         config['learning_rate'] = learning_rate
+        config['learning_rate_decay'] = learning_rate_decay
         config['end_trigger_num'] = epochs
         output = open(output_file, "w+")
         app = self.submit(config, output)
