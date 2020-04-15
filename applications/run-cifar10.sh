@@ -6,11 +6,11 @@ spark-submit \
 	--executor-memory 4G \
 	--total-executor-cores $2 \
 	--executor-cores 1 \
-	--py-files /home/ubuntu/bigdl/lib/bigdl-0.8.0-python-api.zip,/home/ubuntu/sprinting/applications/cifar10.py \
+	--py-files /home/ubuntu/bigdl/lib/bigdl-0.8.0-python-api.zip,/home/ubuntu/pipetune/applications/keras_cifar10.py \
 	--properties-file /home/ubuntu/bigdl/conf/spark-bigdl.conf \
 	--jars /home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar \
 	--conf spark.driver.extraClassPath=/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar \
-	--conf spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar /home/ubuntu/sprinting/applications/cifar10.py \
+	--conf spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar /home/ubuntu/pipetune/applications/keras_cifar10.py \
 	--appName $1 \
 	--action train \
 	--batchSize $3 \
