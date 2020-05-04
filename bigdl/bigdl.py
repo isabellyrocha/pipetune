@@ -33,7 +33,7 @@ class BigDL(object):
             #utils.setCores(epochs[epoch])
             finish = utils.timestamp()
             epoch_duration = finish - start
-            epoch_energy = energy.pcm_energy(start,finish)
+            epoch_energy = energy.pdu_energy(start,finish)
             if epoch_energy < min_energy:
             #if epoch_duration < duration:
                 min_energy = epoch_energy
@@ -55,6 +55,7 @@ class BigDL(object):
             '--py-files', config['py_files'],
             '--properties-file', config['properties_file'],
             '--jars', config['jars'],
+#            '--conf spark.dynamicAllocation.enabled=false',
             '--conf', 'spark.driver.extraClassPath=/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar',
             '--conf', 'spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar', config['conf'],
             '--appName', config['app_name'],
@@ -64,6 +65,29 @@ class BigDL(object):
             '--learningRate', config['learning_rate'],
             '--learningrateDecay', config['learning_rate_decay'],
             '--endTriggerNum', config['end_trigger_num']], output)
+
+    def get_epoch_info(self,output_file,info):
+        start  = 0
+        finish = 0
+        accuracy = 0
+        with open(output_file, "r") as output:
+            line = output.readline()
+            while line:
+                if "Epoch 1" in line and start == 0:
+                    start  = utils.str_to_tstp(line.split(" INFO ")[0])
+                if "accuracy" in line:
+                    finish = utils.str_to_tstp(line.split(" INFO ")[0])
+                    accuracy = line.split("accuracy: ")[1].replace(')','')
+                    break
+                line = output.readline()
+        duration = finish - start
+        cluster_energy = energy.pdu_energy(start, finish)
+        #info = {}
+        info['accuracy'] = float(accuracy)
+        info['energy'] = cluster_energy
+        info['duration'] = duration
+        info['ratio'] = 1#1#1#1#1#1#1#1#1#1#1#float(accuracy)/float(cluster_energy)
+        return info
 
     def get_info(self, output_file):
         start  = None
@@ -94,7 +118,8 @@ class BigDL(object):
                   batch_size ="1024",
                   learning_rate ="0.01",
                   learning_rate_decay ="0.002",
-                  epochs ="1"):
+                  epochs ="1",
+                  info_in ={}):
         output_file ="%s/pipetune/bigdl/logs/mnist_%s.log" % (Path.home(), str(time.time()))
         config = utils.read_json(config_file)
         config['total_executor_cores'] = total_executor_cores
@@ -109,7 +134,10 @@ class BigDL(object):
         app.wait()
         #self.submit_v2(config, output)
         output.close()
-        info = self.get_info(output_file)
-        print(config)
+        info = self.get_epoch_info(output_file, info_in)
+        if 'cores 'not in info:
+            info['cores'] = {}
+        info['cores'][total_executor_cores] = info['duration']
+#        print(config)
         print(info)
         return info
