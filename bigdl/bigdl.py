@@ -43,6 +43,25 @@ class BigDL(object):
         config['end_trigger_num'] = str(number_of_epochs-3)
         app = self.submit(config, output)
         app.wait()
+ 
+    def submit_textclassifier(self, config, output):
+        return utils.run_script([
+            'spark-submit',
+            '--master', config['master'],
+            '--driver-memory', config['driver_memory'],
+            '--total-executor-cores', config['total_executor_cores'],
+            '--executor-cores', config['executor_cores'],
+            '--executor-memory', config['executor_memory'],
+            '--py-files', config['py_files'],
+            '--properties-file', config['properties_file'],
+            '--jars', config['jars'],
+            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar',
+            '--conf', 'spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar', config['conf'],
+            '--model', config['model'],
+            '--batchSize', config['batchSize'],
+            '--learning_rate', config['learning_rate'],
+            '--embedding_dim', config['embedding_dim'],
+            '--max_epoch', config['max_epoch']], output)
 
     def submit(self, config, output):
         return utils.run_script([
@@ -55,16 +74,13 @@ class BigDL(object):
             '--py-files', config['py_files'],
             '--properties-file', config['properties_file'],
             '--jars', config['jars'],
-#            '--conf spark.dynamicAllocation.enabled=false',
             '--conf', 'spark.driver.extraClassPath=/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar',
             '--conf', 'spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar', config['conf'],
             '--appName', config['app_name'],
-            '--action', config['action'],
-            '--dataPath', config['data_path'],
-            '--batchSize', config['batch_size'],
+            '--batchSize', config['batchSize'],
             '--learningRate', config['learning_rate'],
-            '--learningrateDecay', config['learning_rate_decay'],
-            '--endTriggerNum', config['end_trigger_num']], output)
+            '--embedding_dim', config['embedding_dim'],
+            '--max_epoch', config['max_epoch']], output)
 
     def get_epoch_info(self,output_file,info):
         start  = 0
@@ -139,5 +155,31 @@ class BigDL(object):
             info['cores'] = {}
         info['cores'][total_executor_cores] = info['duration']
 #        print(config)
+        print(info)
+        return info
+
+    def run_textclassifier(self,
+                           config_file ="%s/pipetune/bigdl/config/textclassifier.json" %  Path.home(),
+                           total_executor_cores ="1",
+                           memory ="32",
+                           model ="cnn",
+                           batchSize ="128",
+                           embedding_dim ="200",
+                           learning_rate ="0.05",
+                           max_epochs ="1",
+                           info_in ={}):
+        output_file ="%s/pipetune/bigdl/logs/textclassifier_%s.log" % (Path.home(), str(time.time()))
+        config = utils.read_json(config_file)
+        config['total_executor_cores'] = total_executor_cores
+        config['executor_memory'] = "%sG" % memory
+        config['batchSize'] = batchSize
+        config['learning_rate'] = learning_rate
+        config['embedding_dim'] = embedding_dim
+        config['max_epoch'] = max_epochs
+        output = open(output_file, "w+")
+        app = self.submit_textclassifier(config, output)
+        app.wait()
+        output.close()
+        info = self.get_epoch_info(output_file, info_in)
         print(info)
         return info
