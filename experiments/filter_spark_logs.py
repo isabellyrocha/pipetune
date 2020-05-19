@@ -20,17 +20,20 @@ for log_file in files:
         line = fp.readline()
         sline = line.split(" ")
         date = "%s %s" % (sline[0], sline[1])
-        print("%s,%s,%s,%s,%s,%s,0,%d" % (log_id, model, dataset, cores, memory, batch, str_to_tstp(date)))
+        print("%s,%s,%s,%s,%s,%s,0,%d" % (model, dataset, cores, memory, batch, log_id, str_to_tstp(date)))
         epoch = 0
         while line:
             if "[Epoch " in line:
                 sline = line.split(" ")
                 line_epoch = int(sline[7])
+#                if len(sline) > 19:
+#                    print(sline)
+#                    acc = sline[19].replace(")\n","")
                 if line_epoch != epoch:
                     date = "%s %s" % (sline[0], sline[1])
                     epoch = line_epoch
-                    print("%s,%s,%s,%s,%s,%s,%d,%d" % (log_id, model, dataset, cores, memory, batch, epoch, str_to_tstp(date)))
+                    print("%s,%s,%s,%s,%s,%s,%d,%d" % (model, dataset, cores, memory, batch, log_id, epoch, str_to_tstp(date)))
             line = fp.readline()
 #    sline = line.split(" ")
         date = "%s %s" % (sline[0], sline[1])
-        print("%s,%s,%s,%s,%s,%s,end,%d" % (log_id, model, dataset, cores, memory, batch, str_to_tstp(date)))
+        print("%s,%s,%s,%s,%s,%s,end,%d" % (model, dataset, cores, memory, batch, log_id,  str_to_tstp(date)))
