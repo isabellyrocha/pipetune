@@ -26,3 +26,4 @@ for phase in events:
         counts = events[phase][event]
         avg_counts = mean(counts)
         print("lenet,fashion-mnist,%s,%s,%f" % (phase, event, avg_counts))
+
