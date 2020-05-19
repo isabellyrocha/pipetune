@@ -1,17 +1,108 @@
 from pandas import DataFrame
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA 
+from matplotlib import colors as mcolors 
+import math 
+import pandas as pd 
+import seaborn as sns 
 
-Data = {'x': [25,34,22,27,33,33,31,22,35,34,67,54,57,43,50,57,59,52,65,47,49,48,35,33,44,45,38,43,51,46],
-        'y': [79,51,53,78,59,74,73,57,69,75,51,32,40,47,53,36,35,58,59,50,25,20,14,12,20,5,29,27,8,7]
-       }
-  
-df = DataFrame(Data,columns=['x','y'])
-  
-kmeans = KMeans(n_clusters=3).fit(df)
-centroids = kmeans.cluster_centers_
-print(centroids)
+clusters = 4
+events = {}
+config = []
 
-plt.scatter(df['x'], df['y'], c= kmeans.labels_.astype(float), s=50, alpha=0.5)
-plt.scatter(centroids[:, 0], centroids[:, 1], c='red', s=50)
+with open('../experiments/agg_per_event.log') as fp:
+    line = fp.readline()
+    while line:
+        sline = line.split(",")
+        model = sline[0]
+        dataset = sline[1]
+        cores = sline[2]
+        memory = sline[3]
+        batch = sline[4]
+        #log_id = sline[5]
+        event = sline[5]
+        count = float(sline[6])
+        duration = float(sline[7].strip())
+        name = "%s,%s,%s,%s,%s,%d" % (model, dataset, cores, memory, batch, duration)
+        if event not in events:
+            events[event] = []
+        #if int(phase) < 5 and int(phase) > 0:
+        events[event].append(count)
+        if name not in config:
+            config.append(name)
+        line = fp.readline()
+
+#for event in events:
+#    print(len(events[event]))
+
+#print(len(names))
+#print(events)
+#print(len(events.keys()))
+  
+df = DataFrame(events,columns=list(events.keys()))
+  
+#print(df)
+
+km = KMeans(n_clusters=4)
+
+kmeans = km.fit(df)
+
+#print(kmeans.cluster_centers_)
+#print(kmeans.labels_)
+
+#print(kmeans.labels_)
+#print(names)
+
+for i in range(len(config)):
+    print("%s,%d" % (config[i], kmeans.labels_[i]))
+
+
+'''
+results = {}
+for i in range(len(config)):
+    if kmeans.labels_[i] not in results:
+        results[kmeans.labels_[i]] = {}
+    sconfig = config[i].split(",")
+    duration = int(sconfig[5])
+    if duration not in results[kmeans.labels_[i]]:
+        results[kmeans.labels_[i]][duration] = config[i]
+    #print("%s,%s" % (config[i],kmeans.labels_[i]))
+    #if kmeans.labels_[i] == 0:
+    #     print("%s,%s" % (config[i],kmeans.labels_[i]))
+
+
+for result in results:
+    key = min(list(results[result].keys()))
+    print(key)
+    print("%s: %s" % (result, results[result][key]))
+
+
+        
+
+
+pca = PCA(3) 
+pca.fit(df) 
+  
+pca_data = pd.DataFrame(pca.transform(df)) 
+  
+print(pca_data.head())
+
+colors = list(zip(*sorted(( 
+                    tuple(mcolors.rgb_to_hsv( 
+                          mcolors.to_rgba(color)[:3])), name) 
+                     for name, color in dict( 
+                            mcolors.BASE_COLORS, **mcolors.CSS4_COLORS 
+                                                      ).items())))[1] 
+   
+   
+# number of steps to taken generate n(clusters) colors  
+skips = math.floor(len(colors[1 : -1])/clusters) 
+cluster_colors = colors[1 : -1 : skips] 
+
+# generating correlation heatmap 
+sns.heatmap(df.corr(), annot = False) 
+  
+# posting correlation heatmap to output console  
 plt.show()
+'''
