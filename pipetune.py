@@ -10,13 +10,14 @@ if __name__ == '__main__':
     print("starting at %d" % start)
     #tune.runParameter()
     utils.start_perf()
-    tune.runPipetune()
-    #b.run_textclassifier(total_executor_cores = "16",
-    #                                  memory = "32",
-    #                                  batchSize = "256",
-    #                                  embedding_dim = "200",
-    #                                  learning_rate = "0.005",
-    #                                  max_epochs = "1")
+    #tune.runPipetune()
+    b.run_textclassifier(total_executor_cores = "16",
+                                      model = "lstm",
+                                      memory = "32",
+                                      batchSize = "256",
+                                      embedding_dim = "200",
+                                      learning_rate = "0.005",
+                                      max_epochs = "1")
     finish = utils.timestamp()
     utils.stop_perf()
     print("finishing at %d" % finish)

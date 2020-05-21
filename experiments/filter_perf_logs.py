@@ -31,58 +31,53 @@ def get_epoch(timestemp, epochs):
 #        print(i)
         if timestemp >= epochs[str(i)] and timestemp <= epochs[next]:
             return "%s,%d" % (i, (epochs[str(next)] - epochs[str(i)]))
-    return "10,%d" % (epochs[str(next)] - epochs[str(i)])
+#    return "%d,%d" % (nepochs-1,epochs[str(next)] - epochs[str(i)])
 
 epochs = {}
 with open('spark_filtered.log') as fp:
-    line = fp.readline()
+    line = fp.readline().strip()
     while line:
-        sline = line.split(",")
-        model = sline[0]
-        dataset = sline[1]
-        cores = sline[2]
-        memory = sline[3]
-        batch = sline[4]
-        log_id = sline[5]
-        epoch = sline[6]
-        timestemp = int(sline[7].strip())
+        (model, dataset, cores, memory, batch, log_id, epoch, timestemp) = line.split(",")
+        #model = sline[0]
+        #dataset = sline[1]
+        #cores = sline[2]
+        #memory = sline[3]
+        #batch = sline[4]
+        #log_id = sline[5]
+        #epoch = sline[6]
+        #timestemp = int(sline[7].strip())
         name = "%s_%s_%s_%s_%s_%s" % (model, dataset, cores, memory, batch, log_id)
         if name not in epochs:
             epochs[name] = {}
-        epochs[name][epoch] = timestemp
-        line = fp.readline()
+        epochs[name][epoch] = int(timestemp)
+        line = fp.readline().strip()
 
-#print(epochs)
 for log_file in files:
     with open(LOGS_PATH + log_file) as fp:
         name = log_file.replace(".stat", "")
-#        print(name)
-        line = fp.readline()
-        sline = line.split(" ")
-        sday = sline[5]
-        smonth = month_converter(sline[4])
-        syear = sline[7].strip()
-        stime = sline[6]
-        date_str = "%s-%s-%s %s" % (syear, smonth, sday, stime)
-#        print(date_str)
-        start = str_to_tstp(date_str)
-        line = fp.readline()
-        #line = fp.readline()
-        line = fp.readline()
-        while line:
-            sline = line.split(";")
-            current_time = int(float(sline[0].strip()) + start)
-            event = sline[3]
-            counts = sline[1]
-            #if "not" in value or int(value) != 0:
-#            print(epochs[name])
-            epoch = get_epoch(current_time, epochs[name])
-#            if int(phase) >=9:
-            #print(phase)
-            #events += counter + ","
-            if epoch != "end":
-                if "not" in counts:
-                    counts = "0"
-                print("%s,%s,%s,%s" % (name.replace("_",","), epoch, event, counts))
-            line = fp.readline()
-    #print(events)
+        log_id = name.split("_")[5]
+        #curr_epochs = epochs[name]
+        if log_id == "0":
+            curr_epochs = epochs[name]
+            if len(list(curr_epochs.keys())) > 5:
+                line = fp.readline()
+                sline = line.split(" ")
+                sday = sline[5]
+                smonth = month_converter(sline[4])
+                syear = sline[7].strip()
+                stime = sline[6]
+                date_str = "%s-%s-%s %s" % (syear, smonth, sday, stime)
+                start = str_to_tstp(date_str)
+                line = fp.readline()
+                line = fp.readline()
+                while line:
+                    sline = line.split(";")
+                    current_time = int(float(sline[0].strip()) + start)
+                    event = sline[3]
+                    counts = sline[1]
+                    epoch = get_epoch(current_time, epochs[name])
+                    if epoch and epoch != "end":
+                        if "not" in counts:
+                            counts = "0"
+                        print("%s,%s,%s,%s" % (name.replace("_",","), epoch, event, counts))
+                    line = fp.readline()

@@ -9,7 +9,9 @@ total = 0
 with open('perf_filtered.log') as fp:
     line = fp.readline()
     while line:
+        #print(line)
         #lenet,fashion-mnist,4,4,32,0,2,223,node-load-misses,0
+        #lenet,fashion-mnist,8,16,1024,0,1,54,cache-references,52581273
         sline = line.split(",")
         model = sline[0]
         dataset = sline[1]
@@ -39,6 +41,7 @@ with open('perf_filtered.log') as fp:
 for name in events:
     duration = durations[name]
     for event in events[name]:
+        #print(duration)
         #for phase in events[name][event]:
         counts = events[name][event]
         avg_counts = mean(counts)

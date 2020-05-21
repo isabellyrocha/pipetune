@@ -171,6 +171,7 @@ class BigDL(object):
         output_file ="%s/pipetune/bigdl/logs/textclassifier_%s.log" % (Path.home(), str(time.time()))
         config = utils.read_json(config_file)
         config['total_executor_cores'] = total_executor_cores
+        config['model'] = model
         config['executor_memory'] = "%sG" % memory
         config['batchSize'] = batchSize
         config['learning_rate'] = learning_rate
