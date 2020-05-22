@@ -3,11 +3,13 @@ from pathlib import Path
 import random
 import time
 import sys
+from utils.Profiler import Profiler
 
 class BigDL(object):
 
     def __init__(self):
         self._job_id = 0
+        self._profiler = Profiler()
 
     def get_new_id(self):
         time.sleep(random.randrange(15))
@@ -77,12 +79,12 @@ class BigDL(object):
             '--conf', 'spark.driver.extraClassPath=/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar',
             '--conf', 'spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar', config['conf'],
             '--appName', config['app_name'],
-            '--batchSize', config['batchSize'],
+            '--batchSize', config['batch_size'],
             '--learningRate', config['learning_rate'],
-            '--embedding_dim', config['embedding_dim'],
-            '--max_epoch', config['max_epoch']], output)
+            '--learningrateDecay', config['learning_rate_decay'],
+            '--endTriggerNum', config['end_trigger_num']], output)
 
-    def get_epoch_info(self,output_file,info):
+    def get_epoch_info(self,output_file):
         start  = 0
         finish = 0
         accuracy = 0
@@ -98,7 +100,7 @@ class BigDL(object):
                 line = output.readline()
         duration = finish - start
         cluster_energy = energy.pdu_energy(start, finish)
-        #info = {}
+        info = {}
         info['accuracy'] = float(accuracy)
         info['energy'] = cluster_energy
         info['duration'] = duration
@@ -136,7 +138,7 @@ class BigDL(object):
                   learning_rate_decay ="0.002",
                   epochs ="1",
                   info_in ={}):
-        output_file ="%s/pipetune/bigdl/logs/mnist_%s.log" % (Path.home(), str(time.time()))
+        output_file ="%s/bigdl_logs/mnist_%s.log" % (Path.home(), str(time.time()))
         config = utils.read_json(config_file)
         config['total_executor_cores'] = total_executor_cores
         config['memory'] = "%sG" % memory
@@ -150,13 +152,48 @@ class BigDL(object):
         app.wait()
         #self.submit_v2(config, output)
         output.close()
-        info = self.get_epoch_info(output_file, info_in)
+        info = self.get_epoch_info(output_file)
         if 'cores 'not in info:
             info['cores'] = {}
         info['cores'][total_executor_cores] = info['duration']
 #        print(config)
         print(info)
         return info
+
+    def run_mnist_off(self,
+                  config_file ="%s/pipetune/bigdl/config/mnist.json" % Path.home(),
+                  total_executor_cores ="1",
+                  memory ="2",
+                  batch_size ="1024",
+                  learning_rate ="0.01",
+                  learning_rate_decay ="0.002",
+                  epochs ="1"):
+        output_file ="%s/bigdl_logs/mnist_%s.log" % (Path.home(), str(time.time()))
+        config = utils.read_json(config_file)
+        config['total_executor_cores'] = total_executor_cores
+        config['executor_cores'] = str(int(int(total_executor_cores)/4))
+        config['memory'] = "%sG" % memory
+        config['batch_size'] = batch_size
+        #print(config['batch_size'])
+        config['learning_rate'] = learning_rate
+        config['learning_rate_decay'] = learning_rate_decay
+        config['end_trigger_num'] = epochs
+        output = open(output_file, "w+")
+        app = self.submit(config, output)
+        time.sleep(30)
+        self._profiler.startMeasuring("mnist_%s_%s_%s" % (batch_size, learning_rate, learning_rate_decay))
+        app.wait()
+        #self.submit_v2(config, output)
+        output.close()
+        self._profiler.stopMeasuring()
+        info = self.get_epoch_info(output_file)
+        #if 'cores 'not in info:
+        #    info['cores'] = {}
+        #info['cores'][total_executor_cores] = info['duration']
+#        print(config)
+        print(info)
+        return info
+
 
     def run_textclassifier(self,
                            config_file ="%s/pipetune/bigdl/config/textclassifier.json" %  Path.home(),

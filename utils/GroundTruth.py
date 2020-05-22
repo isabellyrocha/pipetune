@@ -77,16 +77,32 @@ class GroundTruth():
 #        self.influx_client.query("drop measurement clusters")
         self.influx_client.write_points(json_body)
 
-    def get_config(self, cluster):
-        self.query('SELECT * '
-                'FROM "ground_truth/config" '
-                'WHERE cluster =~ /%s/' % (cluster))
-        return list(result.get_points(measurement='ground_truth/config'))
+    def getConfig(self, metrics):
+        model = joblib.load('/home/ubuntu/pipetune/utils/data/model.pkl')
+        score = model.score(metrics)
+        print(score)
+        print(model.inertia_)
+        if score < -model.inertia_/2:
+            return None
+        prediction = model.predict(metrics)
+        return self.get_config(prediction[0])
 
+    def get_config(self, cluster):
+        print("CLUSTER: %s" % cluster)
+        result = self.influx_client.query('SELECT * '
+                'FROM "clusters" '
+                'WHERE clusterID =~ /%s/' % (cluster))
+        cluster = list(result.get_points(measurement='clusters'))[0]
+        cores = cluster['cores']
+        memory = cluster['memory']
+        return (cores, memory)
+        #return list(result.get_points(measurement='ground_truth/config'))
+''' 
     def get_config(self, measurements):
         model = joblib.load('data/model.pkl')   
-        score = model.score(measurements) 
+        score = model.score(measurements)
         if score <= model.inertia_:
             prediction = model.predict(measurements)
             return self.get_config(prediction)
         return None
+'''
