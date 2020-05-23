@@ -104,7 +104,10 @@ class BigDL(object):
         info['accuracy'] = float(accuracy)
         info['energy'] = cluster_energy
         info['duration'] = duration
-        info['ratio'] = 1#1#1#1#1#1#1#1#1#1#1#float(accuracy)/float(cluster_energy)
+        if accuracy and cluster_energy:
+            info['ratio'] = float(accuracy)/float(duration)
+        else:
+            info['ratio'] = 0
         return info
 
     def get_info(self, output_file):
@@ -136,14 +139,13 @@ class BigDL(object):
                   batch_size ="1024",
                   learning_rate ="0.01",
                   learning_rate_decay ="0.002",
-                  epochs ="1",
-                  info_in ={}):
+                  epochs ="1"):
         output_file ="%s/bigdl_logs/mnist_%s.log" % (Path.home(), str(time.time()))
         config = utils.read_json(config_file)
         config['total_executor_cores'] = total_executor_cores
+        config['executor_cores'] = str(int(int(total_executor_cores)/4))
         config['memory'] = "%sG" % memory
         config['batch_size'] = batch_size
-        #print(config['batch_size'])
         config['learning_rate'] = learning_rate
         config['learning_rate_decay'] = learning_rate_decay
         config['end_trigger_num'] = epochs

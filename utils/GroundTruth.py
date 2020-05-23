@@ -38,46 +38,51 @@ class GroundTruth():
        
         joblib.dump(model, '/home/ubuntu/pipetune/utils/data/model.pkl')
 
+    #def update_config()
+
     def save_clusters(self, result):
         clusters = {}
         for i in range(len(result)):
             (model, dataset, cores,
             memory, batch, epoch,
             duration, cluster) = result[i].split(",")
-            if cluster not in clusters:
-                clusters[cluster] = {
+            tags = (cluster, batch)
+            if tags not in clusters:
+                clusters[tags] = {
                     'cores': cores, 
                     'memory': memory,
                     'duration': duration.strip()
                 }
             else:
-                if int(duration) < int(clusters[cluster]['duration']):
-                    clusters[cluster] = {
+                if int(duration) < int(clusters[tags]['duration']):
+                    clusters[tags] = {
                         'cores': cores,
                         'memory': memory,
                         'duration': duration.strip()
                     }
-        self.influx_client.query("drop measurement clusters")
-        for cluster in clusters:
+#        print(clusters)
+#        self.influx_client.query("drop measurement clusters")
+        for tags_cluster in clusters:
             ##c_config = best_config[i].split(",")
             #tags = {'cluster': i, 'cores': c_config[2], 'memory': c_config[3]}
             #duration = c_config[5]
-            self.write_config(cluster, clusters[cluster])
+            self.write_config(tags_cluster, clusters[tags_cluster])
 
-    def write_config(self, cluster: str, fields: dict):
+    def write_config(self, tags, fields):
         json_body = [
         {
             "measurement": "clusters",
             "tags": { 
-                "clusterID": cluster
+                "clusterID": tags[0],
+                "batch": tags[1]
             },
             "fields": fields
         }
         ]
-#        self.influx_client.query("drop measurement clusters")
+        self.influx_client.query("drop measurement clusters")
         self.influx_client.write_points(json_body)
 
-    def getConfig(self, metrics):
+    def getConfig(self, metrics, batch):
         model = joblib.load('/home/ubuntu/pipetune/utils/data/model.pkl')
         score = model.score(metrics)
         print(score)
@@ -85,16 +90,17 @@ class GroundTruth():
         if score < -model.inertia_/2:
             return None
         prediction = model.predict(metrics)
-        return self.get_config(prediction[0])
+        return self.get_config(prediction[0], batch)
 
-    def get_config(self, cluster):
+    def get_config(self, cluster, batch):
         print("CLUSTER: %s" % cluster)
         result = self.influx_client.query('SELECT * '
                 'FROM "clusters" '
-                'WHERE clusterID =~ /%s/' % (cluster))
+                'WHERE clusterID =~ /%s/ and batch =~ /%s/' % (cluster, batch))
         cluster = list(result.get_points(measurement='clusters'))[0]
         cores = cluster['cores']
         memory = cluster['memory']
+        print(cores)
         return (cores, memory)
         #return list(result.get_points(measurement='ground_truth/config'))
 ''' 

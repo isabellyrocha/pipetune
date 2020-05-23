@@ -31,18 +31,15 @@ class MNIST(Trainable):
         memory = "8"
         n_epochs = 5
 
-
         #### probing phase ###
-#        self.profiler.startMeasuring("mnist_test")
         result = self.bigdl.run_mnist_off(total_executor_cores = cores,
                                       memory = memory,
                                       batch_size = batch,
                                       learning_rate = lr,
                                       learning_rate_decay = lrd,
                                       epochs = "1")
-#        self.profiler.stopMeasuring()
         metrics = self.profiler.getMetrics("mnist_%s_%s_%s" % (batch, lr, lrd))
-        (cores, memory) = self.ground_truth.getConfig(metrics)
+        (cores, memory) = self.ground_truth.getConfig(metrics, batch)
         ######################
 
         result = self.bigdl.run_mnist(total_executor_cores = cores,
@@ -64,15 +61,9 @@ class MNIST(Trainable):
         with open(checkpoint_path) as f:
             self.info = json.loads(f.read())
 
-#if __name__ == "__main__":
-
 def stop(trial_id, res):
     if float(res['accuracy']) >= 0.99:
         return True
-#    elif (res['iter'] >= 800) and (res['mean_absolute_percentage_error'] > 40):
-#        return True
-#    elif args.smoke_test and res['iter'] >= 5:
-#        return True
     elif res['iter'] >= 10:
         return True
     else:        
@@ -85,27 +76,11 @@ def runParameter():
     args, _ = parser.parse_known_args()
     ray.init()
 
-    # Hyperband early stopping, configured with `episode_reward_mean` as the
-    # objective and `training_iteration` as the time unit,
-    # which is automatically filled by Tune.
     sched = AsyncHyperBandScheduler(
         time_attr="training_iteration",
         metric="duration",
         mode="min",
         max_t=20)
-
-#    exp = Experiment(
-#        name="hyperband_test",
-#        run=MNIST,
-#        num_samples=1,
-#        stop={"training_iteration": 1 if args.smoke_test else 99999},
-#        config={
-#            "batch": np.random.randint(32,1024) #tune.grid_search([32,64,512,1024])#tune.sample_from(lambda spec: np.random.randint(64, 1024))
-            #"cores": tune.grid_search([1,2,4])
-#        })
-
-#    analysis = run(exp, scheduler=hyperband, resume=False, resources_per_trial={"cpu": 2})
-#    print("Best config is", analysis.get_best_config(metric="duration"))
 
     analysis = tune.run(
         MNIST,
@@ -153,9 +128,6 @@ def runPipetune():
     args, _ = parser.parse_known_args()
     ray.init()
 
-    # Hyperband early stopping, configured with `episode_reward_mean` as the
-    # objective and `training_iteration` as the time unit,
-    # which is automatically filled by Tune.
     sched = AsyncHyperBandScheduler(
         time_attr="training_iteration",
         metric="duration",
@@ -169,27 +141,22 @@ def runPipetune():
         max_failures=5,
         name="exp",
         scheduler=sched,
-        stop={"training_iteration": 10},
-        num_samples=1,
+        stop={
+            "training_iteration": 5
+        },
+        num_samples=5,
         reuse_actors=False,
         resume=False,
         resources_per_trial={
             "cpu": 8
-            #"gpu": 0.5
         },
         config={
-#            "epochs": tune.sample_from(
-#                lambda spec: np.random.randint(10, 20)),
-            #    lambda spec: np.random.randint(1, 100)),
             "lr": tune.sample_from(
                 lambda spec: np.random.uniform(0.001, 0.1)),
-            #    lambda spec: np.random.uniform(0.001, 0.1)),
-            "batch": tune.sample_from([1024, 32, 64, 128, 256, 512, 1024]),#tune.grid_search([64,256,1024]),
+            "batch": tune.sample_from(
+                lambda spec: random.sample([1024, 512, 32, 64], 1)[0]),
             "lrd": tune.sample_from(
-                lambda spec: np.random.uniform(0.2, 0.0002)),
-            #"cores": tune.sample_from([1, 16]),
-            #"executor_cores": tune.sample_from([1, 2, 4]),#tune.grid_search([1,2,4])
-            #"memory": tune.sample_from([2, 4])
+                lambda spec: np.random.uniform(0.2, 0.0002))
         })
 
     trials = analysis.trials
