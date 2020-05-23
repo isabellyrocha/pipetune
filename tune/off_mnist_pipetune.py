@@ -161,8 +161,8 @@ def runPipetune():
 
     trials = analysis.trials
     for trial in trials:
-        print (trial.metric_analysis['duration'])
-    best_trial = analysis.get_best_trial('duration', mode='min', scope='all')
+        print (trial.metric_analysis['accuracy'])
+    best_trial = analysis.get_best_trial('accuracy', mode='max', scope='all')
     print(best_trial)
-    print(best_trial.metric_analysis['duration'])
+    print(best_trial.metric_analysis['accuracy'])
     print(best_trial.config)
