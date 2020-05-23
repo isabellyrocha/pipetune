@@ -26,8 +26,8 @@ class MNIST(Trainable):
         batch = str(self.config['batch'])
         lr = str(self.config['lr'])
         lrd = str(self.config['lrd'])
-        cores = str(self.config['cores'])
-        memory = str(self.config['memory'])
+        memory = "8"
+        cores = "16"
         n_epochs = 5
 
         result = self.bigdl.run_mnist(total_executor_cores = cores,
