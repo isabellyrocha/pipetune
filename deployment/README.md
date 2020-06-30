@@ -22,6 +22,22 @@ $ tar -xzf spark-2.4.1-bin-hadoop2.7.tgz
 $ echo "export PATH=$PATH:/usr/local/spark-2.4.1-bin-hadoop2.7/bin" >> $HOME/.bashrc
 ```
 
+### Set Environment Variables
+
+> Use Spark's template `spark-env.sh.template`
+
+```Shell
+$ cp conf/spark-env.sh.template conf/spark-env.sh
+```
+
+> Copy the following configurations into `spark-env.sh`
+
+```
+export SPARK_WORKER_INSTANCES=1
+export SPARK_WORKER_MEMORY=32g
+export SPARK_WORKER_CORES=8
+```
+
 ### Deploy Master Node
 
 ```Shell
