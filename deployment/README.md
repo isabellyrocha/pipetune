@@ -29,7 +29,7 @@ $ cd /usr/local/spark-2.4.1-bin-hadoop2.7
 $ ./sbin/start-master.sh
 ```
 
-### Add Workers to Cluster
+### Add Worker Nodes to Cluster
 
 ```Shell
 $ cd /usr/local/spark-2.4.1-bin-hadoop2.7
