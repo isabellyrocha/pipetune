@@ -51,3 +51,9 @@ $ ./sbin/start-master.sh
 $ cd /usr/local/spark-2.4.1-bin-hadoop2.7
 $ ./sbin/start-slave.sh <master-spark-URL>
 ```
+
+### Accessing MasterWebUI
+
+```
+MasterWebUI abailable at: `http://eiger-1.maas:8080`
+```
