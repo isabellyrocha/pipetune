@@ -73,6 +73,6 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 
 - MasterWebUI abailable at: `http://masternode:8080`
 
-https://github.com/isabellyrocha/pipetune/blob/master/spark_master_web.png
+![alt text](https://github.com/isabellyrocha/pipetune/raw/master/spark_master_web.png?raw=true)
 
 ---
