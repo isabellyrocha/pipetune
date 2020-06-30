@@ -1,6 +1,23 @@
-# Spark 2.4.1 Standalone Cluster Deployment
+# PipeTune
 
-## Requirements
+> A pipelined paralelism approch for hyper and system parameter tuning.
+
+---
+
+## Table of Contents (Optional)
+
+> If your `README` has a lot of info, section headers might be nice.
+
+- [Deployment](#deployment)
+
+
+---
+
+## Deployment
+
+> Spark 2.4.1 Standalone Cluster Deployment
+
+### Requirements
 
 - Java 1.8.0
 
@@ -55,3 +72,5 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 ### Accessing MasterWebUI
 
 - MasterWebUI abailable at: `http://masternode:8080`
+
+---
