@@ -55,5 +55,5 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 ### Accessing MasterWebUI
 
 ```
-MasterWebUI abailable at: http://masternode:8080
+MasterWebUI abailable at: <a href="http://masternode:8080" target="_blank">`http://masternode:8080`</a>
 ```
