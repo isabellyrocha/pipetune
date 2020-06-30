@@ -55,5 +55,5 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 ### Accessing MasterWebUI
 
 ```
-MasterWebUI abailable at: `http://eiger-1.maas:8080`
+MasterWebUI abailable at: http://masternode:8080
 ```
