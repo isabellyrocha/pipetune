@@ -31,7 +31,7 @@ def run_trial(total_executor_cores, executor_cores, memory, model, batch_size, t
 #        with open("%s/mnist-exp.config" % HOME, "w") as fp:
 #            fp.write("%d,lenet,%s,%s,%s,%s\n" % (trial_id, dataset, total_executor_cores, memory, batch_size))
 
-for trial_id in [0, 1, 2]:
+for trial_id in range(3):
     for total_executor_cores in [16, 8, 4]:
         for memory in ["4", "8", "16", "32"]:
             for model in ["cnn", "lstm"]:

@@ -15,7 +15,7 @@ spark-submit \
 	--conf spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar $HOME/pipetune/applications/lenet5/lenet5.py \
 	--appName mnist \
 	--action train \
-	--dataPath $HOME/data/$4 \
+	--dataPath /tmp/$4 \
 	--batchSize $5 \
 	--learningRate 0.0781816 \
 	--learningrateDecay 0.0905019 \
