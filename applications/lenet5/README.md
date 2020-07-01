@@ -2,6 +2,14 @@
 
 LeNet5 is a classical CNN model used in digital number classification. For detail information, please refer to <http://yann.lecun.com/exdb/lenet/>.
 
+## MNIST
+
+MNIST dataset consists of handwritten digits images. More information in <http://yann.lecun.com/exdb/mnist/>.
+
+## FASHION-MNIST
+
+FASHION-MNIST dataset is a dataset of Zalando's article images. More information in <https://github.com/zalandoresearch/fashion-mnist>.
+
 ## Install dependencies
  * [Install dependencies](../../README.md#install.bigdl.dependencies)
 
@@ -9,7 +17,7 @@ LeNet5 is a classical CNN model used in digital number classification. For detai
 Please note that due to some permission issue, this example **cannot** be run on Windows.
 
 
-Program would download the mnist data into ```/tmp/mnist``` automatically by default.
+Program downloads the chosen dataset into ```/tmp```.
 
 ```
 /tmp/mnist$ tree .
