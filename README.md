@@ -13,7 +13,7 @@
 
 ## Spark
 
-> Spark 2.4.1 Standalone Cluster Deployment
+> Spark 2.4.1 Standalone Cluster Deployment.
 
 ### Requirements
 
@@ -21,14 +21,14 @@
 
 ### Download and Install
 
-> Install Java 1.8.0
+> Install Java 1.8.0.
 
 ```Shell
 $ apt-get install openjdk-8-jdk
 $ apt-get install openjdk-8-jre
 ```
 
-> Install Spark 2.4.1
+> Install Spark 2.4.1.
 
 ```Shell
 $ cd /usr/local
@@ -88,7 +88,7 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 
 ### Download and Install
 
-> Install requirements
+> Install requirements.
 ```Shell
 $ sudo apt install maven
 $ sudo apt-get install python
@@ -96,13 +96,17 @@ $ sudo apt install python-pip
 $ echo "export LC_ALL="en_US.UTF-8"" >> .bashrc
 $ echo "export LC_CTYPE="en_US.UTF-8"" >> .bashrc
 $ source .bashrc
+```
+
+> Install Python dependencies on master and each worker node.
+```Shell
 $ pip install six numpy
 $ pip install --upgrade pip
 $ pip install BigDL==0.10.0     # for Python 2.7
 $ pip3 install BigDL==0.10.0    # for Python 3.5 and Python 3.6
 ```
 
-> Download and install BigDL
+> Download and install BigDL.
 
 ```Shell
 $ git clone https://github.com/intel-analytics/BigDL.git
