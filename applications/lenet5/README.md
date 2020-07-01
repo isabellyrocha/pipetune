@@ -14,20 +14,8 @@ FASHION-MNIST is a dataset of Zalando's article images. More information in <htt
  * [Install dependencies](../../README.md#install.bigdl.dependencies)
 
 ## How to run this example:
-Please note that due to some permission issue, this example **cannot** be run on Windows.
-
-
-Program downloads the chosen dataset into ```/tmp```.
-
-```
-/tmp/mnist$ tree .
-.
-├── t10k-images-idx3-ubyte.gz
-├── t10k-labels-idx1-ubyte.gz
-├── train-images-idx3-ubyte.gz
-└── train-labels-idx1-ubyte.gz
-
-```
+- Please note that due to some permission issue, this example **cannot** be run on Windows.
+- Program automaticaly downloads the chosen dataset if not yet available in the specified `dataPath`.
 
 We would train a LeNet model in Spark local mode with the following commands and you can distribute it across cluster by modifying the spark master and the executor cores.
 
@@ -56,21 +44,13 @@ We would train a LeNet model in Spark local mode with the following commands and
  ```
 
 * ```--action``` it can be train or test.
-
 * ```--dataPath``` option can be used to set the path for downloading mnist data, the default value is /tmp/mnist. Make sure that you have write permission to the specified path.
-
 * ```--batchSize``` option can be used to set batch size, the default value is 128.
-
 * ```--endTriggerType``` option can be used to control how to end the training process, the value can be "epoch" or "iteration" and default value is "epoch".
-
 * ```--endTriggerNum``` use together with ```endTriggerType```, the default value is 20.
-
 * ```--modelPath``` option can be used to set model path for testing, the default value is /tmp/lenet5/model.470.
-
 * ```--checkpointPath``` option can be used to set checkpoint path for saving model, the default value is /tmp/lenet5/.
-
 * ```--optimizerVersion``` option can be used to set DistriOptimizer version, the value can be "optimizerV1" or "optimizerV2".
-
 
 To verify the accuracy, search "accuracy" from log:
 
