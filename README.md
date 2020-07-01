@@ -6,13 +6,13 @@
 
 ## Table of Contents
 
-- [Spark Cluster](#spark.deployment)
-- [BigDL](#bigdl)
+- [Deploy Spark Cluster](#spark.deployment)
+- [BigDL Setup](#bigdl.setup)
 
 ---
 
 <a name="spark.deployment"></a>
-## Spark Cluster
+## Deploy Spark Cluster
 
 > Spark 2.4.1 Standalone Cluster Deployment.
 
@@ -77,7 +77,8 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 
 ---
 
-## BigDL
+<a name="bigdl.setup"></a>
+## BigDL Setup
 
 > BigDL is a distributed deep learning library for Apache Spark.
 
