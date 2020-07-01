@@ -6,11 +6,12 @@
 
 ## Table of Contents
 
-- [Spark Deployment](#deployment)
+- [Deployment](#deployment)
+- [BigDL] (#bigdl)
 
 ---
 
-## Spark Deployment
+## Deployment
 
 > Spark 2.4.1 Standalone Cluster Deployment
 
@@ -70,6 +71,22 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 
 - MasterWebUI abailable at: `http://masternode:8080`
 
-![alt text](https://github.com/isabellyrocha/pipetune/raw/master/spark_master_web.png?raw=true)
+![alt text](https://github.com/isabellyrocha/pipetune/raw/master/documentation/spark_master_web.png?raw=true)
+
+---
+
+## BigDL
+
+> BigDL is a distributed deep learning library for Apache Spark.
+
+### Requirements
+
+- Spark
+- Maven
+- Python
+
+### Download and Install
+
+
 
 ---
