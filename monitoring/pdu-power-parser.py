@@ -4,7 +4,7 @@
 # It writes the Voltage, Current, Active Power and Power factor to a CSV file
 # usage:
 #       ./pdu-parser.py pdu-outputs-power.csv "http://example-pdu.url" 1
-#
+#       python3 /home/ubuntu/pipetune/monitoring/pdu-power-parser.py http://pdu-dell-1.cluster.iiun.unine.ch 1
 # hit Ctrl-C when you want to stop the capture
 
 import argparse
