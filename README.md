@@ -8,6 +8,7 @@
 
 - [Deploy Spark Cluster](#spark.deployment)
 - [BigDL Setup](#bigdl.setup)
+- [Power Measurements Setup](#power.measurements)
 
 ---
 
@@ -123,4 +124,15 @@ $ ./make-dist.sh -P spark_2.x
 
 ![alt text](https://github.com/isabellyrocha/pipetune/blob/master/documentation/bigdl_test.gif?raw=true)
 
+---
+<a name="power.measurements"></a>
+## Power Measurements Setup
+> Settig up cluster's power metrics for energy reports.
+
+### Requirements
+
+- PDU or PCM
+- InfluxDB
+
+### Download and Install
 ---
