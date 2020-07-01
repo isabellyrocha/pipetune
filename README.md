@@ -131,8 +131,29 @@ $ ./make-dist.sh -P spark_2.x
 
 ### Requirements
 
-- PDU or PCM
+- PDU (if PDU is not available, metrics can be collected using PCM)
 - InfluxDB
 
 ### Download and Install
+> The following steps are only required when PCM is needed (in each cluster node).
+```Shell
+$ git clone https://github.com/opcm/pcm.git
+$ cd pcm
+$ make
+$ sudo modprobe msr
+```
+
+> Installing and setting up the time series database.
+```Shell
+$ sudo apt install influxdb
+$ service influxdb start
+$ influx
+$ CREATE DATABASE energy
+```
+
+> Initiate power metrics collection.
+```Shell
+$ nohup python3 `pipetune/monitoring/pdu-power-parser.py` <http://pdu-address> 1 &  # PDU
+$ nohup python3 /home/ubuntu/pipetune/monitoring/energy_pcm.py <nodename> &         # PCM
+```
 ---
