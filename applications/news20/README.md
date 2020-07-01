@@ -37,6 +37,9 @@ spark-submit \
 	--learningRate 0.05
  ```
 
+* ```--total-executor-cores``` defines the maximum number of cores used by the application.
+* ```--executor-cores``` defines the numeber of cores each executer has. Note that the number of executers is indirectly defined by the ration ```total-executor-cores`` to ```--executor-cores```.
+* `--appName` defines the name of the application, which also defined the name of the saved model.
 * `--data_path` option can be used to set the path for downloading news20 data, the default value is /tmp/news20. Make sure that you have write permission to the specified path.
 * `--max_epoch` option can be used to set how many epochs the model to be trained
 * `--model` option can be used to choose a model to be trained, three models are supported in this example,
