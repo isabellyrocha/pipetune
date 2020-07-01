@@ -4,11 +4,11 @@ LeNet5 is a classical CNN model used in digital number classification. For detai
 
 ## MNIST
 
-MNIST dataset consists of handwritten digits images. More information in <http://yann.lecun.com/exdb/mnist/>.
+MNIST is a dataset consisting of handwritten digits images. More information in <http://yann.lecun.com/exdb/mnist/>.
 
 ## FASHION-MNIST
 
-FASHION-MNIST dataset is a dataset of Zalando's article images. More information in <https://github.com/zalandoresearch/fashion-mnist>.
+FASHION-MNIST is a dataset of Zalando's article images. More information in <https://github.com/zalandoresearch/fashion-mnist>.
 
 ## Install dependencies
  * [Install dependencies](../../README.md#install.bigdl.dependencies)
