@@ -1,6 +1,6 @@
 # LeNet5 Model on MNIST or FASHION-MNIST
 
-LeNet5 is a classical CNN model used in digital number classification. For more detailed information, please refer to <http://yann.lecun.com/exdb/lenet/>. This application is an extension of the [LeNet5 example](https://github.com/intel-analytics/BigDL/tree/master/pyspark/bigdl/models/lenet) available from the official BigDL documentation. This application slightly **modifies the model** itsel, **adds support to the fashion-mnist dataset**, and **extends the list of hyperparameters** which can be chosen by the user.
+LeNet5 is a classical CNN model used in digital number classification. For more detailed information, please refer to <http://yann.lecun.com/exdb/lenet/>. This application is an extension of the [LeNet5 example](https://github.com/intel-analytics/BigDL/tree/master/pyspark/bigdl/models/lenet) available from the official BigDL documentation. This application slightly **modifies the model** itsel, **automatically retrieves previously trained model** if any, **adds support to the fashion-mnist dataset**, and **extends the list of hyperparameters** which can be chosen by the user.
 
 ## MNIST
 
@@ -19,7 +19,7 @@ FASHION-MNIST is a dataset of Zalando's article images. More information in <htt
 
 The LeNet model can be trained in Spark local mode with the following command, or it can be distributed across a cluster by modifying the Spark master.
 
-```
+```{engine='sh'}
 MASTER=local[*]
 spark-submit \
 	--master $MASTER \
@@ -43,19 +43,19 @@ spark-submit \
 	--endTriggerNum 10
  ```
 
-* ```--total-executor-cores``` defines the maximum number of cores used by the application.
-* ```--executor-cores``` defines the numeber of cores each executer has. Note that the number of executers is indirectly defined by the ration ```total-executor-cores``` to ```executor-cores```.
-* ```--action``` it can be train or test.
-* ```--dataPath``` option can be used to set the path for downloading data, the default value is `/tmp/mnist`. If `/tmp/fashion_mnist` is used then the `fashion-mnist` will be used/downloaded. Make sure that you have write permission to the specified path. 
-* ```--batchSize``` option can be used to set batch size, the default value is 128.
-* ```--endTriggerType``` option can be used to control how to end the training process, the value can be "epoch" or "iteration" and default value is "epoch".
-* ```--endTriggerNum``` use together with ```endTriggerType```, the default value is 20.
-* ```--modelPath``` option can be used to set model path for testing, the default value is /tmp/```appName```.bigdl.
-* ```--checkpointPath``` option can be used to set checkpoint path for saving model, the default value is /tmp/lenet5/.
-* ```--optimizerVersion``` option can be used to set DistriOptimizer version, the value can be "optimizerV1" or "optimizerV2".
-* ```--momentum``` option can be used to set mementum, the default value is 0.9.
-* ```--dampening``` option can be used to set dampening, the default value is 0.0.
-* ```--nesterov``` option can be used to set nesterov, the default value is True.
+* `--total-executor-cores` defines the maximum number of cores used by the application.
+* `--executor-cores` defines the numeber of cores each executer has. Note that the number of executers is indirectly defined by the ration `total-executor-cores` to `executor-cores`.
+* `--action` it can be train or test.
+* `--dataPath` option can be used to set the path for downloading data, the default value is `/tmp/mnist`. If `/tmp/fashion_mnist` is used then the `fashion-mnist` will be used/downloaded. Make sure that you have write permission to the specified path. 
+* `--batchSize` option can be used to set batch size, the default value is 128.
+* `--endTriggerType` option can be used to control how to end the training process, the value can be "epoch" or "iteration" and default value is "epoch".
+* `--endTriggerNum` use together with `endTriggerType`, the default value is 20.
+* `--modelPath` option can be used to set model path for testing, the default value is /tmp/`appName`.bigdl.
+* `--checkpointPath` option can be used to set checkpoint path for saving model, the default value is /tmp/lenet5/.
+* `--optimizerVersion` option can be used to set DistriOptimizer version, the value can be "optimizerV1" or "optimizerV2".
+* `--momentum` option can be used to set mementum, the default value is 0.9.
+* `--dampening` option can be used to set dampening, the default value is 0.0.
+* `--nesterov` option can be used to set nesterov, the default value is True.
 
 To verify the accuracy, search "accuracy" from log:
 
