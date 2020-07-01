@@ -37,17 +37,22 @@ spark-submit \
 	--learningRate 0.05
  ```
 
-* ```--total-executor-cores``` defines the maximum number of cores used by the application.
-* ```--executor-cores``` defines the numeber of cores each executer has. Note that the number of executers is indirectly defined by the ration ```total-executor-cores`` to ```--executor-cores```.
+* `--total-executor-cores` defines the maximum number of cores used by the application.
+* `--executor-cores` defines the numeber of cores each executer has. Note that the number of executers is indirectly defined by the ration ```total-executor-cores`` to `--executor-cores`.
 * `--appName` defines the name of the application, which also defined the name of the saved model.
-* `--data_path` option can be used to set the path for downloading news20 data, the default value is /tmp/news20. Make sure that you have write permission to the specified path.
-* `--max_epoch` option can be used to set how many epochs the model to be trained
+* `--dataPath` option can be used to set the path for downloading news20 data, the default value is /tmp/news20. Make sure that you have write permission to the specified path.
+* `--maxEpoch` option can be used to set how many epochs the model to be trained, the default value is 30.
 * `--model` option can be used to choose a model to be trained, three models are supported in this example,
-which are `cnn`, `lstm` and `gru`, default is `cnn`
-* `--batchSize` option can be used to set batch size, the default value is 128
-* `--embedding_dim` option can be used to set the embedding size of word vector, the default value is 200.
-* `--learning_rate` option can be used to set learning rate, default is 0.05.
+which are `cnn`, `lstm` and `gru`, default is `cnn`.
+* `--batchSize` option can be used to set batch size, the default value is 128.
+* `--embeddingDim` option can be used to set the embedding size of word vector, the default value is 200.
+* `--learningRate` option can be used to set learning rate, default is 0.05.
+* `--learningRateDecay` option can be used to set learning rate decay, default is 0.01.
 * `--optimizerVersion` option can be used to set DistriOptimizer version, the value can be "optimizerV1" or "optimizerV2".
+* `--sequenceLen` option can be used to set the sequence length, default is 500.
+* `--maxWords` option can be used to set the max words, default is 5000.
+* `--trainSplit` option can be used to set the train split, default is 0.8.
+
 
 To verify the accuracy, search "accuracy" from log:
 
