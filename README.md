@@ -154,9 +154,11 @@ $ CREATE DATABASE energy
 > Initiate power metrics collection.
 ```Shell
 $ # PDU
-$ nohup python3 $HOME/pipetune/monitoring/pdu-power-parser.py <http://pdu-address> 1 &
-$ # PCM (following steps required for each node)
-$ $HOME/pcm_data
+$ nohup python3 $HOME/pipetune/monitoring/pdu_power.py <http://pdu-address> 1 &
+$ # PCM 
+$ # Following step required only in master node
+$ mkdir $HOME/pcm_data
+$ # Following steps required in each cluster node
 $ nohup ssh <nodename> sudo ./pcm/pcm.x /csv > $HOME/pcm_data/<nodename>.log &
 $ nohup python3 $HOME/pipetune/monitoring/pcm_power.py $HOME/pcm_data/<nodename>.log <nodename> &
 ```
