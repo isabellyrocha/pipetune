@@ -117,6 +117,7 @@ $ ./make-dist.sh -P spark_2.x
 ### Test BigDL
 
 - Test BiglDL with one of the applications avalable in `pipetune/applications`
+- For more details on the applications refer to [Lenet5](https://github.com/isabellyrocha/pipetune/tree/master/applications/lenet5) or [News20](https://github.com/isabellyrocha/pipetune/tree/master/applications/news20).
 
 ![alt text](https://github.com/isabellyrocha/pipetune/blob/master/documentation/bigdl_test.gif?raw=true)
 
