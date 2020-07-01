@@ -15,7 +15,7 @@ available in the official BigDL documentation. This application slightly **modif
 
 The models can be trained in Spark local mode with the following command, or it can be distributed across a cluster by modifying the Spark master.
 
-```
+```{r, engine='sh'}
 MASTER=local[*]
 spark-submit \
 	--master $MASTER \
