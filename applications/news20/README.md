@@ -38,7 +38,8 @@ spark-submit \
  ```
 
 * `--total-executor-cores` defines the maximum number of cores used by the application.
-* `--executor-cores` defines the numeber of cores each executer has. Note that the number of executers is indirectly defined by the ration ```total-executor-cores`` to `--executor-cores`.
+* `--executor-cores` defines the numeber of cores each executer has. Note that the number of executers is indirectly defined by the ration `total-executor-cores to `--executor-cores`.
+* `--action` can be train or test.
 * `--appName` defines the name of the application, which also defined the name of the saved model.
 * `--dataPath` option can be used to set the path for downloading news20 data, the default value is /tmp/news20. Make sure that you have write permission to the specified path.
 * `--maxEpoch` option can be used to set how many epochs the model to be trained, the default value is 30.
