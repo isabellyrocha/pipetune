@@ -19,7 +19,7 @@ FASHION-MNIST is a dataset of Zalando's article images. More information in <htt
 
 The LeNet model can be trained in Spark local mode with the following command, or it can be distributed across a cluster by modifying the Spark master.
 
-```console
+```{engine='sh'}
 MASTER=local[*]
 spark-submit \
 	--master $MASTER \
