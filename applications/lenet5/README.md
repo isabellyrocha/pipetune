@@ -1,7 +1,6 @@
 # LeNet5 Model on MNIST or FASHION-MNIST
 
-LeNet5 is a classical CNN model used in digital number classification. 
-For detail information, please refer to <http://yann.lecun.com/exdb/lenet/>.
+LeNet5 is a classical CNN model used in digital number classification. For detail information, please refer to <http://yann.lecun.com/exdb/lenet/>.
 
 ## Install dependencies
  * [Install dependencies](../../README.md#install.bigdl.dependencies)
@@ -22,7 +21,7 @@ Program would download the mnist data into ```/tmp/mnist``` automatically by def
 
 ```
 
-We would train a LeNet model in spark local mode with the following commands and you can distribute it across cluster by modifying the spark master and the executor cores.
+We would train a LeNet model in Spark local mode with the following commands and you can distribute it across cluster by modifying the spark master and the executor cores.
 
 ```
     BigDL_HOME=...
@@ -64,45 +63,12 @@ We would train a LeNet model in spark local mode with the following commands and
 
 * ```--optimizerVersion``` option can be used to set DistriOptimizer version, the value can be "optimizerV1" or "optimizerV2".
 
-##### In order to use MKL-DNN as the backend, you should:
-1. Define a graph model with Model or convert a sequential model to a graph model using:
-   ```
-   convertedModel = sequentialModel.to_graph()
-   ```
-2. Specify the input and output formats of it.
-   For example:
-   ```
-   theDefinedModel.set_input_formats([theInputFormatIndex])
-   theDefinedModel.set_output_formats([theOutputFormatIndex])
-   ```
-   BigDL needs these format information to build a graph running with MKL-DNN backend.
-   
-   The format index of input or output format can be checked
-   in: 
-   ```
-   ${BigDL-core}/native-dnn/src/main/java/com/intel/analytics/bigdl/mkl/Memory.java
-   
-   For instance:
-   public static final int nchw = 7;
-   means the index of format nchw is 7.
-   
-   public static final int nc = 4;
-   means the index of format nc is 4.
-   
-   ```
-3. Run spark-submit command with correct configurations
-   ```
-   --conf "spark.driver.extraJavaOptions=-Dbigdl.engineType=mkldnn"
-   --conf "spark.executor.extraJavaOptions=-Dbigdl.engineType=mkldnn"
-   ```
 
 To verify the accuracy, search "accuracy" from log:
 
 ```
 INFO  DistriOptimizer$:247 - [Epoch 1 0/60000][Iteration 1][Wall Clock 0.0s] Train 128 in xx seconds. Throughput is xx records/second.
-
 INFO  DistriOptimizer$:522 - Top1Accuracy is Accuracy(correct: 9572, count: 10000, accuracy: 0.9572)
-
 ```
 
 Or you can train a LeNet model directly in shell after installing BigDL from pip:
