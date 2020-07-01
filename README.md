@@ -35,6 +35,7 @@ $ cd /usr/local
 $ wget https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz
 $ tar -xzf spark-2.4.1-bin-hadoop2.7.tgz
 $ echo "export PATH=$PATH:/usr/local/spark-2.4.1-bin-hadoop2.7/bin" >> $HOME/.bashrc
+$ source .bashrc
 ```
 
 ### Set Environment Variables
@@ -94,7 +95,7 @@ $ sudo apt-get install python
 $ sudo apt install python-pip
 $ echo "export LC_ALL="en_US.UTF-8"" >> .bashrc
 $ echo "export LC_CTYPE="en_US.UTF-8"" >> .bashrc
-$ sudo dpkg-reconfigure locales
+$ source .bashrc
 $ pip install six numpy
 $ pip install --upgrade pip
 $ pip install BigDL==0.10.0     # for Python 2.7
