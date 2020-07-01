@@ -7,7 +7,7 @@
 ## Table of Contents
 
 - [Deployment](#deployment)
-- [BigDL] (#bigdl)
+- [BigDL](#bigdl)
 
 ---
 
