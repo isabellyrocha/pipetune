@@ -6,12 +6,11 @@
 
 ## Table of Contents
 
-- [Deployment](#deployment)
-
+- [Spark Deployment](#deployment)
 
 ---
 
-## Deployment
+## Spark Deployment
 
 > Spark 2.4.1 Standalone Cluster Deployment
 
