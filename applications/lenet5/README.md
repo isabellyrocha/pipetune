@@ -1,6 +1,6 @@
 # LeNet5 Model on MNIST or FASHION-MNIST
 
-LeNet5 is a classical CNN model used in digital number classification. For detail information, please refer to <http://yann.lecun.com/exdb/lenet/>.
+LeNet5 is a classical CNN model used in digital number classification. For detail information, please refer to <http://yann.lecun.com/exdb/lenet/>. This application is an extension of the LeNet5 example available from the official BigDL documentation. This application slightly modifies the model and adds support to the fashion-mnist dataset. Moreover, we extend the list of hyperparameters which can be chosen by the user.
 
 ## MNIST
 
