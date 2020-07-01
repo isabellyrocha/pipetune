@@ -6,12 +6,12 @@
 
 ## Table of Contents
 
-- [Spark Deployment](#deployment)
+- [Spark](#spark)
 - [BigDL](#bigdl)
 
 ---
 
-## [Spark Deployment](#deployment)
+## Spark
 
 > Spark 2.4.1 Standalone Cluster Deployment
 
