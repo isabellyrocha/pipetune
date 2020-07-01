@@ -6,11 +6,12 @@
 
 ## Table of Contents
 
-- [Spark Deployment](#deployment)
+- [Spark](#spark)
+- [BigDL](#bigdl)
 
 ---
 
-## Spark Deployment
+## Spark
 
 > Spark 2.4.1 Standalone Cluster Deployment
 
@@ -34,6 +35,7 @@ $ cd /usr/local
 $ wget https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz
 $ tar -xzf spark-2.4.1-bin-hadoop2.7.tgz
 $ echo "export PATH=$PATH:/usr/local/spark-2.4.1-bin-hadoop2.7/bin" >> $HOME/.bashrc
+$ source .bashrc
 ```
 
 ### Set Environment Variables
@@ -70,6 +72,47 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 
 - MasterWebUI abailable at: `http://masternode:8080`
 
-![alt text](https://github.com/isabellyrocha/pipetune/raw/master/spark_master_web.png?raw=true)
+![alt text](https://github.com/isabellyrocha/pipetune/raw/master/documentation/spark_master_web.png?raw=true)
+
+---
+
+## BigDL
+
+> BigDL is a distributed deep learning library for Apache Spark.
+
+### Requirements
+
+- Spark
+- Maven
+- Python
+
+### Download and Install
+
+> Install requirements
+```Shell
+$ sudo apt install maven
+$ sudo apt-get install python
+$ sudo apt install python-pip
+$ echo "export LC_ALL="en_US.UTF-8"" >> .bashrc
+$ echo "export LC_CTYPE="en_US.UTF-8"" >> .bashrc
+$ source .bashrc
+$ pip install six numpy
+$ pip install --upgrade pip
+$ pip install BigDL==0.10.0     # for Python 2.7
+$ pip3 install BigDL==0.10.0    # for Python 3.5 and Python 3.6
+```
+
+> Download and install BigDL
+
+```Shell
+$ git clone https://github.com/intel-analytics/BigDL.git
+$ cd BigDL
+$ ./make-dist.sh -P spark_2.x
+```
+### Test BigDL
+
+- Test BiglDL with one of the applications avalable in `pipetune/applications`
+
+![alt text](https://github.com/isabellyrocha/pipetune/blob/master/documentation/bigdl_test.gif?raw=true)
 
 ---
