@@ -156,7 +156,8 @@ $ CREATE DATABASE energy
 $ # PDU
 $ nohup python3 $HOME/pipetune/monitoring/pdu-power-parser.py <http://pdu-address> 1 &
 $ # PCM (following steps required for each node)
+$ $HOME/pcm_data
 $ nohup ssh <nodename> sudo ./pcm/pcm.x /csv > $HOME/pcm_data/<nodename>.log &
-$ nohup python3 $HOMEpipetune/monitoring/energy_pcm.py <nodename> &
+$ nohup python3 $HOME/pipetune/monitoring/pcm_power.py $HOME/pcm_data/<nodename>.log <nodename> &
 ```
 ---
