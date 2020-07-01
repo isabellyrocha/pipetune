@@ -90,6 +90,12 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 > Install requirements
 ```Shell
 $ sudo apt install maven
+$ sudo apt-get install python
+$ sudo apt install python-pip
+$ echo "export LC_ALL="en_US.UTF-8"" >> .bashrc
+$ echo "export LC_CTYPE="en_US.UTF-8"" >> .bashrc
+$ sudo dpkg-reconfigure locales
+$ pip install six numpy
 $ pip install --upgrade pip
 $ pip install BigDL==0.10.0     # for Python 2.7
 $ pip3 install BigDL==0.10.0    # for Python 3.5 and Python 3.6
