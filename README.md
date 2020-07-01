@@ -109,4 +109,10 @@ $ git clone https://github.com/intel-analytics/BigDL.git
 $ cd BigDL
 $ ./make-dist.sh -P spark_2.x
 ```
+### Test BigDL
+
+- Test BiglDL with one of the applications avalable in `pipetune/applications`
+
+![alt text](https://github.com/isabellyrocha/pipetune/blob/master/documentation/bigdl_test.gif?raw=true)
+
 ---
