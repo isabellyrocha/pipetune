@@ -87,6 +87,19 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 
 ### Download and Install
 
+> Install requirements
+```Shell
+$ sudo apt install maven
+$ pip install --upgrade pip
+$ pip install BigDL==0.10.0     # for Python 2.7
+$ pip3 install BigDL==0.10.0    # for Python 3.5 and Python 3.6
+```
 
+> Download and install BigDL
 
+```Shell
+$ git clone https://github.com/intel-analytics/BigDL.git
+$ cd BigDL
+$ ./make-dist.sh -P spark_2.x
+```
 ---
