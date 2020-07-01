@@ -86,6 +86,7 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 - Maven
 - Python
 
+<a name="install.bigdl.dependencies"></a>
 ### Download and Install
 
 > Install requirements.
