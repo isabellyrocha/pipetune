@@ -5,7 +5,7 @@ from numpy import mean
 events = {}
 durations = {}
 
-with open('agg_per_epoch.log') as fp:
+with open('data/agg_per_epoch.log') as fp:
     line = fp.readline()
     while line: 
         (model, dataset, cores, memory, batch, log_id, epoch, event, counts, duration) = line.split(",")

@@ -3,7 +3,7 @@ import os
 import time
 from datetime import datetime
 
-LOGS_PATH = "/home/ubuntu/perf/"
+LOGS_PATH = "data/perf/"
 files = os.listdir(LOGS_PATH)
 
 def str_to_tstp(time_str):
@@ -27,7 +27,7 @@ def get_epoch(timestemp, epochs):
             return "%s,%d" % (i, (epochs[str(next)] - epochs[str(i)]))
 
 epochs = {}
-with open('spark_filtered.log') as fp:
+with open('data/spark_filtered.log') as fp:
     line = fp.readline().strip()
     while line:
         (model, dataset, cores, memory, batch, log_id, epoch, timestemp) = line.split(",")

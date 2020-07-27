@@ -5,7 +5,7 @@ from numpy import mean
 events = {}
 total = 0
 
-with open('lenet_bind_over_epochs.csv') as fp:
+with open('data/lenet_bind_over_epochs.csv') as fp:
     line = fp.readline()
     while line:
         sline = line.split(",")

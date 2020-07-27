@@ -5,7 +5,7 @@ from numpy import mean
 events = {}
 durations = {}
 
-with open('perf_filtered.log') as fp:
+with open('data/perf_filtered.log') as fp:
     line = fp.readline()
     while line:
         (model, dataset, cores, memory, batch, log_id, epoch, duration, event, counts) = line.split(",")
