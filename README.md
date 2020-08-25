@@ -2,7 +2,7 @@
   <img src="https://github.com/isabellyrocha/pipetune/blob/master/documentation/pipetune.png" />
 </p>
 
-> PipeTune implements a pipelined paralelism approach for hyper and system parameter tuning.
+PipeTune implements a pipelined paralelism approach for hyper and system parameter tuning.
 
 ---
 
