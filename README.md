@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/isabellyrocha/pipetune/blob/master/documentation/pipetune.png" /></p>
+<p align="center"><img src="https://github.com/isabellyrocha/pipetune/blob/master/docs/pipetune.png" /></p>
 
 PipeTune implements a pipelined paralelism approach for hyper and system parameter tuning.
 
@@ -75,7 +75,7 @@ $ ./sbin/start-slave.sh <master-spark-URL>
 
 - MasterWebUI abailable at: `http://masternode:8080`
 
-![alt text](https://github.com/isabellyrocha/pipetune/raw/master/documentation/spark_master_web.png?raw=true)
+![alt text](https://github.com/isabellyrocha/pipetune/raw/master/docs/spark_master_web.png?raw=true)
 
 ---
 
@@ -123,7 +123,7 @@ $ ./make-dist.sh -P spark_2.x
 - Test BiglDL with one of the applications avalable in `pipetune/applications`
 - For more details on the applications refer to [Lenet5](https://github.com/isabellyrocha/pipetune/tree/master/applications/lenet5) or [News20](https://github.com/isabellyrocha/pipetune/tree/master/applications/news20).
 
-![alt text](https://github.com/isabellyrocha/pipetune/blob/master/documentation/bigdl_test.gif?raw=true)
+![alt text](https://github.com/isabellyrocha/pipetune/blob/master/docs/bigdl_test.gif?raw=true)
 
 ---
 <a name="power.measurements"></a>
@@ -168,7 +168,7 @@ $ nohup python3 $HOME/pipetune/monitoring/pcm_power.py $HOME/pcm_data/<nodename>
 
 In the current version, clustring is implemented using Kmeans algorithm on low level events collected using hardware performance counters. A preselected list of 58 performance counters are collected every second during a given epoch and the system configurations to be applied in that given trial is deficed by this profile. A model is pretrainined in available at ``, but the model is updated as new workloads comes to the system. Bellow we can see a subset of the profiling results for a given workloads during 5 epochs.
 
-![alt text](https://github.com/isabellyrocha/pipetune/blob/master/documentation/profiling.png?raw=true)
+![alt text](https://github.com/isabellyrocha/pipetune/blob/master/docs/profiling.png?raw=true)
 
 > Install perf in those nodes where profiling is needed
 
