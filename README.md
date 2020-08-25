@@ -175,3 +175,9 @@ In the current version, clustring is implemented using Kmeans algorithm on low l
 ```Shell
 $ sudo apt install linux-tools-common linux-tools-4.4.0-184-generic linux-cloud-tools-4.4.0-184-generic
 ```
+
+> Create a directory where all the collected data will be saved
+
+```Shell
+$ mkdir $HOME/perf
+```
