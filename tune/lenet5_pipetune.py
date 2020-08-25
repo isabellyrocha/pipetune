@@ -1,3 +1,4 @@
+from pathlib import Path
 import argparse
 import json
 import os
@@ -7,7 +8,7 @@ import ray
 from ray import tune
 from ray.tune import Trainable, run, Experiment, sample_from
 from ray.tune.schedulers import AsyncHyperBandScheduler, HyperBandScheduler
-from bigdl.bigdl import BigDL
+from bigdl.BigDL import BigDL
 from utils import utils, metrics
 from utils.Profiler import Profiler
 from utils.GroundTruth import GroundTruth
@@ -23,6 +24,7 @@ class MNIST(Trainable):
         self.info = {}
 
     def _train(self):
+        config = "%s/pipetune/bigdl/config/mnist.json" % Path.home()
         batch = str(self.config['batch'])
         lr = str(self.config['lr'])
         lrd = str(self.config['lrd'])
@@ -32,17 +34,22 @@ class MNIST(Trainable):
         n_epochs = 5
 
         #### probing phase ###
-        result = self.bigdl.run_mnist_off(total_executor_cores = cores,
-                                      memory = memory,
-                                      batch_size = batch,
-                                      learning_rate = lr,
-                                      learning_rate_decay = lrd,
-                                      epochs = "1")
+        result = self.bigdl.run_mnist_off(config_file = config,
+                                          total_executor_cores = cores,
+                                          memory = memory,
+                                          batch_size = batch,
+                                          learning_rate = lr,
+                                          learning_rate_decay = lrd,
+                                          epochs = "1")
         metrics = self.profiler.getMetrics("mnist_%s_%s_%s" % (batch, lr, lrd))
-        (cores, memory) = self.ground_truth.getConfig(metrics, batch)
+        #(cores, memory) = self.ground_truth.getConfig(metrics, batch)
         ######################
-
-        result = self.bigdl.run_mnist(total_executor_cores = cores,
+        print("NUMBER OF CORES:")
+        print(cores)
+        print("MEMORY:")
+        print(memory)
+        result = self.bigdl.run_mnist(config_file = config,
+                                      total_executor_cores = cores,
                                       memory = memory,
                                       batch_size = batch,
                                       learning_rate = lr,

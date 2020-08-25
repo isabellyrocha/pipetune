@@ -1,3 +1,4 @@
+from pathlib import Path
 import argparse
 import json
 import os
@@ -23,14 +24,16 @@ class MNIST(Trainable):
         self.info = {}
 
     def _train(self):
+        config ="%s/pipetune/bigdl/config/mnist.json" % Path.home()
         batch = str(self.config['batch'])
         lr = str(self.config['lr'])
         lrd = str(self.config['lrd'])
-        memory = "8"
-        cores = "16"
-        n_epochs = 5
+        cores = str(self.config['cores'])
+        memory = str(self.config['memory'])
+        n_epochs = self.config['epoch']
 
-        result = self.bigdl.run_mnist(total_executor_cores = cores,
+        result = self.bigdl.run_mnist(config_file = config,
+                                      total_executor_cores = cores,
                                       memory = memory,
                                       batch_size = batch,
                                       learning_rate = lr,
@@ -78,25 +81,30 @@ def runParameter():
         name="exp",
         scheduler=sched,
         stop={"training_iteration": 1},
-        num_samples=5,
+        num_samples=1,
         reuse_actors=False,
         resume=False,
         resources_per_trial={
             "cpu": 8
         },
         config={
-            "lr": tune.sample_from(
-                lambda spec: np.random.uniform(0.001, 0.1)),
-            "batch": tune.sample_from(
-                lambda spec: random.sample([1024, 512, 32, 64],1)[0]),
-            "lrd": tune.sample_from(
-                lambda spec: np.random.uniform(0.2, 0.0002))
+            "epoch": tune.grid_search([1, 2]),
+            "lr": tune.grid_search([0.01,0.001]),#tune.sample_from(
+             #   lambda spec: np.random.uniform(0.001, 0.1)),
+            "batch": tune.grid_search([128,256,512,1024]),#tune.sample_from(
+#                lambda spec: random.sample([1024, 512, 32, 64],1)[0]),
+            "lrd": tune.grid_search([0.01,0.001]),#tune.sample_from(
+#                lambda spec: np.random.uniform(0.2, 0.0002)),
+            "cores": tune.grid_search([4, 16]),##tune.sample_from(
+#                lambda spec: random.sample([4, 8, 16],1)[0]),
+            "memory": tune.grid_search([2, 4])#tune.sample_from(
+            #    lambda spec: random.sample([4, 8, 16, 32], 1)[0])
         })
 
     trials = analysis.trials
     for trial in trials:
-        print (trial.metric_analysis['accuracy'])
-    best_trial = analysis.get_best_trial('accuracy', mode='max', scope='all')
+        print (trial.metric_analysis['ratio'])
+    best_trial = analysis.get_best_trial('ratio', mode='max', scope='all')
     print(best_trial)
-    print(best_trial.metric_analysis['accuracy'])
+    print(best_trial.metric_analysis['ratio'])
     print(best_trial.config)

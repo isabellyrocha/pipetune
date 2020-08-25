@@ -22,11 +22,17 @@ def next_line(file_name):
         line = file_name.readline()
     return line
 
-def setCores(cores):
-    command = "ps -aux -a | grep executor | awk '{print $2}' | while read line ; do sudo taskset -cp -pa 0-%d $line  ; done" % (cores-1)
-    for node in ["eiger-2.maas"]:
+def set_cores(cores):
+    command = "ps -aux -a | grep spark.executor | awk '{print $2}' | while read line ; do sudo taskset -cp -pa 0-%d $line  ; done" % (int(cores)-1)
+    for node in ["eiger-2.maas", "eiger-3.maas", "eiger-4.maas", "eiger-5.maas"]:
         subprocess.Popen(["ssh", node, command], shell=False ,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print("Changed number of cores to %d... " % cores)
+    print("Changed number of cores to %s... " % cores)
+
+def set_mem(mem):
+    command = "ps -aux -a | grep spark.executor | awk '{print $2}' | while read line ; do niceload -M %sG -p $line ; done" % mem
+    for node in ["eiger-2.maas", "eiger-3.maas", "eiger-4.maas", "eiger-5.maas"]:
+        subprocess.Popen(["ssh", node, command], shell=False ,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print("Changed mem to %s... " % mem)
 
 def isEpoch(line, epoch):
     return ("Epoch %d" % epoch) in line

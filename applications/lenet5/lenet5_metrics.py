@@ -13,6 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+### Spark Measure ###
+from __future__ import print_function
+from pyspark.sql import SparkSession
+from sparkmeasure import StageMetrics
+####################
 from optparse import OptionParser
 from bigdl.models.lenet.utils import *
 from bigdl.dataset.transformer import *
@@ -50,8 +56,8 @@ if __name__ == "__main__":
     parser.add_option("-o", "--modelPath", dest="modelPath", default="/tmp/lenet5/model.test")
     parser.add_option("-c", "--checkpointPath", dest="checkpointPath", default="/tmp/lenet5")
     parser.add_option("-t", "--endTriggerType", dest="endTriggerType", default="epoch")
-    parser.add_option("-n", "--endTriggerNum", type=int, dest="endTriggerNum", default="20")
-    parser.add_option("-d", "--dataPath", dest="dataPath", default="/tmp/mnist")
+    parser.add_option("-n", "--endTriggerNum", type=int, dest="endTriggerNum", default="1")
+    parser.add_option("-d", "--dataPath", dest="dataPath", default="/tmp/fashion_mnist")
     parser.add_option("-l", "--learningRate", type=float, dest="learningRate", default=0.01)
     parser.add_option("-k", "--learningrateDecay", type=float, dest="learningrateDecay", default=0.0002)
     parser.add_option("-j", "--executorCores", dest="executorCores", default="1")
@@ -65,12 +71,18 @@ if __name__ == "__main__":
     show_bigdl_info_logs()
     init_engine()
 
+    spark = SparkSession \
+        .builder \
+        .appName("SparkMeasure instrumentation of Python.") \
+        .getOrCreate()
+    stagemetrics = StageMetrics(spark)
     (train_data, test_data) = utils.get_mnist_costum(sc, options.dataPath)
+
 
     if options.action == "train":
         #(train_data, test_data) = preprocess_mnist(sc, options)
 #        (train_data, test_data) = utils.get_mnist_costum(sc, options.dataPath)
-        if os.path.exists("/tmp/%s.bigdl" % options.appName):
+        if False:#os.path.exists("/tmp/%s.bigdl" % options.appName):
             model = Model.loadModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName)
         else:
             model = build_model(10)
@@ -89,17 +101,29 @@ if __name__ == "__main__":
             batch_size=options.batchSize)
         validate_optimizer(optimizer, test_data, options)
         trained_model = optimizer.optimize()
+        
+        stagemetrics.end()
+        # print report to standard output
+        stagemetrics.print_report()
+        stagemetrics.print_accumulables()
+
         trained_model.saveModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName, True)
+#        df = stagemetrics.create_stagemetrics_DF("PerfStageMetrics")
+#        stagemetrics.save_data(df.orderBy("jobId", "stageId"), "/tmp/stagemetrics_test1")
+##        aggregatedDF = stagemetrics.aggregate_stagemetrics_DF("PerfStageMetrics")
+#        stagemetrics.save_data(aggregatedDF, "/tmp/stagemetrics_report_test2")
         #parameters = trained_model.parameters()
+
     elif options.action == "test":
         # Load a pre-trained model and then validate it through top1 accuracy.
-#       test_data = get_mnist(sc, "test", options.dataPath) \
+#        test_data = get_mnist(sc, "test", options.dataPath) \
 #            .map(lambda rec_tuple: (normalizer(rec_tuple[0], cifar10.TEST_MEAN, cifar10.TEST_STD),
-#                                    rec_tuple[1])) \
-#            .map(lambda t: Sample.from_ndarray(t[0], t[1]))
+ #                                   rec_tuple[1])) \
+ #           .map(lambda t: Sample.from_ndarray(t[0], t[1]))
+        #model = Model.load(options.modelPath)
         model = Model.loadModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName)
         results = model.evaluate(test_data, options.batchSize, [Top1Accuracy()])
         for result in results:
             print(result)
     sc.stop()
-
+    spark.stop()

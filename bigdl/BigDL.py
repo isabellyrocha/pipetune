@@ -4,12 +4,14 @@ import random
 import time
 import sys
 from utils.Profiler import Profiler
+from utils.GroundTruth import GroundTruth
 
 class BigDL(object):
 
     def __init__(self):
         self._job_id = 0
         self._profiler = Profiler()
+        self._ground_truth = GroundTruth()
 
     def get_new_id(self):
         time.sleep(random.randrange(15))
@@ -110,6 +112,15 @@ class BigDL(object):
             info['ratio'] = 0
         return info
 
+    def epoch_done(self, output_file):
+        with open(output_file, "r") as output:
+            line = output.readline()
+            while line:
+                if "Epoch 2" in line and not start:
+                    return True
+                line = output.readline()
+        return False
+
     def get_info(self, output_file):
         start  = None
         finish = None
@@ -152,13 +163,11 @@ class BigDL(object):
         output = open(output_file, "w+")
         app = self.submit(config, output)
         app.wait()
-        #self.submit_v2(config, output)
         output.close()
         info = self.get_epoch_info(output_file)
         if 'cores 'not in info:
             info['cores'] = {}
         info['cores'][total_executor_cores] = info['duration']
-#        print(config)
         print(info)
         return info
 
@@ -176,23 +185,54 @@ class BigDL(object):
         config['executor_cores'] = str(int(int(total_executor_cores)/4))
         config['memory'] = "%sG" % memory
         config['batch_size'] = batch_size
-        #print(config['batch_size'])
         config['learning_rate'] = learning_rate
         config['learning_rate_decay'] = learning_rate_decay
         config['end_trigger_num'] = epochs
         output = open(output_file, "w+")
         app = self.submit(config, output)
         time.sleep(30)
-        self._profiler.startMeasuring("mnist_%s_%s_%s" % (batch_size, learning_rate, learning_rate_decay))
+        self._profiler.startMeasuring("mnist_%s_%s_%s" % (batch_size, learning_rate, learning_rate_decay), "eiger-2.maas")
         app.wait()
-        #self.submit_v2(config, output)
         output.close()
-        self._profiler.stopMeasuring()
+        self._profiler.stopMeasuring("eiger-2.maas")
         info = self.get_epoch_info(output_file)
-        #if 'cores 'not in info:
-        #    info['cores'] = {}
-        #info['cores'][total_executor_cores] = info['duration']
-#        print(config)
+        print(info)
+        return info
+
+    def run_textclassifier_off(self,
+                           config_file ="%s/pipetune/bigdl/config/textclassifier.json" %  Path.home(),
+                           total_executor_cores ="1",
+                           memory ="32",
+                           model ="cnn",
+                           batchSize ="128",
+                           embedding_dim ="200",
+                           learning_rate ="0.05",
+                           max_epochs ="1",
+                           info_in ={}):
+        output_file ="%s/bigdl_logs/textclassifier_%s.log" % (Path.home(), str(time.time()))
+        config = utils.read_json(config_file)
+        config['total_executor_cores'] = total_executor_cores
+        config['executor_cores'] = str(int(int(total_executor_cores)/4))
+        config['model'] = model
+        config['executor_memory'] = "%sG" % memory
+        config['batchSize'] = batchSize
+        config['learning_rate'] = learning_rate
+        config['embedding_dim'] = embedding_dim
+        config['max_epoch'] = max_epochs
+        output = open(output_file, "w+")
+        app = self.submit_textclassifier(config, output)
+        time.sleep(60)
+        self._profiler.startMeasuring("%s_news20_%s_%s_%s" % (model, batchSize, embedding_dim, learning_rate), "eiger-2.maas")
+        if not self.epoch_done(output_file):
+            time.sleep(60)
+        self._profiler.stopMeasuring("eiger-2.maas")
+        metrics = self._profiler.getMetrics("%s_news20_%s_%s_%s" % (model, batchSize, embedding_dim, learning_rate))
+        (cores, memory) = self._ground_truth.getConfig(metrics, batchSize)
+        utils.set_cores(cores)
+        utils.set_mem(memory)
+        app.wait()
+        output.close()
+        info = self.get_epoch_info(output_file)
         print(info)
         return info
 
@@ -207,9 +247,10 @@ class BigDL(object):
                            learning_rate ="0.05",
                            max_epochs ="1",
                            info_in ={}):
-        output_file ="%s/pipetune/bigdl/logs/textclassifier_%s.log" % (Path.home(), str(time.time()))
+        output_file ="%s/bigdl_logs/textclassifier_%s.log" % (Path.home(), str(time.time()))
         config = utils.read_json(config_file)
         config['total_executor_cores'] = total_executor_cores
+        config['executor_cores'] = str(int(int(total_executor_cores)/4))
         config['model'] = model
         config['executor_memory'] = "%sG" % memory
         config['batchSize'] = batchSize
@@ -220,6 +261,6 @@ class BigDL(object):
         app = self.submit_textclassifier(config, output)
         app.wait()
         output.close()
-        info = self.get_epoch_info(output_file, info_in)
+        info = self.get_epoch_info(output_file)
         print(info)
         return info

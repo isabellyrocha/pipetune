@@ -9,35 +9,33 @@ from ray.tune import Trainable, run, Experiment, sample_from
 from ray.tune.schedulers import AsyncHyperBandScheduler, HyperBandScheduler
 from bigdl.bigdl import BigDL
 from utils import utils, metrics
-from utils.Profiler import Profiler
-from utils.GroundTruth import GroundTruth
 from influxdb import InfluxDBClient
 
-class MNIST(Trainable):
+class text_classifier(Trainable):
     def _setup(self, config):
         self.timestep = 0
-        self.bigdl = BigDL()
+        self.bigdl = BigDL()# = self.config['bigdl']#igDL()
         self.config = config
-        self.profiler = Profiler()
-        self.ground_truth = GroundTruth()
-        self.info = {}
+        self.info = {'timestep': 0}
 
     def _train(self):
         batch = str(self.config['batch'])
         lr = str(self.config['lr'])
-        lrd = str(self.config['lrd'])
-        cores = str(self.config['cores'])
-        memory = str(self.config['memory'])
-        n_epochs = 5
+        ed = str(self.config['embedding_dim'])
+        mem = "32"
+        cores = "16"
+        mod = "lstm"
+        m_epochs = "3"
 
-        result = self.bigdl.run_mnist(total_executor_cores = cores,
-                                      memory = memory,
-                                      batch_size = batch,
+        result = self.bigdl.run_textclassifier(model = mod,
+                                      total_executor_cores = cores,
+                                      memory = mem,
+                                      batchSize = batch,
+                                      embedding_dim = ed,
                                       learning_rate = lr,
-                                      learning_rate_decay = lrd,
-                                      epochs = str(n_epochs))
+                                      max_epochs = m_epochs)
         self.info = result
-        return result        
+        return result
 
     def _save(self, checkpoint_dir):
         path = os.path.join(checkpoint_dir, "checkpoint")
@@ -49,29 +47,24 @@ class MNIST(Trainable):
         with open(checkpoint_path) as f:
             self.info = json.loads(f.read())
 
-def stop(trial_id, res):
-    if float(res['accuracy']) >= 0.99:
-        return True
-    elif res['iter'] >= 10:
-        return True
-    else:        
-        return False
-
 def runParameter():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--smoke-test", action="store_true", help="Finish quickly for testing")
     args, _ = parser.parse_known_args()
-    ray.init()
+    #ray.init()
 
-    sched = AsyncHyperBandScheduler(
+    # Hyperband early stopping, configured with `episode_reward_mean` as the
+    # objective and `training_iteration` as the time unit,
+    # which is automatically filled by Tune.
+    sched = HyperBandScheduler(
         time_attr="training_iteration",
         metric="duration",
         mode="min",
         max_t=20)
 
     analysis = tune.run(
-        MNIST,
+        text_classifier,
         checkpoint_freq=1,
         checkpoint_at_end=False,
         max_failures=5,
@@ -86,15 +79,11 @@ def runParameter():
         },
         config={
             "lr": tune.sample_from(
-                lambda spec: np.random.uniform(0.001, 0.1)),
+                lambda spec: np.random.uniform(0.005, 0.5)),
             "batch": tune.sample_from(
-                lambda spec: random.sample([1024, 512, 32, 64],1)[0]),
-            "lrd": tune.sample_from(
-                lambda spec: np.random.uniform(0.2, 0.0002)),
-            "cores": tune.sample_from(
-                lambda spec: random.sample([4, 8, 16],1)[0]),
-            "memory": tune.sample_from(
-                lambda spec: random.sample([4, 8, 16, 32], 1)[0])
+                lambda spec: random.sample([32, 64, 512, 1024],1)[0]),
+            "embedding_dim": tune.sample_from(
+                lambda spec: random.sample([100, 200, 300],1)[0])
         })
 
     trials = analysis.trials

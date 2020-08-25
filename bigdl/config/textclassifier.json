@@ -1,5 +1,5 @@
 {
-    "master": "spark://eiger-1.maas:7078",
+    "master": "spark://eiger-1.maas:7077",
     "driver_memory": "32G",
     "total_executor_cores": "1",
     "executor_cores": "4",

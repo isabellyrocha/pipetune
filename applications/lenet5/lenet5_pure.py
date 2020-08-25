@@ -65,11 +65,9 @@ if __name__ == "__main__":
     show_bigdl_info_logs()
     init_engine()
 
-    (train_data, test_data) = utils.get_mnist_costum(sc, options.dataPath)
-
     if options.action == "train":
         #(train_data, test_data) = preprocess_mnist(sc, options)
-#        (train_data, test_data) = utils.get_mnist_costum(sc, options.dataPath)
+        (train_data, test_data) = utils.get_mnist_costum(sc, options.dataPath)
         if os.path.exists("/tmp/%s.bigdl" % options.appName):
             model = Model.loadModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName)
         else:
@@ -93,13 +91,12 @@ if __name__ == "__main__":
         #parameters = trained_model.parameters()
     elif options.action == "test":
         # Load a pre-trained model and then validate it through top1 accuracy.
-#       test_data = get_mnist(sc, "test", options.dataPath) \
-#            .map(lambda rec_tuple: (normalizer(rec_tuple[0], cifar10.TEST_MEAN, cifar10.TEST_STD),
-#                                    rec_tuple[1])) \
-#            .map(lambda t: Sample.from_ndarray(t[0], t[1]))
-        model = Model.loadModel("/tmp/%s.bigdl" % options.appName, "/tmp/%s.bin" % options.appName)
+        test_data = get_mnist(sc, "test", options.dataPath) \
+            .map(lambda rec_tuple: (normalizer(rec_tuple[0], cifar10.TEST_MEAN, cifar10.TEST_STD),
+                                    rec_tuple[1])) \
+            .map(lambda t: Sample.from_ndarray(t[0], t[1]))
+        model = Model.load(options.modelPath)
         results = model.evaluate(test_data, options.batchSize, [Top1Accuracy()])
         for result in results:
             print(result)
     sc.stop()
-

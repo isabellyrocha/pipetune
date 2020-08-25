@@ -4,6 +4,9 @@ from pandas import DataFrame
 import subprocess
 from paramiko import SSHClient
 from scp import SCPClient
+from pathlib import Path
+
+home = str(Path.home())
 
 class Profiler():
 
@@ -20,19 +23,18 @@ class Profiler():
             "fields": {
                 "value": value
             }
-        }
-        ]
+        }]
         self.influx_client.write_points(json_body)
 
-    def startMeasuring(self, file_name):
+    def startMeasuring(self, file_name, node_name):
         #file_name = "lenet_%s_%s_%s_%s_%d" % (dataset, total_executor_cores, memory, batch_size, trial_id)
-        return subprocess.Popen(["ssh", "eiger-2.maas", "./start-perf.sh", file_name])
+        return subprocess.Popen(["ssh", node_name, "./start-perf.sh", "%s/perf/%s" % (home, file_name)])
 
-    def stopMeasuring(self):
-        return subprocess.Popen(["ssh", "eiger-2.maas", "./stop-perf.sh"])
+    def stopMeasuring(self, node_name):
+        return subprocess.Popen(["ssh", node_name, "./stop-perf.sh"])
 
     def getMetrics(self, file_name):
-        copy = subprocess.Popen("scp eiger-2.maas:perf/%s.stat /home/ubuntu/perf_off" % file_name, shell=True)
+        copy = subprocess.Popen("scp eiger-2.maas:perf/%s.stat %s/perf" % (file_name, home), shell=True)
         copy.wait()
         ssh = SSHClient()
         ssh.load_system_host_keys()
@@ -41,7 +43,7 @@ class Profiler():
 #    scp.put('test.txt', 'test2.txt')
             try:
                 remote = '/home/ubuntu/perf/%s.stat' % file_name
-                scp.get(remote, '/home/ubuntu/perf_off')
+                scp.get(remote, '/home/ubuntu/perf')
             except Exception:
                 print("Error!")
             finally:
@@ -50,13 +52,13 @@ class Profiler():
         #stdout = copy.communicate()[0]
         #print('STDOUT: %s' % stdout)
         events = {}
-        with open('/home/ubuntu/perf_off/%s.stat' % file_name) as fp:
+        with open('%s/perf/%s.stat' % (home, file_name)) as fp:
             line = fp.readline()
             line = fp.readline()
             line = fp.readline()
             while line:
                 sline = line.strip().split(";")
-                event = sline[3]
+                event = sline[2]
                 count = sline[1]
                 if "not" in count:
                     count = 0
