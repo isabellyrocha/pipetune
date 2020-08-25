@@ -1,3 +1,6 @@
+
+![alt text](https://github.com/isabellyrocha/pipetune/blob/master/documentation/pipetune.png?raw=true)
+
 # PipeTune
 
 > A pipelined paralelism approch for hyper and system parameter tuning.
