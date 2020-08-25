@@ -9,6 +9,7 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 - [Deploy Spark Cluster](#spark.deployment)
 - [BigDL Setup](#bigdl.setup)
 - [Power Measurements Setup](#power.measurements)
+- [Clustering](#clustering)
 
 ---
 
@@ -164,3 +165,5 @@ $ nohup python3 $HOME/pipetune/monitoring/pcm_power.py $HOME/pcm_data/<nodename>
 ```
 ---
 ### Clustering
+
+In the current version, clustring is implemented using Kmeans algorithm on low level events collected using hardware performance counters. A preselected list of 58 performance counters are collected every second during a given epoch and the system configurations to be applied in that given trial is deficed by this profile. A model is pretrainined in available at ``, but the model is updated as new workloads comes to the system. Bellow we can see a subset of the profiling results for a given workloads during 5 epochs.
