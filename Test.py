@@ -1,4 +1,5 @@
 from bigdl.BigDL import BigDL
+
 #from tune import mnist_tune_v1 as tune_v1
 #from tune import mnist_tune_v2 as tune_v2
 #from tune import mnist_pipetune as pipetune
