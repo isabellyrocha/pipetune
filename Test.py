@@ -10,7 +10,6 @@ from utils import utils, energy
 if __name__ == '__main__':
 #        try:
 #            start = utils.timestamp()
-#            print("Starting at %d" % start)
 #            tune_v1.runParameter()
 #            finish = utils.timestamp()
 #            print("Finishing at %d" % finish)
