@@ -78,21 +78,22 @@ class BigDL(object):
             '--py-files', config['py_files'],
             '--properties-file', config['properties_file'],
             '--jars', config['jars'],
-            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar',
-            '--conf', 'spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar', config['conf'],
+            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar',
+            '--conf', 'spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar', config['conf'],
             '--appName', config['app_name'],
             '--batchSize', config['batch_size'],
             '--learningRate', config['learning_rate'],
             '--learningrateDecay', config['learning_rate_decay'],
             '--endTriggerNum', config['end_trigger_num']], output)
 
-    def get_epoch_info(self,output_file):
+    def get_epoch_info(self, output_file):
         start  = 0
         finish = 0
         accuracy = 0
         with open(output_file, "r") as output:
             line = output.readline()
             while line:
+                print(line)
                 if "Epoch 1" in line and start == 0:
                     start  = utils.str_to_tstp(line.split(" INFO ")[0])
                 if "accuracy" in line:
@@ -106,6 +107,7 @@ class BigDL(object):
         info['accuracy'] = float(accuracy)
         info['energy'] = cluster_energy
         info['duration'] = duration
+        print(info)
         if accuracy and cluster_energy:
             info['ratio'] = float(accuracy)/float(duration)
         else:
@@ -143,14 +145,15 @@ class BigDL(object):
         info['ratio'] = float(accuracy)/float(cluster_energy)
         return info
 
-    def run_mnist(self, 
+    def run_mnist(self,
                   config_file ="%s/pipetune/bigdl/config/mnist.json" % Path.home(),
                   total_executor_cores ="1",
                   memory ="2",
                   batch_size ="1024",
                   learning_rate ="0.01",
                   learning_rate_decay ="0.002",
-                  epochs ="1"):
+                  epochs ="1",
+                  profile =False):
         output_file ="%s/bigdl_logs/mnist_%s.log" % (Path.home(), str(time.time()))
         config = utils.read_json(config_file)
         config['total_executor_cores'] = total_executor_cores
@@ -161,41 +164,19 @@ class BigDL(object):
         config['learning_rate_decay'] = learning_rate_decay
         config['end_trigger_num'] = epochs
         output = open(output_file, "w+")
+        print("SUBMIT JOB..")
         app = self.submit(config, output)
+        time.sleep(3)
+        print("JOB SUBMITTED")
+        if profile:
+            self._profiler.startMeasuring("mnist_%s_%s_%s" % (batch_size, learning_rate, learning_rate_decay), "eiger-2.maas")
+            print("PROFILE STARTED")
         app.wait()
         output.close()
+        if profile:
+            self._profiler.stopMeasuring("eiger-2.maas")
         info = self.get_epoch_info(output_file)
-        if 'cores 'not in info:
-            info['cores'] = {}
-        info['cores'][total_executor_cores] = info['duration']
-        print(info)
-        return info
-
-    def run_mnist_off(self,
-                  config_file ="%s/pipetune/bigdl/config/mnist.json" % Path.home(),
-                  total_executor_cores ="1",
-                  memory ="2",
-                  batch_size ="1024",
-                  learning_rate ="0.01",
-                  learning_rate_decay ="0.002",
-                  epochs ="1"):
-        output_file ="%s/bigdl_logs/mnist_%s.log" % (Path.home(), str(time.time()))
-        config = utils.read_json(config_file)
-        config['total_executor_cores'] = total_executor_cores
-        config['executor_cores'] = str(int(int(total_executor_cores)/4))
-        config['memory'] = "%sG" % memory
-        config['batch_size'] = batch_size
-        config['learning_rate'] = learning_rate
-        config['learning_rate_decay'] = learning_rate_decay
-        config['end_trigger_num'] = epochs
-        output = open(output_file, "w+")
-        app = self.submit(config, output)
-        time.sleep(30)
-        self._profiler.startMeasuring("mnist_%s_%s_%s" % (batch_size, learning_rate, learning_rate_decay), "eiger-2.maas")
-        app.wait()
-        output.close()
-        self._profiler.stopMeasuring("eiger-2.maas")
-        info = self.get_epoch_info(output_file)
+        print("DONE WITH GET INFO")
         print(info)
         return info
 

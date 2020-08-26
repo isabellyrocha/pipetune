@@ -1,9 +1,9 @@
 from bigdl.BigDL import BigDL
-#from tune import off_mnist_tune_v1 as tune_v1
-#from tune import off_mnist_tune_v2 as tune_v2
-#from tune import off_mnist_pipetune as pipetune
-#from tune import off_cnn_news20_tune_v1 as tune_v1
-from tune import off_cnn_news20_tune_v2 as tune_v2
+#from tune import mnist_tune_v1 as tune_v1
+#from tune import mnist_tune_v2 as tune_v2
+#from tune import mnist_pipetune as pipetune
+#from tune import cnn_news20_tune_v1 as tune_v1
+#from tune import cnn_news20_tune_v2 as tune_v2
 from tune import lenet5_pipetune as pipetune
 from utils import utils, energy
 

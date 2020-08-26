@@ -58,7 +58,7 @@ class Profiler():
             line = fp.readline()
             while line:
                 sline = line.strip().split(";")
-                event = sline[2]
+                event = sline[3]
                 count = sline[1]
                 if "not" in count:
                     count = 0

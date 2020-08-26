@@ -97,8 +97,11 @@ def run_script_v2(args, out =subprocess.PIPE, err =subprocess.PIPE):
     monitor(out)
     return app
 
-def run_script(args, out =subprocess.PIPE, err =subprocess.PIPE):
-    return subprocess.Popen(args, stdout=out, stderr=err)
+def run_script(args, out):
+#    print("HERE IS SCRIPT")
+#    print(out)
+    print(args)
+    return subprocess.Popen(args, stdout=out, stderr=subprocess.PIPE)
 
 def start_perf():
     subprocess.Popen(["bash", "/home/ubuntu/rstat/rstat_start.sh", "eiger-2.maas", "eiger-3.maas", "eiger-4.maas", "eiger-5.maas"], shell=False ,stdout=subprocess.PIPE, stderr=subprocess.PIPE)
