@@ -8,8 +8,6 @@ from tune import lenet5_pipetune as pipetune
 from utils import utils, energy
 
 if __name__ == '__main__':
-#    for i in [0, 1, 2]:
-#        print(i)
 #        try:
 #            start = utils.timestamp()
 #            print("Starting at %d" % start)
