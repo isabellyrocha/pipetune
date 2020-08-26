@@ -2,16 +2,18 @@ from pandas import DataFrame
 from influxdb import InfluxDBClient
 from sklearn.externals import joblib
 from sklearn.cluster import KMeans
+from pathlib import Path
+
+HOME = str(Path.home())
 
 class GroundTruth():
     def __init__(self):
-        #self.influx_client = InfluxDBClient(args.influx_host, args.influx_port, args.influx_user, args.influx_pass, args.influx_database)        
         self.influx_client = InfluxDBClient('localhost', 8086, 'root', 'root', 'ground_truth')
 
     def model_init(self):
         events = {}
         config = []
-        with open('/home/ubuntu/pipetune/utils/data/model.csv') as fp:
+        with open('%s/pipetune/clustering/model.csv' % HOME) as fp:
             line = fp.readline().strip()
             while line:
                 (model, dataset, cores, 
@@ -36,9 +38,7 @@ class GroundTruth():
 
         self.save_clusters(result)
        
-        joblib.dump(model, '/home/ubuntu/pipetune/utils/data/model.pkl')
-
-    #def update_config()
+        joblib.dump(model, '%s/pipetune/clustering/model.pkl' % HOME)
 
     def save_clusters(self, result):
         clusters = {}
@@ -60,12 +60,7 @@ class GroundTruth():
                         'memory': memory,
                         'duration': duration.strip()
                     }
-#        print(clusters)
-#        self.influx_client.query("drop measurement clusters")
         for tags_cluster in clusters:
-            ##c_config = best_config[i].split(",")
-            #tags = {'cluster': i, 'cores': c_config[2], 'memory': c_config[3]}
-            #duration = c_config[5]
             self.write_config(tags_cluster, clusters[tags_cluster])
 
     def write_config(self, tags, fields):
@@ -83,32 +78,19 @@ class GroundTruth():
         self.influx_client.write_points(json_body)
 
     def getConfig(self, metrics, batch):
-        model = joblib.load('/home/ubuntu/pipetune/utils/data/model.pkl')
-        score = model.score(metrics)
-        print(score)
-        print(model.inertia_)
-        if score < -model.inertia_/2:
+        model = joblib.load('%s/pipetune/clustering/model.pkl' % HOME)
+#        score = model.score(metrics)
+        score = 0
+        if True:#score < -model.inertia_/2:
             return None
         prediction = model.predict(metrics)
         return self.get_config(prediction[0], batch)
 
     def get_config(self, cluster, batch):
-        print("CLUSTER: %s" % cluster)
         result = self.influx_client.query('SELECT * '
                 'FROM "clusters" '
                 'WHERE clusterID =~ /%s/ and batch =~ /%s/' % (cluster, batch))
         cluster = list(result.get_points(measurement='clusters'))[0]
         cores = cluster['cores']
         memory = cluster['memory']
-        print(cores)
         return (cores, memory)
-        #return list(result.get_points(measurement='ground_truth/config'))
-''' 
-    def get_config(self, measurements):
-        model = joblib.load('data/model.pkl')   
-        score = model.score(measurements)
-        if score <= model.inertia_:
-            prediction = model.predict(measurements)
-            return self.get_config(prediction)
-        return None
-'''

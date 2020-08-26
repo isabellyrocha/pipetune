@@ -41,7 +41,6 @@ def monitor(file_name):
     epochs = {1:1, 2:2, 3:4}
     cores = 1
     duration = sys.maxsize
- #   file_path = open(file_name, 'r')
     line = next_line(file_name)
     while line:
         if isEpoch(line, 4):
@@ -93,14 +92,10 @@ def monitor_v1(file_name):
 
 def run_script_v2(args, out =subprocess.PIPE, err =subprocess.PIPE):
     app = subprocess.Popen(args, stdout=out, stderr=err)
-#    time.sleep(5)
     monitor(out)
     return app
 
 def run_script(args, out):
-#    print("HERE IS SCRIPT")
-#    print(out)
-    print(args)
     return subprocess.Popen(args, stdout=out, stderr=subprocess.PIPE)
 
 def start_perf():

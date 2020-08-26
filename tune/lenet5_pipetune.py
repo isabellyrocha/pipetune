@@ -32,28 +32,23 @@ class MNIST(Trainable):
         n_epochs = 5
 
         #### probing phase ###
-        print("START FIRST EPOCH")
-        result = self.bigdl.run_mnist(config_file = config,
-                                          total_executor_cores = cores,
-                                          memory = memory,
-                                          batch_size = batch,
-                                          learning_rate = lr,
-                                          learning_rate_decay = lrd,
-                                          epochs = "1",
-                                          profile = True)
-        print("ENDED FIRST EPOCH")
-        metrics = self.profiler.getMetrics("mnist_%s_%s_%s" % (batch, lr, lrd))
-        print(metrics)
-        #(cores, memory) = self.ground_truth.getConfig(metrics, batch)
-        ######################
-        
-        result = self.bigdl.run_mnist(config_file = config,
-                                      total_executor_cores = cores,
-                                      memory = memory,
-                                      batch_size = batch,
-                                      learning_rate = lr,
-                                      learning_rate_decay = lrd,
-                                      epochs = str(n_epochs-1))
+        print("STARTING FIRST EPOCH..")
+        result = self.bigdl.run_lenet5(config, cores, memory, batch, lr, lrd, "1", True)
+        print("STARTING FIRST EPOCH..")
+        gt_result = self.ground_truth.getConfig(metrics, batch)
+        if gt_result:
+            (cores, memory) = gt_result    
+            remaining_result = self.bigdl.run_lenet5(config, cores, memory, batch, lr, lrd, str(n_epochs-1))
+            result['duration'] = result['duration'] + remaining_result['duration']
+        else:
+            for trial_cores in ["4", "8"]:
+                trial_result  = self.bigdl.run_lenet5(config, trial_cores, memory, batch, lr, lrd, "1", True)
+                result['duration'] = result['duration'] + trial_result['duration']
+            for trial_memory in ["4"]:
+                trial_result = self.bigdl.run_lenet5(config, cores, trial_memory, batch, lr, lrd, "1", True)
+                result['duration'] = result['duration'] + trial_result['duration']
+            remaining_result = self.bigdl.run_lenet5(config, cores, memory, batch, lr, lrd, str(n_epochs-4))
+            result['duration'] = result['duration'] + remaining_result['duration']        
         return result        
 
     def _save(self, checkpoint_dir):
