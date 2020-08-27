@@ -1,4 +1,5 @@
 from utils import utils, energy
+
 from pathlib import Path
 import random
 import time
