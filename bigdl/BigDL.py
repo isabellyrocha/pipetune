@@ -38,7 +38,26 @@ class BigDL(object):
         config['end_trigger_num'] = str(number_of_epochs-3)
         app = self.submit(config, output)
         app.wait()
- 
+
+
+    def submit(self, config, output):
+        command = ['spark-submit',
+            '--master', config['master'],
+            '--driver-memory', config['driver_memory'],
+            '--total-executor-cores', config['total_executor_cores'],
+            '--executor-cores', config['executor_cores'],
+            '--executor-memory', config['executor_memory'],
+            '--py-files', config['py_files'],
+            '--properties-file', config['properties_file'],
+            '--jars', config['jars'],
+            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar',
+            '--conf', 'spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar', config['conf']]
+        for p in config['extras']:
+            command.append("--%s" % p)
+            command.append(config['extras'][p])
+        print(command)
+        return utils.run_script(command, output)
+
     def submit_textclassifier(self, config, output):
         return utils.run_script([
             'spark-submit',
@@ -50,8 +69,8 @@ class BigDL(object):
             '--py-files', config['py_files'],
             '--properties-file', config['properties_file'],
             '--jars', config['jars'],
-            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/bigdl/lib/bigdl-SPARK_2.4-0.8.0-jar-with-dependencies.jar',
-            '--conf', 'spark.executer.extraClassPath=bigdl-SPARK_2.4-0.8.0.jar', config['conf'],
+            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar',
+            '--conf', 'spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar', config['conf'],
             '--model', config['model'],
             '--batchSize', config['batchSize'],
             '--learning_rate', config['learning_rate'],
@@ -211,5 +230,24 @@ class BigDL(object):
         app.wait()
         output.close()
         info = self.get_epoch_info(output_file)
+        print(info)
+        return info
+
+
+    def run(self, config, profile =False):
+        job_name = "job_%s" % str(time.time())
+        output_file ="%s/bigdl_logs/%s.log" % (Path.home(), job_name)
+        output = open(output_file, "w+")
+        app = self.submit(config, output)
+        #start = utils.timestamp()
+        #time.sleep(5)
+        if profile:
+            self._profiler.startMeasuring(job_name, "eiger-2.maas")
+        app.wait()
+        #end = utils.timestamp()
+        output.close()
+        if profile:
+            self._profiler.stopMeasuring("eiger-2.maas")
+        info = self.get_info(output_file)
         print(info)
         return info
