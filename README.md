@@ -130,6 +130,7 @@ $ ./make-dist.sh -P spark_2.x
 Once the BigDL application is tested a config file describing it has to be created.
 This file will be used by the BigDL Python module which is part of PipeTune.
 Below is an exemple of how this file should look like and a list describing each item.
+Similar examples can be found in `bigdl/confif`.
 
 - `master` especifies Spark's master address
 - `driver_memory` espeficies the default memory to be used by the driver
