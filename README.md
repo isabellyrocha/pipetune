@@ -228,4 +228,32 @@ $ mkdir $HOME/perf
 <a name="pipetune"></a>
 ## PipeTune
 
+If all the previous steps were perfomed correctly, we can now finally run PipeTune.
 
+```Shell
+$ python3 pipetune.py `pipetune.conf`
+```
+
+The `pipetune.conf` consists of the following 3 main sections:
+- `bigdlConf` pointing to the BigDL config file created earlier 
+- `systemParameters` describing the system parameters to be tuned and the values which each parameter can assume
+- `hyperParameters` describing the hyper parameters to be tuned and the values which each parameter can assume
+
+
+Below is an example of how this configuration file looks like.
+```yaml
+{
+    "bigdlConf": "/home/ubuntu/pipetune/bigdl/config/test.json",
+    "systemParameters":
+    {
+        "cores": ["16", "8", "4"],
+        "memory": ["8", "4"]
+    },
+    "hyperParameters":
+    {
+        "batch_size": [1024, 512, 32, 64],
+        "learning_rate": [0.001, 0.01, 0.1],
+        "learning_rate_decay": [0.002, 0.02, 0.2]
+    }
+}
+```
