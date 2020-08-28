@@ -129,9 +129,17 @@ $ ./make-dist.sh -P spark_2.x
 
 Once the BigDL application is tested a config file describing it has to be created.
 This file will be used by the BigDL Python module which is part of PipeTune.
-Below is an exemple of how this file should look like. 
+Below is an exemple of how this file should look like and a list describing each item.
 
 - `master` especifies Spark's master address
+- `driver_memory` espeficies the default memory to be used by the driver
+- `total_executor_cores` espeficies the default total executeor cores (has to be a multiple of `executor_cores`)
+- `executor_cores` espeficies the number of cores which should be assigned to each executor 
+- `executor_memory` esfeficies the default memory to be used by each executor
+- `py_files` lists the needed python files for the application
+- `properties_file` points to a config file containging Spark and BigDL configurations
+- `jars` points to the jar file with all the needed BigDL dependencies
+- `conf` points to the python file containing the model implementation
 - `extra` described all the prameters which as especific for the application itself.
 
 ```yaml
@@ -154,6 +162,8 @@ Below is an exemple of how this file should look like.
         "endTriggerNum": "1"
     }
 }
+```
+
 ---
 <a name="power.measurements"></a>
 ## Power Measurements Setup
