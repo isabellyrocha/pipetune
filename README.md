@@ -125,6 +125,46 @@ $ ./make-dist.sh -P spark_2.x
 
 ![alt text](https://github.com/isabellyrocha/pipetune/blob/master/docs/bigdl_test.gif?raw=true)
 
+### BigDL Config file
+
+Once the BigDL application is tested a config file describing it has to be created.
+This file will be used by the BigDL Python module which is part of PipeTune.
+Below is an exemple of how this file should look like and a list describing each item.
+Similar examples can be found in `bigdl/confif`.
+
+- `master` especifies Spark's master address
+- `driver_memory` espeficies the default memory to be used by the driver
+- `total_executor_cores` espeficies the default total executeor cores (has to be a multiple of `executor_cores`)
+- `executor_cores` espeficies the number of cores which should be assigned to each executor 
+- `executor_memory` esfeficies the default memory to be used by each executor
+- `py_files` lists the needed python files for the application
+- `properties_file` points to a config file containging Spark and BigDL configurations
+- `jars` points to the jar file with all the needed BigDL dependencies
+- `conf` points to the python file containing the model implementation
+- `extra` described all the prameters which as especific for the application itself.
+
+```yaml
+{
+    "master": "spark://eiger-1.maas:7077",
+    "driver_memory": "2G",
+    "total_executor_cores": "1",
+    "executor_cores": "1",
+    "executor_memory": "2G",
+    "py_files": "/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-python-api.zip,/home/ubuntu/pipetune/apps/lenet5/lenet5_pure.py",
+    "properties_file": "/home/ubuntu/BigDL/dist/conf/spark-bigdl.conf",
+    "jars": "/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar",
+    "conf": "/home/ubuntu/pipetune/apps/lenet5/lenet5_pure.py",
+    "extras": {
+        "action": "train",
+        "dataPath": "/home/ubuntu/dataset/mnist",
+        "batchSize": "32",
+        "learningRate": "0.01",
+        "learningrateDecay": "0.0002",
+        "endTriggerNum": "1"
+    }
+}
+```
+
 ---
 <a name="power.measurements"></a>
 ## Power Measurements Setup
