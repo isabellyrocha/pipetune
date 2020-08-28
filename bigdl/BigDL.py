@@ -1,11 +1,11 @@
 from utils import utils, energy
-
 from pathlib import Path
 import random
 import time
 import sys
 from utils.Profiler import Profiler
 from utils.GroundTruth import GroundTruth
+
 
 class BigDL(object):
 
