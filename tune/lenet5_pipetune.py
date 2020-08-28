@@ -27,7 +27,7 @@ class TRAIN(Trainable):
         config['executor_memory'] = "%sG" % memory
 
     def _getBestConfig(self, probing):
-        result = ("16", "8")
+#        result = ("16", "8")
         min_duration = 0
         for key in probing.keys():
             duration = probing[key]
@@ -37,52 +37,57 @@ class TRAIN(Trainable):
         return result
 
     def _train(self):
-        config_file = "%s/pipetune/bigdl/config/test.json" % Path.home()
+        config_file = self.config['bigdlConf']#"%s/pipetune/bigdl/config/test.json" % Path.home()
+        self.config.pop('bigdlConf')
         config = utils.read_json(config_file)
+        
+        cores = self.config['cores']
+        memory = self.config['memory']
 
-        config['batch_size'] = str(self.config['batch'])
-        config['learning_rate'] = str(self.config['lr'])
-        config['learning_rate_decay'] = str(self.config['lrd'])
+        self.config.pop('cores')
+        self.config.pop('memory')
 
-        cores = "16"
-        memory = "8"
+        for parameter in self.config.keys():
+            config[parameter] = self.config[parameter]
+
+#        config['batch_size'] = str(self.config['batch_size'])
+#        config['learning_rate'] = str(self.config['learning_rate'])
+#        config['learning_rate_decay'] = str(self.config['learning_rate_decay'])
+
+#        cores = "16"
+#        memory = "8"
         n_epochs = 5
 
-        self._setSysParameters(config, cores, memory)
+        (default_cores, default_memory) = (cores[0], memory[0])
+
+        self._setSysParameters(config, default_cores, default_memory)
 
         #### probing phase ###
-        print("STARTING FIRST EPOCH..")
-#        result = self.bigdl.run_lenet5(config, cores, memory, batch, lr, lrd, "1", True)
         result = self.bigdl.run(config, True)
-        print("STARTING FIRST EPOCH..")
-        gt_result = ("16", "4")#self.ground_truth.getConfig(metrics, config['batch_size'])
+        gt_result = self.ground_truth.getConfig(metrics, config['batch_size'])
         if gt_result:
             (cores, memory) = gt_result    
             self._setSysParameters(config, cores, memory)
-#            remaining_result = self.bigdl.run_lenet5(config, cores, memory, batch, lr, lrd, str(n_epochs-1))
             config['endTriggerNum'] = str(n_epochs-1)
             remaining_result = self.bigdl.run(config)
             result['duration'] = result['duration'] + remaining_result['duration']
         else:
             probing = {}
-            probing[(cores, memory)] = result['duration']
-            for trial_cores in ["4", "8"]:
-                self._setSysParameters(config, trial_cores, memory)
+            probing[(default_cores, default_memory)] = result['duration']
+            for trial_cores in cores[1:]:
+                self._setSysParameters(config, trial_cores, default_memory)
                 trial_result = self.bigdl.run(config, True)
-#                trial_result  = self.bigdl.run_lenet5(config, trial_cores, memory, batch, lr, lrd, "1", True)
-                probing[(trial_cores, memory)] = trial_result['duration']
+                probing[(trial_cores, default_memory)] = trial_result['duration']
                 result['duration'] = result['duration'] + trial_result['duration']
-            for trial_memory in ["4"]:
-                self._setSysParameters(config, cores, trial_memory)
+            for trial_memory in memory[1:]:
+                self._setSysParameters(config, default_cores, trial_memory)
                 trial_result = self.bigdl.run(config, True)
-                probing[(cores, trial_memory)] = trial_result['duration']
-#                trial_result = self.bigdl.run_lenet5(config, cores, trial_memory, batch, lr, lrd, "1", True)
+                probing[(default_cores, trial_memory)] = trial_result['duration']
                 result['duration'] = result['duration'] + trial_result['duration']
             config['endTriggerNum'] = str(n_epochs-4)
             (cores, memory) = self._getBestConfig(probing)
             self._setSysParameters(config, cores, memory)
             remaining_result = self.bigdl.run(config)
-#            remaining_result = self.bigdl.run_lenet5(config, cores, memory, batch, lr, lrd, str(n_epochs-4))
             result['duration'] = result['duration'] + remaining_result['duration']        
         return result        
 
@@ -105,6 +110,8 @@ def stop(trial_id, res):
 def runParameter():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--conf", type=str, help="Path to config file.", default="%s/pipetune/config/mnist.json" % Path.home())
+    parser.add_argument(
         "--smoke-test", action="store_true", help="Finish quickly for testing")
     args, _ = parser.parse_known_args()
     ray.init()
@@ -114,6 +121,17 @@ def runParameter():
         metric="accuracy",
         mode="max",
         max_t=20)
+
+    pipetune_config = utils.read_json("%s/pipetune/config/mnist.json" % Path.home())
+    
+    tune_config = {}
+    tune_config["bigdlConf"] = pipetune_config["bigdlConf"]
+    tune_config["cores"] = pipetune_config["systemParameters"]["cores"]
+    tune_config["memory"] = pipetune_config["systemParameters"]["memory"]
+    hyperParameters = pipetune_config["hyperParameters"]
+    for hp in hyperParameters.keys():
+        tune_config[hp] = tune.sample_from(lambda spec: random.sample(hyperParameters[hp],1)[0])
+    print(tune_config)
 
     analysis = tune.run(
         TRAIN,
@@ -130,18 +148,20 @@ def runParameter():
             "cpu": 8,
             "gpu": 0
         },
-        config={
+        config = tune_config)
+#        config={
+#            "bigdlConf":  pipetune_config["bigdlConf"],
 #            "epochs": tune.sample_from(
 #                lambda spec: np.random.randint(1, 100)),
-            "batch": tune.sample_from([1024, 512, 32, 64]),
-            "lr": tune.sample_from(
-                lambda spec: np.random.uniform(0.001, 0.1)),
-            "lrd": tune.sample_from(
-                lambda spec: np.random.uniform(0.2, 0.0002))
+#            "batch": tune.sample_from([1024, 512, 32, 64]),
+#            "lr": tune.sample_from(
+#                lambda spec: np.random.uniform(0.001, 0.1)),
+#            "lrd": tune.sample_from(
+#                lambda spec: np.random.uniform(0.2, 0.0002))
             #"cores": tune.sample_from([1, 16]),
             #"executor_cores": tune.sample_from([1, 2, 4]),#tune.grid_search([1,2,4])
             #"memory": tune.sample_from([2, 4])
-        })
+#        })
     trials = analysis.trials
     for trial in trials:
         print (trial.metric_analysis['accuracy'])
