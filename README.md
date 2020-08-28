@@ -10,6 +10,7 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 - [BigDL Setup](#bigdl.setup)
 - [Power Measurements Setup](#power.measurements)
 - [Clustering](#clustering)
+- [PipeTune](#pipetune)
 
 ---
 
@@ -141,7 +142,7 @@ Similar examples can be found in `bigdl/confif`.
 - `properties_file` points to a config file containging Spark and BigDL configurations
 - `jars` points to the jar file with all the needed BigDL dependencies
 - `conf` points to the python file containing the model implementation
-- `extra` described all the prameters which as especific for the application itself.
+- `extra` describes all the prameters which as especific for the application itself.
 
 ```yaml
 {
@@ -221,3 +222,10 @@ $ sudo apt install linux-tools-common linux-tools-4.4.0-184-generic linux-cloud-
 ```Shell
 $ mkdir $HOME/perf
 ```
+
+---
+
+<a name="pipetune"></a>
+## PipeTune
+
+
