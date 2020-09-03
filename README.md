@@ -230,7 +230,7 @@ $ mkdir $HOME/perf
 
 If all the previous steps were perfomed correctly, we can now finally run PipeTune.
 
-You can test PipeTune itself by running the following script which uses a already condifgured file for the tuning of LENET on MNIST dataset.
+You can test PipeTune itself by running the following script which uses an already condifgured file for tuning a LENET model with the MNIST dataset.
 ```
 ./run-pipetune.sh
 ```
