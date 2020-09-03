@@ -207,7 +207,7 @@ $ nohup python3 $HOME/pipetune/monitoring/pcm_power.py $HOME/pcm_data/<nodename>
 ---
 ### Clustering
 
-In the current version, clustring is implemented using Kmeans algorithm on low level events collected using hardware performance counters. A preselected list of 58 performance counters are collected every second during a given epoch and the system configurations to be applied in that given trial is deficed by this profile. A model is pretrainined in available at ``, but the model is updated as new workloads comes to the system. Bellow we can see a subset of the profiling results for a given workloads during 5 epochs.
+In the current version, clustring is implemented using Kmeans algorithm on low level events collected using hardware performance counters. A preselected list of 58 performance counters are collected every second during a given epoch and the system configurations to be applied in that given trial is defined by this profile. A pretrainined model is available at `clustering/model.pkl`, but the model is updated as new workloads comes to the system. Bellow we can see a subset of the profiling results for a given workloads during 5 epochs.
 
 ![alt text](https://github.com/isabellyrocha/pipetune/blob/master/docs/profiling.png?raw=true)
 
@@ -230,8 +230,14 @@ $ mkdir $HOME/perf
 
 If all the previous steps were perfomed correctly, we can now finally run PipeTune.
 
+You can test PipeTune itself by running the following script which uses a already condifgured file for the tuning of LENET on MNIST dataset.
+```
+./run-pipetune.sh
+```
+
+Now, if you want to define your own workload and set of hyperparameter then you have to create a `pipetune.conf` as described bellow and run it in as follows:
 ```Shell
-$ python3 pipetune.py `pipetune.conf`
+$ python3 pipetune.py --config pipetune.conf
 ```
 
 The `pipetune.conf` consists of the following 3 main sections:
