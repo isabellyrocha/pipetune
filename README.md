@@ -235,15 +235,15 @@ You can test PipeTune itself by running the following script which uses an alrea
 ./run-pipetune.sh
 ```
 
-Now, if you want to define your own workload and set of hyperparameter then you have to create a `pipetune.conf` as described bellow and run it in as follows:
+Now, if you want to define your own workload and set of hyperparameters then you have to create a `pipetune.conf` file as described bellow and run it as follows:
 ```Shell
 $ python3 pipetune.py --config pipetune.conf
 ```
 
 The `pipetune.conf` consists of the following 3 main sections:
 - `bigdlConf` pointing to the BigDL config file created earlier 
-- `systemParameters` describing the system parameters to be tuned and the values which each parameter can assume
-- `hyperParameters` describing the hyper parameters to be tuned and the values which each parameter can assume
+- `systemParameters` describing the system parameters to be tuned and the list of values which each parameter can assume
+- `hyperParameters` describing the hyper parameters to be tuned and the list of values which each parameter can assume
 
 
 Below is an example of how this configuration file looks like.
