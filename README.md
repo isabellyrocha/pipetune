@@ -157,7 +157,7 @@ Similar examples can be found in `bigdl/confif`.
     "conf": "apps/lenet5/lenet5_pure.py",
     "extras": {
         "action": "train",
-        "dataPath": "/home/ubuntu/dataset/mnist",
+        "dataPath": "$HOME/dataset/mnist",
         "batchSize": "32",
         "learningRate": "0.01",
         "learningrateDecay": "0.0002",
