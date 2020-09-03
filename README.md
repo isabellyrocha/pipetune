@@ -151,10 +151,10 @@ Similar examples can be found in `bigdl/confif`.
     "total_executor_cores": "1",
     "executor_cores": "1",
     "executor_memory": "2G",
-    "py_files": "/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-python-api.zip,/home/ubuntu/pipetune/apps/lenet5/lenet5_pure.py",
-    "properties_file": "/home/ubuntu/BigDL/dist/conf/spark-bigdl.conf",
-    "jars": "/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar",
-    "conf": "/home/ubuntu/pipetune/apps/lenet5/lenet5_pure.py",
+    "py_files": "$HOME/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-python-api.zip,apps/lenet5/lenet5_pure.py",
+    "properties_file": "$HOME/BigDL/dist/conf/spark-bigdl.conf",
+    "jars": "$HOME/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar",
+    "conf": "apps/lenet5/lenet5_pure.py",
     "extras": {
         "action": "train",
         "dataPath": "/home/ubuntu/dataset/mnist",
@@ -243,7 +243,7 @@ The `pipetune.conf` consists of the following 3 main sections:
 Below is an example of how this configuration file looks like.
 ```yaml
 {
-    "bigdlConf": "/home/ubuntu/pipetune/bigdl/config/test.json",
+    "bigdlConf": "bigdl/config/mnist.json",
     "systemParameters":
     {
         "cores": ["16", "8", "4"],
