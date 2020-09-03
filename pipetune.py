@@ -37,7 +37,7 @@ class TRAIN(Trainable):
         return result
 
     def _train(self):
-        config_file = self.config['bigdlConf']#"%s/pipetune/bigdl/config/test.json" % Path.home()
+        config_file = self.config['bigdlConf']
         self.config.pop('bigdlConf')
         config = utils.read_json(config_file)
         
@@ -50,19 +50,12 @@ class TRAIN(Trainable):
         for parameter in self.config.keys():
             config[parameter] = self.config[parameter]
 
-#        config['batch_size'] = str(self.config['batch_size'])
-#        config['learning_rate'] = str(self.config['learning_rate'])
-#        config['learning_rate_decay'] = str(self.config['learning_rate_decay'])
-
-#        cores = "16"
-#        memory = "8"
         n_epochs = 5
 
         (default_cores, default_memory) = (cores[0], memory[0])
 
         self._setSysParameters(config, default_cores, default_memory)
 
-        #### probing phase ###
         result = self.bigdl.run(config, True)
         gt_result = self.ground_truth.getConfig(metrics, config['batch_size'])
         if gt_result:
@@ -108,12 +101,6 @@ def stop(trial_id, res):
         return False
 
 def runParameters(args):
-#    parser = argparse.ArgumentParser()
-##    parser.add_argument(
- #       "--conf", type=str, help="Path to config file.", default="%s/pipetune/config/mnist.json" % Path.home())
- #   parser.add_argument(
- #       "--smoke-test", action="store_true", help="Finish quickly for testing")
-#    args, _ = parser.parse_known_args()
     ray.init()
 
     sched = AsyncHyperBandScheduler(
@@ -169,7 +156,6 @@ def runParameters(args):
     print(best_trial)
     print(best_trial.metric_analysis['accuracy'])
     print(best_trial.config)
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

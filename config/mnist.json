@@ -1,5 +1,5 @@
 {
-    "bigdlConf": "/home/ubuntu/pipetune/bigdl/config/test.json",
+    "bigdlConf": "/home/ubuntu/pipetune/bigdl/config/mnist.json",
     "systemParameters":
     {
         "cores": ["16", "8", "4"],
