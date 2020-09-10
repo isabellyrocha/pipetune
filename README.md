@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/isabellyrocha/pipetune/blob/master/docs/pipetune.png"  width="300" height="100" /></p>
+<p align="center"><img src="https://github.com/isabellyrocha/pipetune/blob/master/docs/pipetune_old.png"  width="300" height="100" /></p>
 
 PipeTune implements a pipelined paralelism approach for hyper and system parameter tuning.
 
