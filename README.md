@@ -209,7 +209,7 @@ $ nohup python3 $HOME/pipetune/monitoring/pcm_power.py $HOME/pcm_data/<nodename>
 
 In the current version, clustring is implemented using Kmeans algorithm on low level events collected using hardware performance counters. A preselected list of 58 performance counters are collected every second during a given epoch and the system configurations to be applied in that given trial is defined by this profile. A pretrainined model is available at `clustering/model.pkl`, but the model is updated as new workloads comes to the system. Bellow we can see a subset of the profiling results for a given workloads during 5 epochs.
 
-![alt text](https://github.com/isabellyrocha/pipetune/blob/master/docs/profiling.png?raw=true)
+![alt text](https://github.com/isabellyrocha/pipetune/blob/master/docs/probing.pdf?raw=true)
 
 > Install perf in those nodes where profiling is needed
 
