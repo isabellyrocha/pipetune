@@ -85,7 +85,7 @@ class MyTuner(kerastuner.tuners.Hyperband):
         lr = trial.get_state()['hyperparameters']['values']['lr']
         training_time = time.time()-trial.metrics.get_last_value('start_time')#trial.get_state()['metrics']['metrics']['start_time']['observations'][0]['value'][-1]
         #error = 100-error_resp*training_time
-        with open('offline/TuneV1Vary_'+job+'_'+str(cores)+'.csv', 'a') as f:
+        with open('offline_res/TuneV2Vary_'+job+'_'+str(cores)+'.csv', 'a') as f:
             f.write(str(lr)+','+str(epochs)+','+str(batch)+','+str(error)+','+str(error_resp)+','+str(training_time)+','+str(energy)+'\n')
         #super(MyTuner, self).on_trial_end(trial)
         print(trial.get_state())
@@ -187,7 +187,7 @@ train, test = read_data(job)
 
 tuner = MyTuner(
     build_model,
-    objective='mean_absolute_percentage_error',#kerastuner.Objective("error_resp", direction="max"),
+    objective=kerastuner.Objective("error_resp", direction="max"),
     factor=4,
     hyperband_iterations=2,
     executions_per_trial=1,
