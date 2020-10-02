@@ -19,6 +19,7 @@ Experiments for the TYPE-III jobs that are executed on a single node.
 
 ### Requirements
 
-- Java 1.8.0
+- scikit hyperband
+- INTEL RAPL
 
 ### Download and Install
