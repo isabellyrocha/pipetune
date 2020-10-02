@@ -42,7 +42,7 @@ $ pip3 install keras keras-tuner scipy scikit.-learn tensorflow
 $ python3 offline_tuning_exp_v1.py
 ```
 
-> Run expeirments for V2 implementation.
+> Run experiments for V2 implementation.
 ```Shell
 $ python3 offline_tuning_exp_v2.py
 ```
@@ -56,7 +56,7 @@ $ python3 offline_tuning_exp_v2.py
 $ python3 online_tuning_exp_v1.py
 ```
 
-> Run expeirments for V2 implementation.
+> Run experiments for V2 implementation.
 ```Shell
 $ python3 online_tuning_exp_v2.py
 ```
