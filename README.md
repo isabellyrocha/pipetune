@@ -6,12 +6,12 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 
 ## Walkthrough Single Node Setup
 
-- [System Requirements](#requirements)
+- [System Requirements](#sys.requirements)
 - [Python Environment](#environment)
 - [Running Offline Tuning Experiments](#online)
 - [Running Online Tuning Experiments](#offline)
 
-<a name="requirements"></a>
+<a name="sys.requirements"></a>
 ## System Requirements
 
 - INTEL RAPL enabled CPU and Linux Kernel
