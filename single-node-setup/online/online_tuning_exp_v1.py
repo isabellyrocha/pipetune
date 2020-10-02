@@ -49,15 +49,15 @@ for ar in arr:
             os.system('rm -rf output')
             if idx == 0:
                 delay = 0
-                os.system('python3.6 easy_hyper.py '+queue[idx][0]+' '+str(delay)+' '+str(cr)+' '+str(ar))
+                os.system('python3.6 easy_hyper_v1.py '+queue[idx][0]+' '+str(delay)+' '+str(cr)+' '+str(ar))
             else:
                 time_to_show += queue[idx][1]
                 delay = elapsed - time_to_show
                 if delay >=0 :
-                    os.system('python3.6 easy_hyper.py '+queue[idx][0]+' '+str(delay)+' '+str(cr)+' '+str(ar)) 
+                    os.system('python3.6 easy_hyper_v1.py '+queue[idx][0]+' '+str(delay)+' '+str(cr)+' '+str(ar)) 
                 else:
                     delay = 0
-                    os.system('python3.6 easy_hyper.py '+queue[idx][0]+' '+str(delay)+' '+str(cr)+' '+str(ar)) 
+                    os.system('python3.6 easy_hyper_v1.py '+queue[idx][0]+' '+str(delay)+' '+str(cr)+' '+str(ar)) 
 
             idx += 1
             elapsed = time.time()-start_time    
