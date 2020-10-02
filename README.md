@@ -29,9 +29,31 @@ $ pip3 install keras keras-tuner scipy scikit-learn tensorflow
 ```
 <a name="online"></a>
 ## Running Offline Tuning Experiments
+> Navigate to the single-node-setup/offline
+
+> Run experiments for V1 implementation
+```Shell
+$ python3 offline_tuning_exp_v1.py
+```
+
+> Run expeirments for V2 implementation
+```Shell
+$ python3 offline_tuning_exp_v2.py
+```
 
 <a name="offline"></a>
 ## Running Online Tuning Experiments
+> Navigate to the single-node-setup/online
+
+> Run experiments for V1 implementation
+```Shell
+$ python3 online_tuning_exp_v1.py
+```
+
+> Run expeirments for V2 implementation
+```Shell
+$ python3 online_tuning_exp_v2.py
+```
 
 ---
 
