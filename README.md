@@ -18,7 +18,13 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 
 ## Python Environment
 
-- Install keras, kerastuners, scipy, sklearn, rapl, and tensorflow
+- Python 3
+- Install keras, kerastuners, scipy, sklearn, and tensorflow
+- Install rapl from https://github.com/wkatsak/py-rapl
+
+```Shell
+$ pip3 install keras keras-tuner scipy scikit-learn tensorflow
+```
 
 ## Running Offline Tuning Experiments
 
