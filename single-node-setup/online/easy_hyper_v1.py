@@ -179,7 +179,7 @@ train, test = read_data(job)
 
 tuner = MyTuner(
     build_model,
-    objective=kerastuner.Objective("error_resp", direction="max"),
+    objective='mean_absolute_percentage_error'#kerastuner.Objective("error_resp", direction="max"),
     factor=3,
     executions_per_trial=1,
     max_epochs=12,
@@ -203,6 +203,6 @@ print("tuning time:", af-(bf-delay))
 tuner.results_summary()
 print(tuner.oracle.get_best_trials(1)[0].get_state())
 
-with open('TuneV2Load_'+str(load)+'_'+str(cores)+'.csv', 'a') as f:
+with open('TuneV1Load_'+str(load)+'_'+str(cores)+'.csv', 'a') as f:
     #load,job,cores,lr,batch_size,epochs,queue_delay,tuning_time,response_time,tuning_energy,model_error,training_time,training_energy,obj_value
     f.write(str(load)+','+job+','+str(cores)+','+str(tuner.oracle.get_best_trials(1)[0].get_state()['hyperparameters']['values']['lr'])+','+str(tuner.oracle.get_best_trials(1)[0].get_state()['hyperparameters']['values']['batch_size'])+','+str(tuner.oracle.get_best_trials(1)[0].get_state()['hyperparameters']['values']['tuner/epochs'])+','+str(delay)+','+str(af-bf)+','+str(af-(bf-delay))+','+str(energy)+','+str(tuner.oracle.get_best_trials(1)[0].metrics.get_last_value('error'))+','+str(tuner.oracle.get_best_trials(1)[0].metrics.get_last_value('training_time'))+','+str(tuner.oracle.get_best_trials(1)[0].metrics.get_last_value('energy'))+','+str(tuner.oracle.get_best_trials(1)[0].metrics.get_last_value('error_resp'))+'\n')
