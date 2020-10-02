@@ -31,6 +31,13 @@ $ pip3 install keras keras-tuner scipy scikit.-learn tensorflow
 <a name="input.data"></a>
 ## Input Data
 
+- BFS
+- Jacobi
+- Kmeans
+- NN
+- Spark Kmeans
+- Spark Stream
+
 > The input data is formatted in h5py. The binaries are not uploaded to this repository because of Github's file size limitation. Please request binaries!
 
 <a name="online"></a>
