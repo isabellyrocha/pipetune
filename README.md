@@ -6,7 +6,24 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 
 ## Walkthrough Single Node Setup
 
-- 
+- [System Requirements]
+- [Python Environment]
+- [Running Offline Tuning Experiments]
+- [Running Online Tuning Experiments]
+
+## System Requirements
+
+- INTEL RAPL enabled CPU and Linux Kernel
+- CPU with at least 8 cores since we have not parameterize this input.
+
+## Python Environment
+
+- Install keras, kerastuners, scipy, sklearn, rapl, and tensorflow
+
+## Running Offline Tuning Experiments
+
+
+## Running Online Tuning Experiments
 
 ---
 
