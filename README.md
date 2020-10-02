@@ -4,6 +4,12 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 
 ---
 
+## Walkthrough Single Node Setup
+
+- 
+
+---
+
 ## Walkthrough Distributed Setup
 
 - [Deploy Spark Cluster](#spark.deployment)
