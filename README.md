@@ -4,7 +4,7 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 
 ---
 
-## Table of Contents
+## Walkthrough Distributed Setup
 
 - [Deploy Spark Cluster](#spark.deployment)
 - [BigDL Setup](#bigdl.setup)
