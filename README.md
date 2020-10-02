@@ -25,32 +25,32 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 - Install rapl from https://github.com/wkatsak/py-rapl
 
 ```Shell
-$ pip3 install keras keras-tuner scipy scikit-learn tensorflow
+$ pip3 install keras keras-tuner scipy scikit.-learn tensorflow
 ```
 <a name="online"></a>
 ## Running Offline Tuning Experiments
-> Navigate to the single-node-setup/offline
+> Navigate to the single-node-setup/offline directory
 
-> Run experiments for V1 implementation
+> Run experiments for V1 implementation.
 ```Shell
 $ python3 offline_tuning_exp_v1.py
 ```
 
-> Run expeirments for V2 implementation
+> Run expeirments for V2 implementation.
 ```Shell
 $ python3 offline_tuning_exp_v2.py
 ```
 
 <a name="offline"></a>
 ## Running Online Tuning Experiments
-> Navigate to the single-node-setup/online
+> Navigate to the single-node-setup/online directory.
 
-> Run experiments for V1 implementation
+> Run experiments for V1 implementation.
 ```Shell
 $ python3 online_tuning_exp_v1.py
 ```
 
-> Run expeirments for V2 implementation
+> Run expeirments for V2 implementation.
 ```Shell
 $ python3 online_tuning_exp_v2.py
 ```
