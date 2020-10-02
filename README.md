@@ -31,7 +31,7 @@ $ pip3 install keras keras-tuner scipy scikit.-learn tensorflow
 <a name="input.data"></a>
 ## Input Data
 
-> The input data is formatted in h5py. The binaries are not uploaded to this repository because of file size limitations. Please request binaries!
+> The input data is formatted in h5py. The binaries are not uploaded to this repository because of Github's file size limitation. Please request binaries!
 
 <a name="online"></a>
 ## Running Offline Tuning Experiments
