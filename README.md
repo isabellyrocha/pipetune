@@ -26,7 +26,7 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 - Install rapl from https://github.com/wkatsak/py-rapl
 
 ```Shell
-$ pip3 install keras keras-tuner scipy scikit.-learn tensorflow
+$ pip3 install keras keras-tuner scipy scikit-learn tensorflow
 ```
 <a name="input.data"></a>
 ## Input Data
