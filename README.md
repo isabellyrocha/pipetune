@@ -44,7 +44,7 @@ $ pipenv sync
 https://drive.google.com/file/d/1xCeRtvwoXu7X4iOYKi7m7iaItk88j0mT/view?usp=sharing
 
 
-> PIPETUNE is an optimized version of our V2 implementation. It only tunes jobs it sees for the first time. Recurring jobs are quickly profiled and classified by kmeans.Jobs exhibiting similar profiles are assigned parameters considered ideal for profiles seen in the past. Many tuning trials are bypassed so that the trained model can complete quickier. Accurate classification means recurring jobs experience 1 tuning trial plus training. The single-node-setup uses the V2 results to compute PIPETUNE's results.
+> PIPETUNE is an optimized version of our V2 implementation. It only tunes jobs it sees for the first time. Recurring jobs are quickly profiled and classified by kmeans.Jobs exhibiting similar profiles are assigned parameters considered ideal for profiles seen in the past. Many tuning trials are bypassed so that a good trained model can complete quickly. Accurate classification means recurring jobs experience 1 tuning trial plus training. The single-node-setup uses the V2 results to compute PIPETUNE's results.
 
 <a name="online"></a>
 ## Running Offline Tuning Experiments
