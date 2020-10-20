@@ -49,12 +49,13 @@ https://drive.google.com/file/d/1b4YHtRNNCYbf85re3dlDIIQMfBvqJlKM/view?usp=shari
 > Run experiments for V1 implementation.
 ```Shell
 $ pipenv run gdown --id 1b4YHtRNNCYbf85re3dlDIIQMfBvqJlKM --output jobs.zip
-$ python3 offline_tuning_exp_v1.py
+$ unzip jobs.zip
+$ pipenv run python offline_tuning_exp_v1.py
 ```
 
 > Run experiments for V2 implementation.
 ```Shell
-$ python3 offline_tuning_exp_v2.py
+$ pipenv run python offline_tuning_exp_v2.py
 ```
 
 <a name="offline"></a>
@@ -63,12 +64,14 @@ $ python3 offline_tuning_exp_v2.py
 
 > Run experiments for V1 implementation.
 ```Shell
-$ python3 online_tuning_exp_v1.py
+$ pipenv run gdown --id 1b4YHtRNNCYbf85re3dlDIIQMfBvqJlKM --output jobs.zip
+$ unzip jobs.zip
+$ pipenv run python online_tuning_exp_v1.py
 ```
 
 > Run experiments for V2 implementation.
 ```Shell
-$ python3 online_tuning_exp_v2.py
+$ pipenv run python online_tuning_exp_v2.py
 ```
 
 ---
