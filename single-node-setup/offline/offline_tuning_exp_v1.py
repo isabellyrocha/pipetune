@@ -17,4 +17,5 @@ for j in jobs:
     for c in cores:
         config = model[j]
         os.system('python3.6 easy_offline_v1.py '+j+' 0 '+str(c)+' 0 '+' '.join([str(elem) for elem in config]))
+
         os.system('rm -rf output')

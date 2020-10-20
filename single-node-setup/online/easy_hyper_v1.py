@@ -8,6 +8,7 @@ import tensorflow as tf
 
 from kerastuner.tuners import Hyperband
 
+
 from scipy.stats import randint as sp_randint
 from sklearn.datasets import load_digits
 from sklearn.ensemble import RandomForestClassifier
@@ -179,6 +180,7 @@ train, test = read_data(job)
 tuner = MyTuner(
     build_model,
     objective='mean_absolute_percentage_error',#kerastuner.Objective("error_resp", direction="max"),
+
     factor=3,
     executions_per_trial=1,
     max_epochs=12,
