@@ -38,7 +38,9 @@ $ pip3 install keras keras-tuner scipy scikit-learn tensorflow
 - Spark Kmeans
 - Spark Stream
 
-> The input data is formatted in h5py. The binaries are not uploaded to this repository because of Github's file size limitation. Please request binaries!
+> The input data is formatted in h5py. The binaries are not uploaded to this repository because of Github's file size limitation. Please find binaries at the following google drive link>
+
+https://drive.google.com/drive/folders/1d1gDZXo84UB_EanypXw8QMZppKz1ugyK?usp=sharing
 
 <a name="online"></a>
 ## Running Offline Tuning Experiments
