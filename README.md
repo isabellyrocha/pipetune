@@ -24,6 +24,10 @@ PipeTune implements a pipelined paralelism approach for hyper and system paramet
 - Python 3
 - Install pipenv
 
+```Shell
+$ cd single-node-setup                                                                                            
+$ pipenv sync                                                        
+```
 
 <a name="input.data"></a>
 ## Input Data
