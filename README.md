@@ -48,9 +48,7 @@ https://drive.google.com/file/d/1b4YHtRNNCYbf85re3dlDIIQMfBvqJlKM/view?usp=shari
 
 > Run experiments for V1 implementation.
 ```Shell
-$ cd jobs
-$ pipenv run gdown --id 1b4YHtRNNCYbf85re3dlDIIQMfBvqJlKM --output wrks.zip
-$ cd ..
+$ pipenv run gdown --id 1b4YHtRNNCYbf85re3dlDIIQMfBvqJlKM --output jobs.zip
 $ python3 offline_tuning_exp_v1.py
 ```
 
