@@ -8,7 +8,7 @@ These two versions are independet from each other but implement the same princip
 
 ---
 <a name="single"></a>
-## Walkthrough Single-Node Setup
+## Walkthrough Single-Node Version
 
 - [System Requirements](#sys.requirements)
 - [Python Environment](#environment)
@@ -84,7 +84,7 @@ $ pipenv run python online_tuning_exp_v2.py
 
 ---
 <a name="multi"></a>
-## Walkthrough Multi-Node Setup
+## Walkthrough Multi-Node Version
 
 - [Deploy Spark Cluster](#spark.deployment)
 - [BigDL Setup](#bigdl.setup)
