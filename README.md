@@ -1,8 +1,10 @@
 <p align="center"><img src="https://github.com/isabellyrocha/pipetune/blob/master/docs/logo.png"/></p>
 
 PipeTune implements a pipelined paralelism approach for hyper and system parameter tuning. This repository contains the following two versions of this implementation: 
-1. A [single-node version](#single), implemented in Python on top of tensorflow. 
-2. A [multi-node version](#multi), implemented in Python on top of BigDL.
+1. [Single-node version](#single), implemented in Python on top of tensorflow. 
+2. [Multi-node version](#multi), implemented in Python on top of BigDL.
+
+These two versions are independet from each other but implement the same principles introduced py PipeTune's algorithm.
 
 ---
 <a name="single"></a>
