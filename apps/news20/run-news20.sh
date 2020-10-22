@@ -1,6 +1,7 @@
 #!/bin/bash
 
-MASTER=spark://<master>:7077
+#MASTER=spark://<master>:7077
+MASTER=local[*]
 
 spark-submit \
 	--master $MASTER \
