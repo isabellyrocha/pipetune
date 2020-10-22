@@ -23,7 +23,7 @@ The LeNet model can be trained in Spark local mode with the following command, o
 
 - You can run it using the script `run-lenet5.sh`. Please update the variable `MASTER` in the script header with your Spark master address. Find below one example of how to run the script with a sample input:
 ```{engine='sh'}
-./run-news20.sh 4 1 4 mnist 32
+./run-lenet5.sh 4 1 4 mnist 32
 ```
 
 - Alternativaly, you can run the application directly via spark interface.
