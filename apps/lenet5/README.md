@@ -28,12 +28,12 @@ spark-submit \
 	--total-executor-cores 32 \
 	--executor-cores 1 \
 	--executor-memory 2G \
-	--py-files $HOME/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-python-api.zip,$HOME/pipetune/applications/lenet5/lenet5.py \
+	--py-files $HOME/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-python-api.zip,$HOME/pipetune/apps/lenet5/lenet5.py \
 	--properties-file $HOME/BigDL/dist/conf/spark-bigdl.conf \
 	--jars $HOME/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar \
         --conf spark.dynamicAllocation.enabled=false \
 	--conf spark.driver.extraClassPath=$HOME/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar \
-	--conf spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar $HOME/pipetune/applications/lenet5/lenet5.py \
+	--conf spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar $HOME/pipetune/apps/lenet5/lenet5.py \
 	--appName mnist \
 	--action train \
 	--dataPath /tmp/mnist \
