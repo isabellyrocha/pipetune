@@ -187,12 +187,10 @@ $ source .bashrc
 
 > Install Python dependencies on master and each worker node.
 ```Shell
-$ sudo apt install python-pip   # for Python 2.7
-$ sudo apt install python3-pip  # for Python 3.5 and Python 3.6
+$ sudo apt install python-pip
 $ pip install six numpy
 $ pip install --upgrade pip
-$ pip install BigDL==0.10.0     # for Python 2.7
-$ pip3 install BigDL==0.10.0    # for Python 3.5 and Python 3.6
+$ pip install BigDL==0.10.0 
 ```
 
 > Download and install BigDL.
