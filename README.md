@@ -127,6 +127,7 @@ $ source .bashrc
 > Use Spark's template `spark-env.sh.template`
 
 ```Shell
+$ cd spark-2.4.1-bin-hadoop2.7/
 $ cp conf/spark-env.sh.template conf/spark-env.sh
 ```
 
@@ -149,7 +150,7 @@ $ ./sbin/start-master.sh
 
 ```Shell
 $ cd /usr/local/spark-2.4.1-bin-hadoop2.7
-$ ./sbin/start-slave.sh <master-spark-URL>
+$ ./sbin/start-slave.sh spark://<master-host>:7077
 ```
 
 ### Accessing MasterWebUI
@@ -201,8 +202,8 @@ $ ./make-dist.sh -P spark_2.x
 ```
 ### Test BigDL
 
-- Test BiglDL with one of the applications avalable in `pipetune/applications`
-- For more details on the applications refer to [Lenet5](https://github.com/isabellyrocha/pipetune/tree/master/applications/lenet5) or [News20](https://github.com/isabellyrocha/pipetune/tree/master/applications/news20).
+- Test BiglDL with one of the applications avalable in `pipetune/apps`
+- For more details on the applications refer to [Lenet5](https://github.com/isabellyrocha/pipetune/tree/master/apps/lenet5) or [News20](https://github.com/isabellyrocha/pipetune/tree/master/apps/news20).
 
 ![alt text](https://github.com/isabellyrocha/pipetune/blob/master/docs/bigdl_test.gif?raw=true)
 
