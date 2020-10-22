@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MASTER=spark://eiger-7.maas:7077
+MASTER=spark://<master>:7077
 
 spark-submit \
 	--master $MASTER \
