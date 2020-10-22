@@ -14,10 +14,19 @@ FASHION-MNIST is a dataset of Zalando's article images. More information in <htt
  * [Install dependencies](../../README.md#install.bigdl.dependencies)
 
 ## How to run this example:
-- Please note that due to some permission issue, this example **cannot** be run on Windows.
+- Please note that due to permission issues, this example **cannot** run on Windows.
 - Program automaticaly downloads the chosen dataset if not yet available in the specified `dataPath`.
+- Program assumes `BigDL` to have been installed in `$HOME` directory
+- Program assumes `pipetune` respository to have been cloned to `$HOME` directory.
 
 The LeNet model can be trained in Spark local mode with the following command, or it can be distributed across a cluster by modifying the Spark master.
+
+- You can run it using the script `run-lenet5.sh`. Please update the variable `MASTER` in the script header with your Spark master addres. Find below one example of how to run the script with a sample input:
+```{engine='sh'}
+./run-news20.sh 4 1 4 mnist 32
+```
+
+- Alternativaly, you can run the application directly via spark interface.
 
 ```{engine='sh'}
 MASTER=local[*]
