@@ -1,0 +1,16 @@
+{
+    "bigdlConf": "/home/ubuntu/pipetune/bigdl/config/mnist.json",
+    "powerMeter": "pcm",
+    "nodes": ["eiger-1.maas"],
+    "systemParameters":
+    {
+        "cores": ["4"],
+        "memory": ["2", "4"]
+    },
+    "hyperParameters":
+    {
+        "batch_size": [1024, 512, 32, 64],
+        "learning_rate": [0.001, 0.01, 0.1],
+        "learning_rate_decay": [0.002, 0.02, 0.2]
+    }
+}

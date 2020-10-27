@@ -20,11 +20,11 @@ def query_pcm_data(node_name, start, end):
                 'time <= %d000000000' % (node_name, start, end))
     return list(result.get_points(measurement='pcm_power/node_utilization'))
 
-def pdu_energy(start, end):
+def pdu_energy(nodes, start, end):
     energy = 0
     print(start)
     print(end)
-    for node_name in ['eiger-1', 'eiger-2', 'eiger-4', 'eiger-5']:
+    for node_name in nodes: #['eiger-1', 'eiger-2', 'eiger-4', 'eiger-5']:
         points = query_pdu_data(node_name, start, end)
         values = []
 
@@ -40,9 +40,9 @@ def pdu_energy(start, end):
         energy += (numpy.trapz(values))
     return energy
 
-def pcm_energy(start, end):
+def pcm_energy(nodes, start, end):
     energy = 0
-    for node_name in ['eiger-2', 'eiger-3', 'eiger-4', 'eiger-5']:
+    for node_name in nodes:# ['eiger-2', 'eiger-3', 'eiger-4', 'eiger-5']:
         points = query_pcm_data(node_name, start, end)
 #        print(points)
         values = []

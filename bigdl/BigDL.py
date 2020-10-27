@@ -8,9 +8,10 @@ from utils.GroundTruth import GroundTruth
 
 
 class BigDL(object):
-
-    def __init__(self):
-        self._profiler = Profiler()
+    def __init__(self, nodes, meter):
+        self._nodes = nodes
+        self._profiler = Profiler(nodes)
+        self._meter = meter
         self._ground_truth = GroundTruth()
 
     def submit_v2(self, config, output):
@@ -29,7 +30,14 @@ class BigDL(object):
             #utils.setCores(epochs[epoch])
             finish = utils.timestamp()
             epoch_duration = finish - start
-            epoch_energy = energy.pdu_energy(start,finish)
+            epoch_energy = 0
+            try:
+                if self._meter == "pdu":
+                    epoch_energy = energy.pdu_energy(self._nodes, start, finish)
+                else:
+                    epoch_energy = energy.pcm_energy(start, finish)
+            except Exception:
+                print("No power returned. Please check your meter setup!")
             if epoch_energy < min_energy:
             #if epoch_duration < duration:
                 min_energy = epoch_energy
@@ -154,7 +162,14 @@ class BigDL(object):
         duration = 0
         if start and finish:
             duration = finish - start
-        cluster_energy = energy.pdu_energy(start, finish)
+        cluster_energy = 0
+        try:
+            if self._meter == "pdu":
+                cluster_energy = energy.pdu_energy(self._nodes, start, finish)
+            else:
+                cluster_energy = energy.pcm_energy(start, finish)    
+        except Exception:
+                 print("No power returned. Please check your meter setup!")
         info = {}
         info['accuracy'] = float(accuracy)
         info['energy'] = cluster_energy
@@ -185,12 +200,12 @@ class BigDL(object):
         #start = utils.timestamp()
         time.sleep(10)
         if profile:
-            self._profiler.startMeasuring("mnist_%s_%s_%s" % (batch_size, learning_rate, learning_rate_decay), "eiger-2.maas")
+            self._profiler.startMeasuring("mnist_%s_%s_%s" % (batch_size, learning_rate, learning_rate_decay), self._nodes[0])
         app.wait()
         #end = utils.timestamp()
         output.close()
         if profile:
-            self._profiler.stopMeasuring("eiger-2.maas")
+            self._profiler.stopMeasuring(self._nodes[0])
         info = self.get_info(output_file)
         print(info)
         return info
@@ -219,11 +234,11 @@ class BigDL(object):
         app = self.submit_textclassifier(config, output)
         time.sleep(60)
         if profile:
-            self._profiler.startMeasuring("%s_news20_%s_%s_%s" % (model, batchSize, embedding_dim, learning_rate), "eiger-2.maas")
+            self._profiler.startMeasuring("%s_news20_%s_%s_%s" % (model, batchSize, embedding_dim, learning_rate), self._nodes[0])
         if not self.epoch_done(output_file):
             time.sleep(60)
         if profile:
-            self._profiler.stopMeasuring("eiger-2.maas")
+            self._profiler.stopMeasuring(self._nodes[0])
         metrics = self._profiler.getMetrics("%s_news20_%s_%s_%s" % (model, batchSize, embedding_dim, learning_rate))
         (cores, memory) = self._ground_truth.getConfig(metrics, batchSize)
         utils.set_cores(cores)
@@ -243,12 +258,12 @@ class BigDL(object):
         #start = utils.timestamp()
         #time.sleep(5)
         if profile:
-            self._profiler.startMeasuring(job_name, "eiger-2.maas")
+            self._profiler.startMeasuring(job_name, self._nodes[0])
         app.wait()
         #end = utils.timestamp()
         output.close()
         if profile:
-            self._profiler.stopMeasuring("eiger-2.maas")
+            self._profiler.stopMeasuring(self._nodes[0])
         info = self.get_info(output_file)
         print(info)
         return info

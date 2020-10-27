@@ -17,8 +17,8 @@ from influxdb import InfluxDBClient
 class TRAIN(Trainable):
     def _setup(self, config):
         self.config = config
-        self.bigdl = BigDL()
-        self.profiler = Profiler()
+        self.bigdl = BigDL(config['nodes'], config['powerMeter'])
+        self.profiler = Profiler(config['nodes'])
         self.ground_truth = GroundTruth()
 
     def _setSysParameters(self, config, cores, memory):
@@ -49,7 +49,6 @@ class TRAIN(Trainable):
 
         for parameter in self.config.keys():
             config[parameter] = self.config[parameter]
-
         n_epochs = 5
 
         (default_cores, default_memory) = (cores[0], memory[0])
@@ -109,10 +108,12 @@ def runParameters(args):
         mode="max",
         max_t=20)
 
-    pipetune_config = utils.read_json("%s/pipetune/config/mnist.json" % Path.home())
+    pipetune_config = utils.read_json(args.config)#utils.read_json("%s/pipetune/config/mnist.json" % Path.home())
     
     tune_config = {}
     tune_config["bigdlConf"] = pipetune_config["bigdlConf"]
+    tune_config["nodes"] = pipetune_config["nodes"]
+    tune_config["powerMeter"] = pipetune_config["powerMeter"]
     tune_config["cores"] = pipetune_config["systemParameters"]["cores"]
     tune_config["memory"] = pipetune_config["systemParameters"]["memory"]
     hyperParameters = pipetune_config["hyperParameters"]

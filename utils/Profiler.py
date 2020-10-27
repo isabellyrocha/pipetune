@@ -10,9 +10,10 @@ home = str(Path.home())
 
 class Profiler():
 
-    def __init__(self):
+    def __init__(self, nodes):
 #        self.influx_client = InfluxDBClient(args.influx_host, args.influx_port, args.influx_user, args.influx_pass, args.influx_database)
         self.influx_client = InfluxDBClient('localhost', 8086, 'root', 'root', 'profiler')
+        self._nodes = nodes
 
     def write_event(self, measurement: str, tags: dict, timestemp, value: int):
         json_body = [
@@ -28,17 +29,17 @@ class Profiler():
 
     def startMeasuring(self, file_name, node_name):
         #file_name = "lenet_%s_%s_%s_%s_%d" % (dataset, total_executor_cores, memory, batch_size, trial_id)
-        return subprocess.Popen(["ssh", node_name, "./start-perf.sh", "%s/perf/%s" % (home, file_name)])
+        return subprocess.Popen(["ssh", node_name, "bash", "%s/pipetune/scripts/perf/start-perf.sh" % home, "%s/perf/%s" % (home, file_name)])
 
     def stopMeasuring(self, node_name):
-        return subprocess.Popen(["ssh", node_name, "./stop-perf.sh"])
+        return subprocess.Popen(["ssh", node_name, "bash", "%s/pipetune/scripts/perf/stop-perf.sh" % home])
 
     def getMetrics(self, file_name):
-        copy = subprocess.Popen("scp eiger-2.maas:perf/%s.stat %s/perf" % (file_name, home), shell=True)
+        copy = subprocess.Popen("scp %s:perf/%s.stat %s/perf" % (self._nodes[0], file_name, home), shell=True)
         copy.wait()
         ssh = SSHClient()
         ssh.load_system_host_keys()
-        ssh.connect('eiger-2.maas')
+        ssh.connect(self._nodes[0])
         with SCPClient(ssh.get_transport()) as scp:
 #    scp.put('test.txt', 'test2.txt')
             try:

@@ -51,8 +51,9 @@ def write_outputs_metrics_influxdb(timestamp, metrics_values, client):
         power = metrics_values[output_id][4]['v']
         
         json_body = get_json(nodename, timestamp, power)
+        print(json_body)
         client.write_points(json_body)    	
-
+ 
 def main(status_url, frequency):
     print('Starting PDU monitoring...')
     try:
@@ -61,7 +62,9 @@ def main(status_url, frequency):
             timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')	
             response = urllib.request.urlopen(status_url + '/statusjsn.js?components=16384')
             obj = response.readline().decode('utf8')
+#            print(obj)
             metrics = json.loads(obj)
+            print(metrics)
             write_outputs_metrics_influxdb(timestamp, metrics['sensor_values'][1]['values'], client)
             time.sleep(frequency)
     except KeyboardInterrupt:
