@@ -320,7 +320,7 @@ $ mkdir $HOME/perf
 
 If all the previous steps were perfomed correctly, we can now finally run PipeTune.
 
-You can test PipeTune itself by running the following script which uses an already condifgured file for tuning a LENET model with the MNIST dataset.
+You can test PipeTune itself by running the following script which uses an already condifgured file for tuning a LENET model with the MNIST dataset. Please note that this script assumes that you have run the applications individually which results in the datasets necessary automatically being downladed for you. If this if not the case then you have to maunally download the datasets from here <http://yann.lecun.com/exdb/mnist/> or here <https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html>, for the mnist and news20 applications, respectivally.
 ```
 ./run-pipetune.sh
 ```
