@@ -33,6 +33,7 @@ class TRAIN(Trainable):
     def _getBestConfig(self, probing):
 #        result = ("16", "8")
         min_duration = 0
+        result = None
         for key in probing.keys():
             duration = probing[key]
             if duration < min_duration:
