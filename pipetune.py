@@ -89,7 +89,7 @@ class TRAIN(Trainable):
             bestConfig = self._getBestConfig(probing)
             if bestConfig:
                 (cores, memory) = bestConfig#self._getBestConfig(probing)
-            self._setSysParameters(config, cores, memory)
+                self._setSysParameters(config, cores, memory)
             remaining_result = self.bigdl.run(config)
             result['duration'] = result['duration'] + remaining_result['duration']        
         return result        
