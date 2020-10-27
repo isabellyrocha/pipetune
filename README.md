@@ -318,12 +318,12 @@ $ mkdir $HOME/perf
 <a name="pipetune"></a>
 ## PipeTune
 
-# Install dependencies
+> Install dependencies
 ```Shell
 $ pip3 install ray dataclasses influxdb paramiko scp tensorboardx
 ```
 
-# Create BigDL logging directory
+> Create BigDL logging directory
 ```Shell
 $ mkdir $HOME/bigdl_logs
 ```
