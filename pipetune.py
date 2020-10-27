@@ -86,7 +86,9 @@ class TRAIN(Trainable):
                 probing[(default_cores, trial_memory)] = trial_result['duration']
                 result['duration'] = result['duration'] + trial_result['duration']
             config['endTriggerNum'] = str(n_epochs-4)
-            (cores, memory) = self._getBestConfig(probing)
+            bestConfig = self._getBestConfig(probing)
+            if bestConfig:
+                (cores, memory) = bestConfig#self._getBestConfig(probing)
             self._setSysParameters(config, cores, memory)
             remaining_result = self.bigdl.run(config)
             result['duration'] = result['duration'] + remaining_result['duration']        
