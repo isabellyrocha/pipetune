@@ -342,6 +342,8 @@ $ python3 pipetune.py --config pipetune.conf
 
 The `pipetune.conf` consists of the following 3 main sections:
 - `bigdlConf` pointing to the BigDL config file created earlier 
+- `powerMeter` defined which power meter you have configured (currently suppports `pdu` and `pcm`)
+- `nodes` list of nodes consisting your cluster (spark slave nodes)
 - `systemParameters` describing the system parameters to be tuned and the list of values which each parameter can assume
 - `hyperParameters` describing the hyper parameters to be tuned and the list of values which each parameter can assume
 
@@ -350,6 +352,8 @@ Below is an example of how this configuration file looks like.
 ```yaml
 {
     "bigdlConf": "bigdl/config/mnist.json",
+    "powerMeter": "pcm",
+    "nodes": ["slavenode1", "slavenode2", "slavenode3"],
     "systemParameters":
     {
         "cores": ["16", "8", "4"],
