@@ -285,6 +285,15 @@ $ # Following steps required in each cluster node
 $ nohup ssh <nodename> sudo ./pcm/pcm.x /csv > $HOME/pcm_data/<nodename>.log &
 $ nohup python3 $HOME/pipetune/monitoring/pcm_power.py $HOME/pcm_data/<nodename>.log <nodename> &
 ```
+
+> Test if the metrics are being fetched to the database
+```Shell
+$ influx
+$ use energy
+$ SELECT * FROM "pdu_power/node_utilization" WHERE time > now() - 1m AND  nodename = 'yournodename' # If you're using PDU
+$ SELECT * FROM "pcm_power/node_utilization" WHERE time > now() - 1m AND  nodename = 'yournodename' # If you're using PDM
+```
+
 ---
 ### Clustering
 
