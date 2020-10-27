@@ -318,6 +318,16 @@ $ mkdir $HOME/perf
 <a name="pipetune"></a>
 ## PipeTune
 
+# Install dependencies
+```Shell
+$ pip3 install ray dataclasses influxdb paramiko scp tensorboardx
+```
+
+# Create BigDL logging directory
+```Shell
+$ mkdir $HOME/bigdl_logs
+```
+
 If all the previous steps were perfomed correctly, we can now finally run PipeTune.
 
 You can test PipeTune itself by running the following script which uses an already condifgured file for tuning a LENET model with the MNIST dataset. Please note that this script assumes that you have tested the application individually. In the first time you run these applications, the required datasets are automatically downladed for you. If you prefer to download them maunally, then please refer to <http://yann.lecun.com/exdb/mnist/> and <https://blog.keras.io/using-pre-trained-word-embeddings-in-a-keras-model.html> for the mnist and news20 applications, respectivally.
