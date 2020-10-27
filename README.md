@@ -295,7 +295,7 @@ In the current version, clustring is implemented using Kmeans algorithm on low l
 > Install perf in those nodes where profiling is needed
 
 ```Shell
-$ sudo apt install linux-tools-common linux-tools-4.4.0-184-generic linux-cloud-tools-4.4.0-184-generic
+$ sudo apt install linux-tools-common linux-tools-generic linux-cloud-tools-generic
 ```
 
 > Create a directory where all the collected data will be saved
