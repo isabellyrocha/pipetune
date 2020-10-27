@@ -59,8 +59,8 @@ class BigDL(object):
             '--py-files', config['py_files'],
             '--properties-file', config['properties_file'],
             '--jars', config['jars'],
-            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar',
-            '--conf', 'spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar', config['conf']]
+            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.12.0-SNAPSHOT-jar-with-dependencies.jar',
+            '--conf', 'spark.executer.extraClassPath=bigdl-0.12.0-SNAPSHOT-jar-with-dependencies.jar', config['conf']]
         for p in config['extras']:
             command.append("--%s" % p)
             command.append(config['extras'][p])
@@ -78,8 +78,8 @@ class BigDL(object):
             '--py-files', config['py_files'],
             '--properties-file', config['properties_file'],
             '--jars', config['jars'],
-            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar',
-            '--conf', 'spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar', config['conf'],
+            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.12.0-SNAPSHOT-jar-with-dependencies.jar',
+            '--conf', 'spark.executer.extraClassPath=bigdl-0.12.0-SNAPSHOT-jar-with-dependencies.jar', config['conf'],
             '--model', config['model'],
             '--batchSize', config['batchSize'],
             '--learning_rate', config['learning_rate'],
@@ -97,8 +97,8 @@ class BigDL(object):
             '--py-files', config['py_files'],
             '--properties-file', config['properties_file'],
             '--jars', config['jars'],
-            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar',
-            '--conf', 'spark.executer.extraClassPath=bigdl-0.11.0-SNAPSHOT-jar-with-dependencies.jar', config['conf'],
+            '--conf', 'spark.driver.extraClassPath=/home/ubuntu/BigDL/dist/lib/bigdl-0.12.0-SNAPSHOT-jar-with-dependencies.jar',
+            '--conf', 'spark.executer.extraClassPath=bigdl-0.12.0-SNAPSHOT-jar-with-dependencies.jar', config['conf'],
             '--appName', config['app_name'],
             '--batchSize', config['batch_size'],
             '--learningRate', config['learning_rate'],
@@ -174,7 +174,9 @@ class BigDL(object):
         info['accuracy'] = float(accuracy)
         info['energy'] = cluster_energy
         info['duration'] = duration
-        info['ratio'] = float(accuracy)/float(cluster_energy)
+        info['ratio'] = 0
+        if accuracy and cluster_energy:
+            info['ratio'] = float(accuracy)/float(cluster_energy)
         return info
 
     def run_lenet5(self,

@@ -17,9 +17,13 @@ from influxdb import InfluxDBClient
 class TRAIN(Trainable):
     def _setup(self, config):
         self.config = config
+        #self.config.pop('nodes')
+        #self.config.pop('powerMeter')
         self.bigdl = BigDL(config['nodes'], config['powerMeter'])
         self.profiler = Profiler(config['nodes'])
         self.ground_truth = GroundTruth()
+        self.config.pop('nodes')
+        self.config.pop('powerMeter')
 
     def _setSysParameters(self, config, cores, memory):
         config['total_executor_cores'] = str(cores)
@@ -37,6 +41,7 @@ class TRAIN(Trainable):
         return result
 
     def _train(self):
+        print("Starting trial..")
         config_file = self.config['bigdlConf']
         self.config.pop('bigdlConf')
         config = utils.read_json(config_file)
@@ -55,7 +60,10 @@ class TRAIN(Trainable):
 
         self._setSysParameters(config, default_cores, default_memory)
 
+        print("Running BigDL..")
+        print(config)
         result = self.bigdl.run(config, True)
+        print("Done running BigDL..")
         gt_result = self.ground_truth.getConfig(metrics, config['batch_size'])
         if gt_result:
             (cores, memory) = gt_result    

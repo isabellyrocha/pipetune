@@ -96,6 +96,7 @@ def run_script_v2(args, out =subprocess.PIPE, err =subprocess.PIPE):
     return app
 
 def run_script(args, out):
+    print(args)
     return subprocess.Popen(args, stdout=out, stderr=subprocess.PIPE)
 
 def start_perf():
