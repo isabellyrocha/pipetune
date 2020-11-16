@@ -119,7 +119,7 @@ $ cd /usr/local
 $ wget https://archive.apache.org/dist/spark/spark-2.4.1/spark-2.4.1-bin-hadoop2.7.tgz
 $ tar -xzf spark-2.4.1-bin-hadoop2.7.tgz
 $ echo "export PATH=$PATH:/usr/local/spark-2.4.1-bin-hadoop2.7/bin" >> $HOME/.bashrc
-$ source .bashrc
+$ source $HOME/.bashrc
 ```
 
 ### Set Environment Variables
