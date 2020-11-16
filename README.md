@@ -193,6 +193,7 @@ $ sudo apt install python-pip
 # So you need to install pip for Python 2 using the get-pip.py script.
 $ curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py 
 $ sudo python2 get-pip.py
+# Make sure to install the dependencies from a root account (sudo does not suffice).
 $ pip install six numpy
 $ pip install --upgrade pip
 $ pip install BigDL==0.10.0 
