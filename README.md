@@ -181,7 +181,6 @@ Note: If you get connection refused when adding the workers, comment out the `12
 ```Shell
 $ sudo apt install maven
 $ sudo apt-get install python
-$ sudo apt install python-pip
 $ echo "export LC_ALL="en_US.UTF-8"" >> .bashrc
 $ echo "export LC_CTYPE="en_US.UTF-8"" >> .bashrc
 $ source .bashrc
@@ -190,6 +189,10 @@ $ source .bashrc
 > Install Python dependencies on master and each worker node.
 ```Shell
 $ sudo apt install python-pip
+# For Ubuntu 20.04 pip for Python 2 is not included in repositories.
+# So you need to install pip for Python 2 using the get-pip.py script.
+$ curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py 
+$ sudo python2 get-pip.py
 $ pip install six numpy
 $ pip install --upgrade pip
 $ pip install BigDL==0.10.0 
