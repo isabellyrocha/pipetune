@@ -153,6 +153,8 @@ $ cd /usr/local/spark-2.4.1-bin-hadoop2.7
 $ ./sbin/start-slave.sh spark://<master-host>:7077
 ```
 
+Note: If you get connection refused when adding the workers, comment out the `127.0.0.1 *` lines in `/etc/hosts`.
+
 ### Accessing MasterWebUI
 
 - MasterWebUI abailable at: `http://masternode:8080`
