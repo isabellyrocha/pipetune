@@ -377,10 +377,7 @@ Below is an example of how this configuration file looks like.
 ## Paper
 
 [MIDDLEWARE'20] "[PipeTune: Pipeline Parallelism of Hyper and System Parameters Tuning for Deep Learning Clusters
-](https://dl.acm.org/doi/10.1145/3423211.3425692)". Isabelly Rocha, Nathaniel Morris, Lydia Y. Chen,  
-Pascal Felber, Robert Birke, Valerio Schiavoni. 
-
-## Cite
+](https://dl.acm.org/doi/10.1145/3423211.3425692)". Isabelly Rocha, Nathaniel Morris, Lydia Y. Chen, Pascal Felber, Robert Birke, Valerio Schiavoni. 
 
 ```
 @inproceedings{DBLP:conf/middleware/RochaMCFBS20,
