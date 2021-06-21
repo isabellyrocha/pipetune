@@ -373,3 +373,36 @@ Below is an example of how this configuration file looks like.
     }
 }
 ```
+
+## Paper
+
+[MIDDLEWARE'20] "[PipeTune: Pipeline Parallelism of Hyper and System Parameters Tuning for Deep Learning Clusters
+](https://dl.acm.org/doi/10.1145/3423211.3425692)". Isabelly Rocha, Nathaniel Morris, Lydia Y. Chen,  
+Pascal Felber, Robert Birke, Valerio Schiavoni. 
+
+## Cite
+
+```
+@inproceedings{DBLP:conf/middleware/RochaMCFBS20,
+  author    = {Isabelly Rocha and
+               Nathaniel Morris and
+               Lydia Y. Chen and
+               Pascal Felber and
+               Robert Birke and
+               Valerio Schiavoni},
+  editor    = {Dilma Da Silva and
+               R{\"{u}}diger Kapitza},
+  title     = {PipeTune: Pipeline Parallelism of Hyper and System Parameters Tuning
+               for Deep Learning Clusters},
+  booktitle = {Middleware '20: 21st International Middleware Conference, Delft, The
+               Netherlands, December 7-11, 2020},
+  pages     = {89--104},
+  publisher = {{ACM}},
+  year      = {2020},
+  url       = {https://doi.org/10.1145/3423211.3425692},
+  doi       = {10.1145/3423211.3425692},
+  timestamp = {Tue, 15 Dec 2020 14:30:24 +0100},
+  biburl    = {https://dblp.org/rec/conf/middleware/RochaMCFBS20.bib},
+  bibsource = {dblp computer science bibliography, https://dblp.org}
+}
+```
